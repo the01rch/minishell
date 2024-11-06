@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/06 15:33:47 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/06 15:57:35 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,11 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	(void)env;
-	ft_putstr("$> ");
-	while (1) {}
+	char	*line;
+
+	while (1) {
+		line = readline("$> ");	
+		ft_putstr(line);
+	}
 	return (0);
 }
