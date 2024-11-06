@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 16:02:43 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/06 16:10:00 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/06 17:02:04 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,18 @@ void	ft_putstr(char *str)
 		ft_putchar(*str++);
 }
 
-bool	ft_strcmp(char *s1, char *s2)
+bool	ft_strncmp(char *s1, char *s2, int n)
 {
-	while (*s1 && *s2)
-	{
-		if (*s1 != *s2)
-			return (false);
-		s1++;
-		s2++;
-	}
-	if (*s1 != *s2)
+	int	i;
+
+	if (n <= 0)
 		return (false);
+	i = 0;
+	while (i < n && (s1[i] || s2[i]))
+	{
+		if (s1[i] != s2[i])
+			return (false);
+		i++;
+	}
 	return (true);
 }

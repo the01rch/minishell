@@ -6,13 +6,13 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:21 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/06 15:53:22 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/06 22:06:42 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-int	count_rows(char *str)
+static int	count_rows(char *str)
 {
 	int	rows;
 	int	i;
@@ -30,7 +30,7 @@ int	count_rows(char *str)
 	return (rows + 1);
 }
 
-int	*count_cols(char *str, int rows)
+static int	*count_cols(char *str, int rows)
 {
 	int	*cols;
 	int	y;
@@ -58,7 +58,7 @@ int	*count_cols(char *str, int rows)
 	return (cols);
 }
 
-char	**init_arr(char *str)
+static char	**init_arr(char *str)
 {
 	char	**arr;
 	int		*cols;
