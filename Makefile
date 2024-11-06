@@ -19,6 +19,8 @@ OBJ		=	$(SRC:.c=.o)
 
 NAME	=	minishell
 
+RL = -lreadline
+
 RM		=	rm -rf
 
 CFLAGS	+=	-Wall -Wextra -Werror -g3
@@ -26,7 +28,7 @@ CFLAGS	+=	-Wall -Wextra -Werror -g3
 all: $(NAME)
 	
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(RL)
  
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
