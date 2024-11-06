@@ -6,21 +6,24 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/06 15:57:35 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:27:53 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-void	ft_putchar(char c)
+void gest_builtin(char *line)
 {
-	write(1, &c, 1);
-}
-
-void	ft_putstr(char *str)
-{
-	while (*str)
-		ft_putchar(*str++);
+	if (ft_strcmp(line, "exit"))
+	{
+		free(line);
+		exit(0);
+	}
+	if (ft_strcmp(line, "echo"))
+	{
+		ft_putstr(line);
+		ft_putchar('\n');
+	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -32,7 +35,7 @@ int	main(int ac, char **av, char **env)
 
 	while (1) {
 		line = readline("$> ");	
-		ft_putstr(line);
+		gest_builtin(line);
 	}
 	return (0);
 }

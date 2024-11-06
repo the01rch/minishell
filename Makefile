@@ -6,11 +6,12 @@
 #    By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/11/06 15:18:42 by redrouic         ###   ########.fr        #
+#    Updated: 2024/11/06 16:28:20 by redrouic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC		=	src/main.c 
+SRC		=	src/main.c\
+			src/utils.c
 
 CC		=	cc
 
