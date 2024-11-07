@@ -70,12 +70,14 @@ int	main(int ac, char **av, char **env)
 	while (1) 
 	{
 		line = readline("$> ");
+		//Gestion de l'exit (CTRL + D)
 		if (!line)
 			break;
+		//Ajout de l'historique basic
 		if (*line)
             add_history(line);
 		gest_builtin(line, env);
+		free(line);
 	}
-	free(line);
 	return (0);
 }
