@@ -58,7 +58,6 @@ void gest_builtin(char *line, char **env)
 
 int	main(int ac, char **av, char **env)
 {
-	(void)ac;
 	(void)av;
 	(void)env;
 	char	*line;
@@ -71,9 +70,11 @@ int	main(int ac, char **av, char **env)
 	while (1) 
 	{
 		line = readline("$> ");
-		gest_builtin(line, env);
 		if (!line)
 			break;
+		if (*line)
+            add_history(line);
+		gest_builtin(line, env);
 	}
 	free(line);
 	return (0);
