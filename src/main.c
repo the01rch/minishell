@@ -12,35 +12,39 @@
 
 #include "../icl/minishell.h"
 
-/*
+
 void	free_arr(char **arr)
 {
-	while (*arr)
+	int i =0;
+	while (arr[i] != NULL)
 	{
-		free(*arr);
-		arr++;
+		free(arr[i]);
+		i++;
 	}
 	free(arr);
 }
-*/
+
 
 void gest_builtin(char *line, char **env)
 {
 	char	**arr;
+	int i = 0;
 
-	arr = str2arr(line);
 	if (ft_strncmp(line, "exit", 4))
 		exit(0);
 	if (ft_strncmp(line, "echo", 4))
 	{
-		arr++;
-		while (*arr)
+		arr = str2arr(line);
+		i++;
+		while (arr[i])
 		{
-			printf("%s ", *arr);
-			arr++;
+			printf("%s ", arr[i]);
+			i++;
 		}
 		printf("\n");
+		free_arr(arr);
 	}
+	
 	if (ft_strncmp(line, "env", 3))
 	{
 		while (*env)
@@ -59,10 +63,18 @@ int	main(int ac, char **av, char **env)
 	(void)env;
 	char	*line;
 
+	if(ac != 1)
+	{
+		printf("Unvalid argument \n");
+		exit(0);
+	}
 	while (1) 
 	{
-		line = readline("$> ");	
+		line = readline("$> ");
 		gest_builtin(line, env);
+		if (!line)
+			break;
 	}
+	free(line);
 	return (0);
 }
