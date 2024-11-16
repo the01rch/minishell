@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/06 22:07:16 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/16 03:36:50 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,35 @@ void	free_arr(char **arr)
 }
 */
 
+void	gest_env(char *line, char **env)
+{
+	int i;
+	
+	i = 0;
+	if (ft_strncmp(line, "env", 3))
+	{
+		while (*env)
+		{
+			printf("%s\n", *env);
+			env++;
+		}
+	}
+	if (ft_strncmp(line, "pwd", 3))
+	{
+		while (env[i])
+		{
+			if (ft_strncmp(env[i], "PWD", 3))
+				printf("%s\n", &env[i][4]);
+			i++;
+		}
+	}
+}
+
 void gest_builtin(char *line, char **env)
 {
 	char	**arr;
 
-	arr = str2arr(line);
+	arr = str2arr(line, " ");
 	if (ft_strncmp(line, "exit", 4))
 		exit(0);
 	if (ft_strncmp(line, "echo", 4))
@@ -41,24 +65,15 @@ void gest_builtin(char *line, char **env)
 		}
 		printf("\n");
 	}
-	if (ft_strncmp(line, "env", 3))
-	{
-		while (*env)
-		{
-			printf("%s\n", *env);
-			env++;
-		}
-	}
-//	free_arr(arr);
+	gest_env(line, env);
 }
 
 int	main(int ac, char **av, char **env)
 {
-	(void)ac;
-	(void)av;
-	(void)env;
 	char	*line;
 
+	(void)ac;
+	(void)av;
 	while (1) 
 	{
 		line = readline("$> ");	

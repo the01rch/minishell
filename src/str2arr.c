@@ -6,31 +6,43 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:21 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/06 22:06:42 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/16 02:23:48 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-static int	count_rows(char *str)
+static bool is_charset(const char *chr, char c)
+{
+	while (*chr)
+	{
+		if (c == *chr)
+			return (true);
+		chr++;
+	}
+	return (false);
+}
+
+static int	count_rows(const char *chr, char *str)
 {
 	int	rows;
 	int	i;
 
 	rows = 0;
 	i = 0;
-	while (*str == ' ')
+	while (is_charset(chr, *str))
 		str++;
 	while (str[i])
 	{
-		if (str[i] == ' ' && str[i + 1] != ' ' && str[i + 1] != '\0')
+		if (is_charset(chr, str[i]) 
+				&& !is_charset(chr, str[i + 1]) && str[i + 1])
 			rows++;
 		i++;
 	}
 	return (rows + 1);
 }
 
-static int	*count_cols(char *str, int rows)
+static int	*count_cols(const char *chr, char *str, int rows)
 {
 	int	*cols;
 	int	y;
@@ -45,9 +57,9 @@ static int	*count_cols(char *str, int rows)
 	x = 0;
 	while (*str)
 	{
-		if (*str != ' ' && *str != '\0')
+		if (!is_charset(chr, *str) && *str != '\0')
 			x++;
-		if (x > 0 && *str == ' ')
+		if (x > 0 && is_charset(chr, *str))
 		{
 			cols[y++] = x;
 			x = 0;
@@ -58,7 +70,7 @@ static int	*count_cols(char *str, int rows)
 	return (cols);
 }
 
-static char	**init_arr(char *str)
+static char	**init_arr(const char *chr, char *str)
 {
 	char	**arr;
 	int		*cols;
@@ -66,8 +78,8 @@ static char	**init_arr(char *str)
 	int		y;
 	int		x;
 
-	rows = count_rows(str);
-	cols = count_cols(str, rows);
+	rows = count_rows(chr, str);
+	cols = count_cols(chr, str, rows);
 	if (!cols)
 		return (0);
 	arr = malloc(sizeof(char *) * (rows + 1));
@@ -87,14 +99,14 @@ static char	**init_arr(char *str)
 	return (arr);
 }
 
-char	**str2arr(char *str)
+char	**str2arr(char *str, const char *chr)
 {
 	char	**arr;
 	int		y;
 	int		x;
 	int		i;
 
-	arr = init_arr(str);
+	arr = init_arr(chr, str);
 	if (!arr)
 		return (0);
 	x = 0;
@@ -102,9 +114,9 @@ char	**str2arr(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] != ' ' && str[i] != '\0')
+		if (!is_charset(chr, str[i]) && str[i] != '\0')
 			arr[y][x++] = str[i];
-		if (x > 0 && str[i] == ' ')
+		if (x > 0 && is_charset(chr, str[i]))
 		{
 			arr[y++][x] = '\0';
 			x = 0;
