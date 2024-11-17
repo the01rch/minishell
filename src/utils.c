@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 16:02:43 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/06 17:02:04 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/16 22:41:43 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,22 @@ bool	ft_strncmp(char *s1, char *s2, int n)
 		i++;
 	}
 	return (true);
+}
+
+char	*ft_strdup(char *src)
+{
+	char	*dest;
+	int		len;
+
+	len = 0;
+	while (src[len])
+		len++;
+	dest = malloc(sizeof(char) * len + 1);
+	if (!dest)
+		return (NULL);
+	len = 0;
+	while (*src)
+		dest[len++] = *src++;
+	dest[len] = '\0';
+	return (dest);
 }
