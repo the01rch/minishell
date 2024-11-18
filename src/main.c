@@ -6,40 +6,13 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/17 02:15:41 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:22:23 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-bool	gest_env(char **arr, char **env)
-{
-	char	cwd[1024];
-
-	if (ft_strncmp(arr[0], "pwd", 3))
-		return (printf("%s\n", getenv("PWD")), true);
-	if (ft_strncmp(arr[0], "env", 3))
-	{
-		while (*env)
-			printf("%s\n", *env++);
-		return (true);
-	}
-	if (ft_strncmp(arr[0], "cd", 2))
-	{
-		if (!arr[1])
-			return (chdir(getenv("HOME")), true);
-		if (chdir(arr[1]) == -1)
-			return (perror("cd"), false);
-		if (getcwd(cwd, sizeof(cwd)) != NULL)
-			ft_setenv("PWD", cwd, 1);
-		else
-			perror("getcwd");
-		return (true);
-	}
-	return (false);
-}
-
-bool	gest_builtins(char **arr, char **env)
+bool	gest_builtins(char **arr)
 {
 	int	i;
 	
@@ -57,56 +30,38 @@ bool	gest_builtins(char **arr, char **env)
 			return (true);
 		return (printf("\n"), true);
 	}
-	return (gest_env(arr, env));
+	return (false);
 }
 
 void	free_arr(char **arr)
 {
-	while (*arr)
+	int	i;
+	
+	i = 0;
+	while (arr[i])
 	{
-		free(*arr);
-		arr++;
+		free(arr[i]);
+		i++;
 	}
 	free(arr);
 }
 
-char **copy_env(char **env)
-{
-	char	**copy;
-	int		len;
-
-	len = 0;
-	while (env[len])
-		len++;
-	copy = malloc(sizeof(char *) * len + 1);
-	if (!copy)
-		return (NULL);
-	len = 0;
-	while (*env)
-	{
-		copy[len++] = ft_strdup(*env);
-		env++;
-	}
-	copy[len] = NULL;
-	return (copy);
-}
-
 int	main(int ac, char **av, char **env)
 {
-	char	*line;
+	t_env	*list;
 	char	**arr;
-	char	**copy;
+	char	*line;
 
 	(void)ac;
 	(void)av;
-	copy = copy_env(env);
+	list = arr2list(env, arr_len(env));
 	while (1) 
 	{
 		line = readline("$> ");	
 		arr = str2arr(line, " ");
-		gest_builtins(arr, copy);
+		gest_env(list, arr);
 	}
 	free_arr(arr);
-	free_arr(copy);
+	//free_list();
 	return (0);
 }
