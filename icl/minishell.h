@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/18 19:12:09 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:16:01 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,16 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+t_env	*arr2list(char **arr, int len);
+t_env	*create_node(char *str);
+char	*plist(t_env *lenv, char *name);
+void	free_list(t_env *list);
+bool	gest_builtins(t_env *len, char **arr);
+bool	gest_env(t_env *lenv, char **arr);
 int		ft_strlen(const char *str);
 bool	ft_strncmp(char *s1, char *s2, int n);
 char	*ft_strdup(char *src);
 char	**str2arr(char *str, const char *charset);
 void	free_arr(char **arr);
-t_env	*arr2list(char **arr, int len);
-bool	gest_env(t_env *lenv, char **arr);
-bool	gest_builtins(char **arr);
-int		arr_len(char **arr);
 
 #endif

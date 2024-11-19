@@ -6,77 +6,11 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/18 22:26:43 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:20:48 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
-
-int	arr_len(char **arr)
-{
-	int	len;
-
-	len = 0;
-	while (arr[len])
-		len++;
-	return (len);
-}
-
-t_env	*create_node(char *str)
-{
-	t_env	*new;
-	char	**arr;
-
-	new = (t_env*)malloc(sizeof(t_env));
-	if (!new)
-		exit(1);
-	arr = str2arr(str, "=");
-	if (!arr)
-		exit(1);
-	new->name = ft_strdup(arr[0]);
-	new->content = ft_strdup(arr[1]);
-	new->next = NULL;
-	//free_arr(arr);
-	return (new);
-}
-
-t_env	*arr2list(char **arr, int len)
-{
-	t_env	*head;
-	t_env	*tmp;
-	int		i;
-
-	i = 0;
-	if (len == 0)
-		return (NULL);
-	head = create_node("a=b");
-	tmp = head;
-	while (i < len)
-	{
-		tmp->next = create_node(arr[i]);
-		tmp = tmp->next;
-		i++;
-	}
-	return (head->next);
-}
-
-void	print_list(t_env *lenv, char *name)
-{
-	t_env	*tmp;
-
-	tmp = lenv;
-	while (tmp != NULL)
-	{
-		if (name && ft_strncmp(name, tmp->name, 3))
-		{
-			printf("%s\n", tmp->content);
-			break ;
-		}
-		else if (!name)
-			printf("%s=%s\n", tmp->name, tmp->content);	
-		tmp = tmp->next;
-	}
-}
 
 bool	ft_export(t_env *lenv, char *str)
 {
@@ -84,7 +18,7 @@ bool	ft_export(t_env *lenv, char *str)
 	char	**arr;
 
 	tmp = lenv;
-	while (tmp->next != NULL)	
+	while (tmp->next != NULL)
 	{
 		arr = str2arr(str, "=");
 		if (!arr)
@@ -110,14 +44,14 @@ void	ft_unset(t_env *lenv, char *str)
 	{
 		if (ft_strncmp(str, tmp->next->name, ft_strlen(str)))
 		{
-			tmp->next = tmp->next->next;		
+			tmp->next = tmp->next->next;
 			break ;
 		}
-		tmp = tmp->next;		
+		tmp = tmp->next;
 	}
 }
 
-char	*path_wrapper(char *name, char *content)
+char	*pwrapper(char *name, char *content)
 {
 	char	*dest;
 	int		len;
@@ -137,29 +71,36 @@ char	*path_wrapper(char *name, char *content)
 	return (dest);
 }
 
-bool	gest_env(t_env *lenv, char **arr)
+bool	ft_cd(t_env *lenv, char **arr)
 {
 	char	cwd[1024];
 
+	if (!arr[1])
+	{
+		chdir(plist(lenv, "HOME"));
+		ft_export(lenv, pwrapper("PWD", plist(lenv, "HOME")));
+		return (true);
+	}
+	if (chdir(arr[1]) == -1)
+		return (perror("cd"), false);
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		ft_export(lenv, pwrapper("PWD", cwd));
+	else
+		perror("getcwd");
+	return (true);
+}
+
+bool	gest_env(t_env *lenv, char **arr)
+{
 	if (ft_strncmp(arr[0], "env", 3))
-		return (print_list(lenv, NULL), true);
+		return (plist(lenv, NULL), true);
 	if (ft_strncmp(arr[0], "pwd", 3))
-		return (print_list(lenv,  "PWD"), true);
+		return (printf("%s\n", plist(lenv, "PWD")), true);
 	if (ft_strncmp(arr[0], "unset", 5))
 		return (ft_unset(lenv, arr[1]), true);
 	if (ft_strncmp(arr[0], "export", 6))
 		return (ft_export(lenv, arr[1]), true);
 	if (ft_strncmp(arr[0], "cd", 2))
-	{
-		if (!arr[1])
-			return (chdir(getenv("HOME")), true);
-		if (chdir(arr[1]) == -1)
-			return (perror("cd"), false);
-		if (getcwd(cwd, sizeof(cwd)) != NULL)
-			ft_export(lenv, path_wrapper("PWD", cwd));
-		else
-			perror("getcwd");
-		return (true);
-	}
-	return (gest_builtins(arr));
+		return (ft_cd(lenv, arr), true);
+	return (false);
 }

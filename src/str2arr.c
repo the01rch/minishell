@@ -6,13 +6,13 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:21 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/16 22:46:28 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:27:26 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-static bool is_charset(const char *chr, char c)
+static bool	is_charset(const char *chr, char c)
 {
 	while (*chr)
 	{
@@ -34,8 +34,8 @@ static int	count_rows(const char *chr, char *str)
 		str++;
 	while (str[i])
 	{
-		if (is_charset(chr, str[i]) 
-				&& !is_charset(chr, str[i + 1]) && str[i + 1])
+		if (is_charset(chr, str[i])
+			&& !is_charset(chr, str[i + 1]) && str[i + 1])
 			rows++;
 		i++;
 	}

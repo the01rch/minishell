@@ -6,16 +6,16 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/18 19:22:23 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:19:20 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-bool	gest_builtins(char **arr)
+bool	gest_builtins(t_env *lenv, char **arr)
 {
 	int	i;
-	
+
 	i = 0;
 	if (ft_strncmp(arr[0], "exit", 4))
 		exit(0);
@@ -30,13 +30,13 @@ bool	gest_builtins(char **arr)
 			return (true);
 		return (printf("\n"), true);
 	}
-	return (false);
+	return (gest_env(lenv, arr));
 }
 
 void	free_arr(char **arr)
 {
 	int	i;
-	
+
 	i = 0;
 	while (arr[i])
 	{
@@ -51,17 +51,21 @@ int	main(int ac, char **av, char **env)
 	t_env	*list;
 	char	**arr;
 	char	*line;
+	int		len;
 
 	(void)ac;
 	(void)av;
-	list = arr2list(env, arr_len(env));
-	while (1) 
+	len = 0;
+	while (env[len])
+		len++;
+	list = arr2list(env, len);
+	while (1)
 	{
-		line = readline("$> ");	
+		line = readline("$> ");
 		arr = str2arr(line, " ");
-		gest_env(list, arr);
+		gest_builtins(list, arr);
 	}
 	free_arr(arr);
-	//free_list();
+	free_list(list);
 	return (0);
 }
