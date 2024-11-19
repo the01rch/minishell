@@ -29,9 +29,7 @@ bool	gest_builtins(char **arr)
 		if (arr[1] && ft_strncmp(arr[1], "-n", 2))
 			return (true);
 		return (printf("\n"), true);
-	}
-	return (false);
-}
+  }
 
 void	free_arr(char **arr)
 {
