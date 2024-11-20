@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/19 19:20:48 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/20 01:28:05 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ bool	ft_cd(t_env *lenv, char **arr)
 		ft_export(lenv, pwrapper("PWD", plist(lenv, "HOME")));
 		return (true);
 	}
+	if (arr[2])
+		return (printf("cd: too many arguments\n"), false);
 	if (chdir(arr[1]) == -1)
 		return (perror("cd"), false);
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
@@ -93,9 +95,17 @@ bool	ft_cd(t_env *lenv, char **arr)
 bool	gest_env(t_env *lenv, char **arr)
 {
 	if (ft_strncmp(arr[0], "env", 3))
+	{
+		if (arr[1])
+			return (printf("env: '%s': No such file or directory\n", arr[1]), false);
 		return (plist(lenv, NULL), true);
+	}
 	if (ft_strncmp(arr[0], "pwd", 3))
+	{
+		if (arr[1])
+			return (printf("pwd: too many arguments\n"), false);
 		return (printf("%s\n", plist(lenv, "PWD")), true);
+	}
 	if (ft_strncmp(arr[0], "unset", 5))
 		return (ft_unset(lenv, arr[1]), true);
 	if (ft_strncmp(arr[0], "export", 6))
