@@ -6,37 +6,11 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/21 15:14:43 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:22:06 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
-
-bool	gest_builtins(t_env *lenv, char **arr)
-{
-	int	i;
-
-	i = 0;
-	if (ft_strncmp(arr[0], "exit", 4))
-	{
-		if (arr[2])
-			return (printf("exit: too many arguments\n"), false);
-		else
-			exit(0);
-	}
-	if (ft_strncmp(arr[0], "echo", 4))
-	{
-		i++;
-		if (arr[1] && ft_strncmp(arr[1], "-n", 2))
-			i++;
-		while (arr[i])
-			printf("%s ", arr[i++]);
-		if (arr[1] && ft_strncmp(arr[1], "-n", 2))
-			return (true);
-		return (printf("\n"), true);
-	}
-	return (gest_env(lenv, arr));
-}
 
 void	free_arr(char **arr)
 {
@@ -49,6 +23,32 @@ void	free_arr(char **arr)
 		i++;
 	}
 	free(arr);
+}
+
+t_state	gest_builtins(t_env *lenv, char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strncmp(arr[0], "exit", 4))
+	{
+		if (arr[1])
+			return (printf("exit: too many arguments\n"), ERROR);
+		printf("exit\n");
+		return (free_arr(arr), free_list(lenv), exit(0), VALID);
+	}
+	if (ft_strncmp(arr[0], "echo", 4))
+	{
+		i++;
+		if (arr[1] && ft_strncmp(arr[1], "-n", 2))
+			i++;
+		while (arr[i])
+			printf("%s ", arr[i++]);
+		if (arr[1] && ft_strncmp(arr[1], "-n", 2))
+			return (VALID);
+		return (printf("\n"), VALID);
+	}
+	return (gest_env(lenv, arr));
 }
 
 int	main(int ac, char **av, char **env)
@@ -68,7 +68,7 @@ int	main(int ac, char **av, char **env)
 	{
 		line = readline("$> ");
 		arr = str2arr(line, " ");
-		if (!gest_builtins(list, arr))
+		if (gest_builtins(list, arr) == NONE)
 			gest_shell(list, arr);
 	}
 	free_arr(arr);

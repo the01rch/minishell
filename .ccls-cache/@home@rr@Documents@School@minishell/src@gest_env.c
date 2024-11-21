@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/20 15:51:07 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:14:09 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,25 +92,21 @@ bool	ft_cd(t_env *lenv, char **arr)
 	return (true);
 }
 
-bool	gest_env(t_env *lenv, char **arr)
+t_state	gest_env(t_env *lenv, char **arr)
 {
 	if (ft_strncmp(arr[0], "env", 3))
 	{
 		if (arr[1])
-			return (printf("env: '%s': No such file or directory\n", arr[1]), false);
-		return (plist(lenv, NULL), true);
+			return (printf("env: '%s': No such file or directory\n", arr[1]), ERROR);
+		return (plist(lenv, NULL), VALID);
 	}
 	if (ft_strncmp(arr[0], "pwd", 3))
-	{
-		if (arr[1])
-			return (printf("pwd: too many arguments\n"), false);
-		return (printf("%s\n", plist(lenv, "PWD")), true);
-	}
+		return (printf("%s\n", plist(lenv, "PWD")), VALID);
 	if (ft_strncmp(arr[0], "unset", 5))
-		return (ft_unset(lenv, arr[1]), true);
+		return (ft_unset(lenv, arr[1]), VALID);
 	if (ft_strncmp(arr[0], "export", 6))
-		return (ft_export(lenv, arr[1]), true);
+		return (ft_export(lenv, arr[1]), VALID);
 	if (ft_strncmp(arr[0], "cd", 2))
-		return (ft_cd(lenv, arr), true);
-	return (false);
+		return (ft_cd(lenv, arr), VALID);
+	return (NONE);
 }
