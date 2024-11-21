@@ -6,7 +6,7 @@
 #    By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/11/19 19:11:04 by redrouic         ###   ########.fr        #
+#    Updated: 2024/11/20 16:04:41 by redrouic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ SRC		=	src/main.c\
 			src/utils.c\
 			src/str2arr.c\
 			src/gest_env.c\
-			src/list.c
+			src/list.c\
+			src/exec.c
 
 CC		=	cc
 
