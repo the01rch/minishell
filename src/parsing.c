@@ -46,5 +46,5 @@ void	*check_args(char *out, t_context *p)
     //     printf("cmds: %s\n", (char *)p.cmds->content);
     //     p.cmds = p.cmds->next;
     // }
-    return NULL;
+    return p;
 }
