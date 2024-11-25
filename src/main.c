@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/21 16:22:06 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/22 03:47:09 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ t_state	gest_builtins(t_env *lenv, char **arr)
 		if (arr[1])
 			return (printf("exit: too many arguments\n"), ERROR);
 		printf("exit\n");
-		return (free_arr(arr), free_list(lenv), exit(0), VALID);
+		free_arr(arr);
+		free_list(lenv);
+		exit(1);
 	}
 	if (ft_strncmp(arr[0], "echo", 4))
 	{
