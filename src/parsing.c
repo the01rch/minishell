@@ -41,10 +41,5 @@ void	*check_args(char *out, t_context *p)
 	list = arr2list(p->env, len);
     if (gest_builtins(list, arr) == NONE)
 			gest_shell(list, arr);
-    // while(p.cmds)
-    // {
-    //     printf("cmds: %s\n", (char *)p.cmds->content);
-    //     p.cmds = p.cmds->next;
-    // }
     return p;
 }
