@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/21 16:14:09 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/25 11:05:24 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,10 @@ t_state	gest_env(t_env *lenv, char **arr)
 	if (ft_strncmp(arr[0], "env", 3))
 	{
 		if (arr[1])
-			return (printf("env: '%s': No such file or directory\n", arr[1]), ERROR);
+		{
+			printf("env: '%s': No such file or directory\n", arr[1]);
+			return (ERROR);
+		}
 		return (plist(lenv, NULL), VALID);
 	}
 	if (ft_strncmp(arr[0], "pwd", 3))
