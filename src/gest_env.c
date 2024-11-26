@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/25 11:05:24 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:35:23 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	ft_export(t_env *lenv, char *str)
 		arr = str2arr(str, "=");
 		if (!arr)
 			return (false);
-		if (ft_strncmp(arr[0], tmp->name, ft_strlen(arr[0])))
+		if (ft_strcmp(arr[0], tmp->name))
 		{
 			free(tmp->content);
 			tmp->content = ft_strdup(arr[1]);
@@ -42,7 +42,7 @@ void	ft_unset(t_env *lenv, char *str)
 	tmp = lenv;
 	while (tmp != NULL)
 	{
-		if (ft_strncmp(str, tmp->next->name, ft_strlen(str)))
+		if (ft_strcmp(str, tmp->next->name))
 		{
 			tmp->next = tmp->next->next;
 			break ;
@@ -94,7 +94,7 @@ bool	ft_cd(t_env *lenv, char **arr)
 
 t_state	gest_env(t_env *lenv, char **arr)
 {
-	if (ft_strncmp(arr[0], "env", 3))
+	if (ft_strcmp(arr[0], "env"))
 	{
 		if (arr[1])
 		{
@@ -103,13 +103,13 @@ t_state	gest_env(t_env *lenv, char **arr)
 		}
 		return (plist(lenv, NULL), VALID);
 	}
-	if (ft_strncmp(arr[0], "pwd", 3))
+	if (ft_strcmp(arr[0], "pwd"))
 		return (printf("%s\n", plist(lenv, "PWD")), VALID);
-	if (ft_strncmp(arr[0], "unset", 5))
+	if (ft_strcmp(arr[0], "unset"))
 		return (ft_unset(lenv, arr[1]), VALID);
-	if (ft_strncmp(arr[0], "export", 6))
+	if (ft_strcmp(arr[0], "export"))
 		return (ft_export(lenv, arr[1]), VALID);
-	if (ft_strncmp(arr[0], "cd", 2))
+	if (ft_strcmp(arr[0], "cd"))
 		return (ft_cd(lenv, arr), VALID);
 	return (NONE);
 }

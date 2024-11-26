@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/21 16:16:55 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:34:23 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_state	gest_builtins(t_env *len, char **arr);
 char	*plist(t_env *lenv, char *name);
 void	free_list(t_env *list);
 int		ft_strlen(const char *str);
-bool	ft_strncmp(char *s1, char *s2, int n);
+bool	ft_strcmp(char *s1, char *s2);
 char	*ft_strdup(char *src);
 char	**str2arr(char *str, const char *charset);
 void	free_arr(char **arr);

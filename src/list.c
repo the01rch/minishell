@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/21 16:34:15 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:36:18 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*plist(t_env *lenv, char *name)
 	tmp = lenv;
 	while (tmp != NULL)
 	{
-		if (name && ft_strncmp(name, tmp->name, 3))
+		if (name && ft_strcmp(name, tmp->name))
 			return (ft_strdup(tmp->content));
 		else if (!name)
 			printf("%s=%s\n", tmp->name, tmp->content);

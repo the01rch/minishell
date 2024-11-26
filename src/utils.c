@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 16:02:43 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/18 18:55:33 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:33:59 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,12 @@ int	ft_strlen(const char *str)
 	return (i);
 }
 
-bool	ft_strncmp(char *s1, char *s2, int n)
+bool ft_strcmp(char *s1, char *s2)
 {
 	int	i;
 
-	if (n <= 0)
-		return (false);
 	i = 0;
-	while (i < n && (s1[i] || s2[i]))
+	while (s1[i] || s2[i])
 	{
 		if (s1[i] != s2[i])
 			return (false);

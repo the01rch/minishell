@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/22 03:47:09 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/11/25 18:36:04 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_state	gest_builtins(t_env *lenv, char **arr)
 	int	i;
 
 	i = 0;
-	if (ft_strncmp(arr[0], "exit", 4))
+	if (ft_strcmp(arr[0], "exit"))
 	{
 		if (arr[1])
 			return (printf("exit: too many arguments\n"), ERROR);
@@ -39,14 +39,14 @@ t_state	gest_builtins(t_env *lenv, char **arr)
 		free_list(lenv);
 		exit(1);
 	}
-	if (ft_strncmp(arr[0], "echo", 4))
+	if (ft_strcmp(arr[0], "echo"))
 	{
 		i++;
-		if (arr[1] && ft_strncmp(arr[1], "-n", 2))
+		if (arr[1] && ft_strcmp(arr[1], "-n"))
 			i++;
 		while (arr[i])
 			printf("%s ", arr[i++]);
-		if (arr[1] && ft_strncmp(arr[1], "-n", 2))
+		if (arr[1] && ft_strcmp(arr[1], "-n"))
 			return (VALID);
 		return (printf("\n"), VALID);
 	}
