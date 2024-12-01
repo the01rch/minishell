@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/25 16:31:44 by kpires           ###   ########.fr       */
+/*   Updated: 2024/11/29 14:54:23 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@
 # include <sys/wait.h>
 # include <dirent.h>
 # include <sys/ioctl.h>
-# include "get_next_line.h"
+# include "../get_next_line/inc/get_next_line.h"
 
 # define READ_END 0
 # define WRITE_END 1
+# define GREEN "\001\033[1;92m\002"
+# define DEFAULT "\001\033[0;39m\002"
 
 typedef enum state
 {
@@ -84,11 +86,12 @@ void	free_list(t_env *list);
 // int		ft_strlen(const char *str);
 // bool	ft_strncmp(char *s1, char *s2, int n);
 // char	*ft_strdup(char *src);
+void free_arr(char **arr);
 char	**str2arr(char *str, const char *charset);
 void	free_arr(char **arr);
 char	*pwrapper(char *name, char *content, char sep);
 void	gest_shell(t_env *lenv, char **arr);
-
+t_state gest_builtins(t_env *lenv, char **arr);
 void	*shell_perror(int err_type, char *param, int err);
 char    *shell_getenv(char *var, char **env, int n);
 char    **shell_setenv(char *var, char *value, char **env, int n);
@@ -100,4 +103,5 @@ void	exec_custom(char ***out, char *full, char *args, char **envp);
 
 void	handle_sigint(int sig);
 void	*check_args(char *out, t_context *p);
+char	**ft_split_quotes(char const *str, char *set);
 #endif

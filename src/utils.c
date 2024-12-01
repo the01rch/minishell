@@ -6,21 +6,24 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 16:02:43 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/25 15:35:19 by kpires           ###   ########.fr       */
+/*   Updated: 2024/11/26 09:54:23 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-// int	ft_strlen(const char *str)
-// {
-// 	int	i;
+void free_arr(char **arr)
+{
+    int i;
 
-// 	i = 0;
-// 	while (str[i])
-// 		i++;
-// 	return (i);
-// }
+    i = 0;
+    while (arr[i])
+    {
+        free(arr[i]); // Libère chaque chaîne
+        i++;
+    }
+    free(arr); // Libère le tableau
+}
 
 bool	ft_strncmp2(char *s1, char *s2, int n)
 {

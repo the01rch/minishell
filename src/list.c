@@ -59,10 +59,10 @@ char	*plist(t_env *lenv, char *name)
     tmp = lenv;
     while (tmp != NULL)
     {
-        if (name && ft_strncmp2(name, tmp->name, ft_strlen(name)) == 0)
+        if (name && ft_strncmp2(name, tmp->name, ft_strlen(name)))
             return (ft_strdup2(tmp->content)); // Si le nom correspond, retourner une copie du contenu
         else if (!name)
-            printf("export %s=%s\n", tmp->name, tmp->content); // Si aucun nom n'est fourni, afficher toutes les variables avec le préfixe export
+            printf("%s=%s\n", tmp->name, tmp->content); // Si aucun nom n'est fourni, afficher toutes les variables avec le préfixe export
         tmp = tmp->next;
     }
     return (NULL); // Retourner NULL si la variable n'est pas trouvée

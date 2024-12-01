@@ -14,6 +14,7 @@
 
 extern int	g_status;
 
+
 void	*check_args(char *out, t_context *p)
 {
     char    **arr;
@@ -28,13 +29,12 @@ void	*check_args(char *out, t_context *p)
 	}
 	if (out[0] != '\0')
 		add_history(out);
-
-    arr = str2arr(out, " ");
-    free(out);
+    arr = ft_split_quotes(out, " ");
     if (!arr)
             shell_perror(QUOTE, NULL, 1);
     if (!arr)
         return ("");
+
     len = 0;
     while (p->env[len])
 		len++;

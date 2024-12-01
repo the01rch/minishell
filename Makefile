@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/11/25 16:34:06 by kpires           ###   ########.fr        #
+#    Updated: 2024/11/29 14:52:34 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,13 @@ SRC		=	src/main.c\
 			src/env.c\
 			src/prompt.c\
 			src/custom_cmd.c\
-			src/get_next_line.c\
-			src/get_next_line_utils.c\
-			src/parsing.c
+			src/parsing.c\
+			src/builtins.c\
+			src/ft_split_quotes.c
 CC		=	cc
 
-OBJ		=	$(SRC:.c=.o)
+OBJ_DIR = obj
+OBJ		=	$(SRC:src/%.c=$(OBJ_DIR)/%.o)
 
 NAME	=	minishell
 
@@ -40,20 +41,29 @@ LIBFT = libft/bin/libft.a
 LIBFT_DIR = libft
 LIBFT_SRC = $(shell [ -d libft ] && ls libft/src*/*.c)
 
+GNL = get_next_line/bin/get_next_line.a
+GNL_DIR = get_next_line
+GNL_SRC = $(shell [ -d get_next_line ] && ls get_next_line/src*/*.c)
 
-all: $(NAME)
+all: $(OBJ_DIR) $(NAME)
 	
-$(NAME): $(LIBFT) $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME) $(RL)
- 
-%.o: %.c
+$(NAME): $(LIBFT) $(GNL) $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(GNL) -o $(NAME) $(RL)
+
+$(OBJ_DIR)/%.o: src/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(GNL): $(GNL_SRC) | $(GNL_DIR)
+	@make all -C get_next_line
+	@$(AR) $(NAME) $(GNL)
 
 $(LIBFT): $(LIBFT_SRC) | $(LIBFT_DIR)
 	@make all -C libft
 	@$(AR) $(NAME) $(LIBFT)
-
+	
 clean: | $(LIBFT_DIR)
 	$(RM) $(OBJ)
 
