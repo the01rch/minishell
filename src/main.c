@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/29 14:58:31 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/02 10:32:47 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,6 @@ int main(int ac, char **av, char **env) {
         printf("\"%s\",", result_ft_cmdtrim[i]);
         i++;
     }
-
+    // ft_free_matrix(&prompt.env);
     return 0;
 }

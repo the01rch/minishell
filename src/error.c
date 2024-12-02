@@ -22,7 +22,7 @@ void	*shell_perror(int err_type, char *param, int err)
 	else if (err_type == NDIR)
 		ft_putstr_fd("minishell: No such file or directory: ", 2);
 	else if (err_type == NPERM)
-		ft_putstr_fd("minishell: permission denied: ", 2);
+		ft_putstr_fd("minishell: Permission denied: ", 2);
 	else if (err_type == NCMD)
 		ft_putstr_fd("minishell: command not found: ", 2);
 	else if (err_type == DUP_ERR)
