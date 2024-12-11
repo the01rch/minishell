@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/28 02:45:57 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/10 18:28:26 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ t_state	gest_builtins(t_env *lenv, char **arr)
 
 static void	ft_handler(int sig, siginfo_t *info, void *context)
 {
-	(void)context;
-	(void)sig;
 	if (info->si_signo == SIGINT)
 	{
 		printf("\n");
@@ -64,6 +62,7 @@ static void	ft_handler(int sig, siginfo_t *info, void *context)
 		rl_on_new_line();
 		rl_redisplay();
 	}
+	return ((void)context, (void)sig, (void)0);
 }
 
 static void	listening(void)
@@ -91,7 +90,12 @@ int	main(int ac, char **av, char **env)
 		if (!line)
 			break ;
 		add_history(line);
-		arr = str2arr(line, " ");
+		arr = str2arr(line, " ", true);
+		for (int i = 0; arr[i]; i++)
+		{
+			arr[i] = ft_strdup(gest_sign(list, arr[i]));
+			printf("arr[%d] :%s\n", i, arr[i]);
+		}
 		if (gest_builtins(list, arr) == NONE)
 			gest_shell(list, arr);
 	}

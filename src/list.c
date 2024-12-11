@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/28 02:19:51 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/05 06:30:28 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_env	*create_node(char *str)
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		exit(1);
-	arr = str2arr(str, "=");
+	arr = str2arr(str, "=", false);
 	if (!arr)
 		exit(1);
 	new->name = ft_strdup(arr[0]);

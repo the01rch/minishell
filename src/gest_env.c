@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/11/25 18:35:23 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/05 06:34:25 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	ft_export(t_env *lenv, char *str)
 	tmp = lenv;
 	while (tmp->next != NULL)
 	{
-		arr = str2arr(str, "=");
+		arr = str2arr(str, "=", false);
 		if (!arr)
 			return (false);
 		if (ft_strcmp(arr[0], tmp->name))
