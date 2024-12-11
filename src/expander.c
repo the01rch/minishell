@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/11 12:24:37 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:42:50 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,11 @@ char	*gest_sign(t_env *lenv, char *str)
 {
 	char	copy[ft_strlen(str)];
 	char	*res;
-	bool	quote;
 	int		i;
 
 	i = 0;
 	ft_strncpy(copy, str, ft_strlen(str));
-	quote = is_quoted(copy);
-	if (quote && !is_unclosed(copy))
+	if (is_quoted(copy) && !is_unclosed(copy))
 		return ("");
 	while (copy[i])
 	{
@@ -126,10 +124,7 @@ char	*gest_sign(t_env *lenv, char *str)
 			return (ft_strdup(res));	
 		}
 		if (copy[i] == 36 && inQ(copy, i, 34))
-		{
-			printf("test\n");
 			return (ft_strdup(update_venv(lenv, copy)));
-		}
 		i++;
 	}
 	if (is_quoted(copy))

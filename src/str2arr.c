@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:21 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/09 23:41:39 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/11 13:38:18 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static int	*count_cols(const char *chr, char *str, int rows, bool quote)
 	int	vec[2];
 	int	i;
 
-	cols = malloc(sizeof(int) * rows);
+	cols = malloc(sizeof(int) * (rows + 1));
 	if (!cols)
 		return (0);
 	vec[0] = 0;
@@ -98,6 +98,7 @@ static char	**init_arr(const char *chr, char *str, bool quote)
 		x = 0;
 		y++;
 	}
+	arr[y] = NULL;
 	return (free(cols), arr);
 }
 
@@ -126,6 +127,5 @@ char	**str2arr(char *str, const char *chr, bool quote)
 		}
 		i++;
 	}
-	arr[vec[1] + 1] = 0;
 	return (arr);
 }
