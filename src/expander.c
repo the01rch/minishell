@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/12 15:36:12 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:39:28 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	inQ(char *str, int index, char quote)
 			return (true);
 		else if (quote == 0 && (str[i] == 34 || str[i] == 39))
 			return (true);
-		i--;
+		i++;
 	}
 	return (false);
 }
