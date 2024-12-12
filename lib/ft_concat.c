@@ -6,13 +6,13 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 00:22:03 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/10 00:22:15 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:01:08 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-char *ft_concat(char *str, char *str2)
+char	*ft_concat(char *str, char *str2)
 {
 	char	*tmp;
 	int		i;

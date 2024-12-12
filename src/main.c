@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/11 16:41:51 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/11 18:01:19 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	ft_handler(int sig, siginfo_t *info, void *context)
 static void	listening(void)
 {
 	struct sigaction	act;
-	
+
 	act.sa_flags = SA_SIGINFO | SA_RESTART;
 	act.sa_sigaction = (void *)ft_handler;
 	sigemptyset(&act.sa_mask);

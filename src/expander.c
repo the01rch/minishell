@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/11 13:42:50 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/12 15:36:12 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ bool	inQ(char *str, int index, char quote)
 {
 	int	i;
 
-	i = index;
-	while (i >= 0)
+	i = 0;
+	while (i < index)
 	{
 		if (quote != 0 && str[i] == quote) 
 			return (true);
@@ -60,7 +60,8 @@ static char	*remQ(char *str)
 	res = malloc(sizeof(char) * (ft_strlen(str)));
 	while (str[i])
 	{
-		if (str[i] != 34 && str[i] != 39)
+		if ((str[i] != 34 && !inQ(str, i, 0)) 
+			&& (str[i] != 39 && !inQ(str, i, 0)))
 			res[j++] = str[i];
 		i++;
 	}
