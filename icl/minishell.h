@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 17:16:08 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 17:50:57 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,5 @@ void	free_cmds(t_command **cmds);
 char	*update_venv(t_env *lenv, char *str);
 char	*remq(char *str);
 void	free_global(t_global *global);
+void	free_node(t_env *node);
 #endif

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/12 23:21:54 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:09:06 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,14 @@ t_env	*create_node(char *str)
 		exit(1);
 	arr = str2arr(str, "=", false);
 	if (!arr)
+	{
+		free(new);
 		exit(1);
+	}
 	new->name = ft_strdup(arr[0]);
 	new->content = ft_strdup(arr[1]);
 	new->next = NULL;
+	free_arr(arr);
 	return (new);
 }
 
@@ -33,6 +37,7 @@ t_env	*arr2list(char **env)
 {
 	t_env	*head;
 	t_env	*tmp;
+	t_env	*result;
 
 	if (!env)
 		return (NULL);
@@ -44,18 +49,24 @@ t_env	*arr2list(char **env)
 		tmp = tmp->next;
 		env++;
 	}
-	return (head->next);
+	result = head->next;
+	free_node(head);
+	return (result);
 }
 
 char	*plist(t_env *lenv, char *name)
 {
 	t_env	*tmp;
+	char	*result;
 
 	tmp = lenv;
 	while (tmp != NULL)
 	{
 		if (name && ft_strcmp(name, tmp->name))
-			return (ft_strdup(tmp->content));
+		{
+			result = ft_strdup(tmp->content);
+			return (result);
+		}
 		else if (!name)
 			printf("%s=%s\n", tmp->name, tmp->content);
 		tmp = tmp->next;
@@ -71,8 +82,6 @@ void	free_list(t_env *list)
 	{
 		tmp = list;
 		list = list->next;
-		free(tmp->name);
-		free(tmp->content);
-		free(tmp);
+		free_node(tmp);
 	}
 }

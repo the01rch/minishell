@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 17:14:55 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:09:25 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,33 @@
 char	*check_access(t_env *lenv, char **arr)
 {
 	char	**tab;
-	int		i;	
+	char	*path;
+	char	*full_path;
+	char	*path_str;
+	int		i;
 
-	tab = str2arr(plist(lenv, "PATH"), ":", false);
-	i = 0;
+	path_str = plist(lenv, "PATH");
+	if (!path_str)
+		return (NULL);
+	tab = str2arr(path_str, ":", false);
+	free(path_str);
 	if (!tab)
 		return (NULL);
-	while (i < 7)
+	i = 0;
+	while (tab[i])
 	{
-		if (access(pwrapper(tab[i], arr[0], '/'), F_OK) == 0
-			&& access(pwrapper(tab[i], arr[0], '/'), X_OK) == 0)
-			return (pwrapper(tab[i], arr[0], '/'));
+		full_path = pwrapper(tab[i], arr[0], '/');
+		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
+		{
+			path = ft_strdup(full_path);
+			free(full_path);
+			free_arr(tab);
+			return (path);
+		}
+		free(full_path);
 		i++;
 	}
+	free_arr(tab);
 	return (NULL);
 }
 
@@ -75,7 +89,9 @@ void	gest_shell(t_env *lenv, char **arr)
 			exit(0);
 		}
 		execve(path, arr, list2arr(lenv));
+		free(path);
 	}
 	if (pid > 0)
 		wait(NULL);
+	free(path);
 }

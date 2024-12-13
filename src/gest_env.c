@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 17:13:35 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:13:29 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,25 @@ bool	ft_cd(t_env *lenv, char **arr)
 
 t_state	gest_env(t_env *lenv, char **arr)
 {
+	char	*result;
+
 	if (ft_strcmp(arr[0], "env"))
 	{
 		if (arr[1])
-		{
-			printf("env: '%s': No such file or directory\n", arr[1]);
-			return (ERROR);
-		}
-		return (plist(lenv, NULL), VALID);
+			return (printf("env: '%s': No such file or directory\n", arr[1]), ERROR);
+		plist(lenv, NULL);
+		return (VALID);
 	}
 	if (ft_strcmp(arr[0], "pwd"))
-		return (printf("%s\n", plist(lenv, "PWD")), VALID);
+	{
+		result = plist(lenv, "PWD");
+		if (result)
+		{
+			printf("%s\n", result);
+			free(result);
+		}
+		return (VALID);
+	}
 	if (ft_strcmp(arr[0], "unset"))
 		return (ft_unset(lenv, arr[1]), VALID);
 	if (ft_strcmp(arr[0], "export"))

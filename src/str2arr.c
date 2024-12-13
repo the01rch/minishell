@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:21 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 17:13:54 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 17:45:03 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,10 @@ static char	**init_arr(const char *chr, char *str, bool quote)
 	rows = count_rows(chr, str, quote);
 	cols = count_cols(chr, str, rows, quote);
 	if (!cols)
-		return (0);
+		return (NULL);
 	arr = malloc(sizeof(char *) * (rows + 1));
 	if (!arr)
-		return (0);
+		return (free(cols), NULL);
 	y = 0;
 	x = 0;
 	while (y < rows)

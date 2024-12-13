@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 17:17:08 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:04:11 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int	main(int ac, char **av, char **env)
 			break ;
 		add_history(line);
 		global.cmds = parse_input(&global, line, global.env_list, 0);
+		free(line);
 		print_test(&global);
 		char *cmd_arr[] = {global.cmds[0]->exec, global.cmds[0]->args, NULL};
 		state = ft_redir(&global);
@@ -114,7 +115,9 @@ int	main(int ac, char **av, char **env)
 		if (gest_builtins(global.env_list, cmd_arr) == NONE)
 			gest_shell(global.env_list, cmd_arr);
 		free_cmds(global.cmds);
+		free_arr(global.full);
 	}
 	rl_clear_history();
-	return (free_list(global.env_list), 0);
+	free_list(global.env_list);
+	return (0);
 }

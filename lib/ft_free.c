@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:54:11 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/13 17:11:02 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 17:53:09 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,14 @@ void	free_global(t_global *global)
 	free_arr(global->argv);
 	free_arr(global->full);
 	free(global->cmds);
+}
+
+void	free_node(t_env *node)
+{
+	if (node)
+	{
+		free(node->name);
+		free(node->content);
+		free(node);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 16:58:56 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 17:44:15 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,21 +93,21 @@ char	*gest_sign(t_env *lenv, char *str, int i)
 		return (NULL);
 	ft_strncpy(copy, str, ft_strlen(str));
 	if (is_quoted(copy) && !is_unclosed(copy))
-		return ("");
+		return (free(copy), "");
 	while (copy[i])
 	{
 		if (copy[0] == 36)
 		{
 			res = plist(lenv, &copy[1]);
 			if (!res)
-				return ("");
-			return (ft_strdup(res));
+				return (free(copy), "");
+			return (free(copy), ft_strdup(res));
 		}
 		if (copy[i] == 36 && inq(copy, i, 34))
-			return (ft_strdup(update_venv(lenv, copy)));
+			return (free(copy), ft_strdup(update_venv(lenv, copy)));
 		i++;
 	}
 	if (is_quoted(copy))
-		return (ft_strdup(remq(copy)));
-	return (str);
+		return (free(copy), ft_strdup(remq(copy)));
+	return (free(copy), str);
 }
