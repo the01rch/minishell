@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 18:04:11 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:33:38 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ int	main(int ac, char **av, char **env)
 	t_global	global;
 	char		*line;
 	t_state		state;
+	char		**cmd_arr;
 
 	init_global(&global, env, av);
 	while (ac && av)
@@ -107,13 +108,23 @@ int	main(int ac, char **av, char **env)
 			break ;
 		add_history(line);
 		global.cmds = parse_input(&global, line, global.env_list, 0);
-		free(line);
-		print_test(&global);
-		char *cmd_arr[] = {global.cmds[0]->exec, global.cmds[0]->args, NULL};
-		state = ft_redir(&global);
-		printf("state: %d\n", state);
-		if (gest_builtins(global.env_list, cmd_arr) == NONE)
-			gest_shell(global.env_list, cmd_arr);
+		if (line[0] != '\0')
+		{
+			free(line);
+			print_test(&global);
+			//temporaire
+			cmd_arr = malloc(sizeof(char *) * 3);
+			cmd_arr[0] = ft_strdup(global.cmds[0]->exec);
+			cmd_arr[1] = global.cmds[0]->args ? ft_strdup(global.cmds[0]->args) : NULL;
+			cmd_arr[2] = NULL;
+			state = ft_redir(&global);
+			printf("state: %d\n", state);
+			if (gest_builtins(global.env_list, cmd_arr) == NONE)
+			{
+				gest_shell(global.env_list, cmd_arr);
+				free_arr(cmd_arr);
+			}
+		}
 		free_cmds(global.cmds);
 		free_arr(global.full);
 	}

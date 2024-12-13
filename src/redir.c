@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 22:23:41 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/13 16:46:27 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:19:39 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_state	ft_redir(t_global *global)
 
 	i = 0;
 	cmd = global->cmds;
+	printf("ft_redir\n");
 	while (cmd[i] && cmd[i]->full)
 	{
 		if (ft_strcmp(cmd[i]->full, ">>"))

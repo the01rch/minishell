@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 18:13:29 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:37:07 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,26 @@ bool	ft_export(t_env *lenv, char *str)
 void	ft_unset(t_env *lenv, char *str)
 {
 	t_env	*tmp;
+	t_env	*to_delete;
 
+	if (!lenv || !str)
+		return ;
+	if (ft_strcmp(str, lenv->name))
+	{
+		to_delete = lenv;
+		lenv = lenv->next;
+		free_node(to_delete);
+		return ;
+	}
 	tmp = lenv;
-	while (tmp != NULL)
+	while (tmp && tmp->next)
 	{
 		if (ft_strcmp(str, tmp->next->name))
 		{
+			to_delete = tmp->next;
 			tmp->next = tmp->next->next;
-			break ;
+			free_node(to_delete);
+			return ;
 		}
 		tmp = tmp->next;
 	}
