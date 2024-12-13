@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/12 15:39:28 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/13 16:58:56 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,33 @@
 
 bool	is_unclosed(char *str)
 {
-	char	openQ;
+	char	openq;
 	int		i;
 
-	openQ = 0;
+	openq = 0;
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == 34 || str[i] == 39) 
+		if (str[i] == 34 || str[i] == 39)
 		{
-			if (openQ == 0) 
-				openQ = str[i];
-			else if (str[i] == openQ) 
-				openQ = 0;
+			if (openq == 0)
+				openq = str[i];
+			else if (str[i] == openq)
+				openq = 0;
 		}
 		i++;
 	}
-	return (openQ == 0);
+	return (openq == 0);
 }
 
-bool	inQ(char *str, int index, char quote)
+bool	inq(char *str, int index, char quote)
 {
 	int	i;
 
 	i = 0;
 	while (i < index)
 	{
-		if (quote != 0 && str[i] == quote) 
+		if (quote != 0 && str[i] == quote)
 			return (true);
 		else if (quote == 0 && (str[i] == 34 || str[i] == 39))
 			return (true);
@@ -49,7 +49,7 @@ bool	inQ(char *str, int index, char quote)
 	return (false);
 }
 
-static char	*remQ(char *str)
+char	*remq(char *str)
 {
 	char	*res;
 	int		i;
@@ -60,35 +60,13 @@ static char	*remQ(char *str)
 	res = malloc(sizeof(char) * (ft_strlen(str)));
 	while (str[i])
 	{
-		if ((str[i] != 34 && !inQ(str, i, 0)) 
-			&& (str[i] != 39 && !inQ(str, i, 0)))
+		if ((str[i] != 34 && !inq(str, i, 0))
+			&& (str[i] != 39 && !inq(str, i, 0)))
 			res[j++] = str[i];
 		i++;
 	}
 	res[j] = 0;
 	return (res);
-}
-
-static char	*update_venv(t_env *lenv, char *str)
-{
-	char	*check;
-	char	*res;
-	int		len;
-
-	len = 0;
-	while (str[len] && str[len] != 32)
-		len++;
-	check = malloc(sizeof(char) * len + 1);
-	ft_strncpy(check, str, len);
-	if (inQ(check, 1, 0))
-		check = ft_strdup(remQ(check));
-	res = plist(lenv, &check[1]);
-	if (res && len == ft_strlen(str))
-		return (free(check), res);
-	else if (res && len < ft_strlen(str))
-		return (free(check), ft_concat(res, &str[len]));
-	res = ft_strdup(&str[len]);
-	return (free(check), remQ(res));
 }
 
 bool	is_quoted(char *str)
@@ -105,13 +83,14 @@ bool	is_quoted(char *str)
 	return (false);
 }
 
-char	*gest_sign(t_env *lenv, char *str)
+char	*gest_sign(t_env *lenv, char *str, int i)
 {
-	char	copy[ft_strlen(str)];
+	char	*copy;
 	char	*res;
-	int		i;
 
-	i = 0;
+	copy = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!copy)
+		return (NULL);
 	ft_strncpy(copy, str, ft_strlen(str));
 	if (is_quoted(copy) && !is_unclosed(copy))
 		return ("");
@@ -122,13 +101,13 @@ char	*gest_sign(t_env *lenv, char *str)
 			res = plist(lenv, &copy[1]);
 			if (!res)
 				return ("");
-			return (ft_strdup(res));	
+			return (ft_strdup(res));
 		}
-		if (copy[i] == 36 && inQ(copy, i, 34))
+		if (copy[i] == 36 && inq(copy, i, 34))
 			return (ft_strdup(update_venv(lenv, copy)));
 		i++;
 	}
 	if (is_quoted(copy))
-		return (ft_strdup(remQ(copy)));
+		return (ft_strdup(remq(copy)));
 	return (str);
 }

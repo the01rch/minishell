@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/11 18:01:19 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:17:08 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
-
-void	free_arr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
 
 t_state	gest_builtins(t_env *lenv, char **arr)
 {
@@ -53,53 +40,81 @@ t_state	gest_builtins(t_env *lenv, char **arr)
 	return (gest_env(lenv, arr));
 }
 
-static void	ft_handler(int sig, siginfo_t *info, void *context)
+t_command	**parse_input(t_global *global, char *line, t_env *env_list, int i)
 {
-	if (info->si_signo == SIGINT)
+	t_command	**cmds;
+	char		**cmd_parts;
+
+	global->full = str2arr(line, "|", true);
+	cmds = malloc(sizeof(t_command *) * (count_rows("|", line, true) + 1));
+	while (global->full[i])
 	{
-		printf("\n");
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
+		cmds[i] = malloc(sizeof(t_command));
+		cmds[i]->full = ft_strdup(global->full[i]);
+		cmd_parts = str2arr(global->full[i], " ", true);
+		cmds[i]->exec = ft_strdup(gest_sign(env_list, cmd_parts[0], 0));
+		if (cmd_parts[1])
+			cmds[i]->args = ft_strdup(gest_sign(env_list, global->full[i]
+						+ strlen(cmd_parts[0]) + 1, 0));
+		else
+			cmds[i]->args = NULL;
+		cmds[i]->infile = STDIN_FILENO;
+		cmds[i]->outfile = STDOUT_FILENO;
+		free_arr(cmd_parts);
+		i++;
 	}
-	return ((void)context, (void)sig, (void)0);
+	cmds[i] = NULL;
+	return (cmds);
 }
 
-static void	listening(void)
+static void	init_global(t_global *global, char **env, char **av)
 {
-	struct sigaction	act;
+	global->env = env;
+	global->env_list = arr2list(env);
+	global->pid = getpid();
+	global->argv = av;
+	listening();
+}
 
-	act.sa_flags = SA_SIGINFO | SA_RESTART;
-	act.sa_sigaction = (void *)ft_handler;
-	sigemptyset(&act.sa_mask);
-	sigaction(SIGINT, &act, NULL);
-	act.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &act, NULL);
+static void	print_test(t_global *global)
+{
+	int	i;
+
+	i = 0;
+	while (global->cmds[i])
+	{
+		printf("cmds[%d]->exec :%s\n",
+			i, global->cmds[i]->exec);
+		if (global->cmds[i]->args)
+			printf("cmds[%d]->args :%s\n", i, global->cmds[i]->args);
+		if (global->cmds[i]->full)
+			printf("cmds[%d]->full :%s\n", i, global->cmds[i]->full);
+		i++;
+	}
 }
 
 int	main(int ac, char **av, char **env)
 {
-	t_env	*list;
-	char	**arr;
-	char	*line;
+	t_global	global;
+	char		*line;
+	t_state		state;
 
-	list = arr2list(env);
-	listening();
+	init_global(&global, env, av);
 	while (ac && av)
 	{
 		line = readline("$> ");
 		if (!line)
 			break ;
 		add_history(line);
-		arr = str2arr(line, " ", true);
-		for (int i = 0; arr[i]; i++)
-		{
-			arr[i] = ft_strdup(gest_sign(list, arr[i]));
-			printf("arr[%d] :%s\n", i, arr[i]);
-		}
-		if (gest_builtins(list, arr) == NONE)
-			gest_shell(list, arr);
+		global.cmds = parse_input(&global, line, global.env_list, 0);
+		print_test(&global);
+		char *cmd_arr[] = {global.cmds[0]->exec, global.cmds[0]->args, NULL};
+		state = ft_redir(&global);
+		printf("state: %d\n", state);
+		if (gest_builtins(global.env_list, cmd_arr) == NONE)
+			gest_shell(global.env_list, cmd_arr);
+		free_cmds(global.cmds);
 	}
 	rl_clear_history();
-	return (free_list(list), 0);
+	return (free_list(global.env_list), 0);
 }

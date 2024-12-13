@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+         #
+#    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/12/11 11:56:11 by redrouic         ###   ########.fr        #
+#    Updated: 2024/12/13 16:06:40 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,13 +15,17 @@ SRC		=	src/main.c\
 			src/gest_env.c\
 			src/list.c\
 			src/executer.c\
-			src/expander.c
+			src/expander.c\
+			src/redir.c\
+			src/signal.c\
+			src/env.c
 
 SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strlen.c\
 			lib/ft_strncpy.c\
 			lib/ft_strdup.c\
-			lib/ft_concat.c
+			lib/ft_concat.c\
+			lib/ft_free.c
 
 OBJ		=	$(SRC:.c=.o)
 

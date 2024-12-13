@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str2arr.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:21 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/11 13:38:18 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:13:54 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static bool	is_charset(const char *chr, char c)
 	return (false);
 }
 
-static int	count_rows(const char *chr, char *str, bool quote)
+int	count_rows(const char *chr, char *str, bool quote)
 {
 	int	rows;
 	int	i;
@@ -37,7 +37,7 @@ static int	count_rows(const char *chr, char *str, bool quote)
 		if ((!quote && str[i + 1] && is_charset(chr, str[i])
 				&& !is_charset(chr, str[i + 1])) || (quote && str[i + 1]
 				&& is_charset(chr, str[i]) && !is_charset(chr, str[i + 1])
-				&& !inQ(str, i, 0)))
+				&& !inq(str, i, 0)))
 			rows++;
 		i++;
 	}
@@ -59,10 +59,10 @@ static int	*count_cols(const char *chr, char *str, int rows, bool quote)
 	while (str[i])
 	{
 		if ((!is_charset(chr, str[i]) && str[i])
-			|| (quote && is_charset(chr, str[i]) && inQ(str, i, 0)))
+			|| (quote && is_charset(chr, str[i]) && inq(str, i, 0)))
 			vec[0]++;
 		if ((!quote && vec[0] > 0 && is_charset(chr, str[i])) || (quote
-				&& vec[0] > 0 && is_charset(chr, str[i]) && !inQ(str, i, 0)))
+				&& vec[0] > 0 && is_charset(chr, str[i]) && !inq(str, i, 0)))
 		{
 			cols[vec[1]++] = vec[0];
 			vec[0] = 0;
@@ -117,10 +117,10 @@ char	**str2arr(char *str, const char *chr, bool quote)
 	while (str[i])
 	{
 		if ((!is_charset(chr, str[i]) && str[i])
-			|| (quote && is_charset(chr, str[i]) && inQ(str, i, 0)))
+			|| (quote && is_charset(chr, str[i]) && inq(str, i, 0)))
 			arr[vec[1]][vec[0]++] = str[i];
 		if ((!quote && vec[0] > 0 && is_charset(chr, str[i])) || (quote
-				&& vec[0] > 0 && is_charset(chr, str[i]) && !inQ(str, i, 0)))
+				&& vec[0] > 0 && is_charset(chr, str[i]) && !inq(str, i, 0)))
 		{
 			arr[vec[1]++][vec[0]] = '\0';
 			vec[0] = 0;
