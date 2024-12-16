@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 18:31:21 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/16 14:26:29 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void	gest_shell(t_env *lenv, char **arr)
 			exit(0);
 		}
 		execve(path, arr, list2arr(lenv));
-		free(path);
 	}
 	if (pid > 0)
 		wait(NULL);
