@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 18:33:38 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/16 14:18:17 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_state	gest_builtins(t_env *lenv, char **arr)
 	}
 	return (gest_env(lenv, arr));
 }
-
+/*
 t_command	**parse_input(t_global *global, char *line, t_env *env_list, int i)
 {
 	t_command	**cmds;
@@ -93,42 +93,55 @@ static void	print_test(t_global *global)
 	}
 }
 
+int	is_in_set(char c, char *set)
+{
+	int	i;
+
+	i = 0;
+	while (set && set[i])
+	{
+		if (set[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+bool	gest_err(char *str)
+{
+	while (*str == '\t' || *str == 32)
+		str++;
+	if (*str == '|')
+		return (perror("error: pipe\n"), true);
+	if (*str && !is_in_set(*str, "><|\"'"))
+		str++;
+	return (false);
+}
+
+*/
 int	main(int ac, char **av, char **env)
 {
-	t_global	global;
+	t_env		*list;
+	char		**cmd;
 	char		*line;
-	t_state		state;
-	char		**cmd_arr;
 
-	init_global(&global, env, av);
+	list = arr2list(env);
 	while (ac && av)
 	{
 		line = readline("$> ");
-		if (!line)
-			break ;
 		add_history(line);
-		global.cmds = parse_input(&global, line, global.env_list, 0);
-		if (line[0] != '\0')
+		/*
+		if (gest_err(line))
+			continue ;
+			*/
+		cmd = str2arr(line, " \t", true);
+		if (gest_builtins(list, cmd) == NONE)
 		{
-			free(line);
-			print_test(&global);
-			//temporaire
-			cmd_arr = malloc(sizeof(char *) * 3);
-			cmd_arr[0] = ft_strdup(global.cmds[0]->exec);
-			cmd_arr[1] = global.cmds[0]->args ? ft_strdup(global.cmds[0]->args) : NULL;
-			cmd_arr[2] = NULL;
-			state = ft_redir(&global);
-			printf("state: %d\n", state);
-			if (gest_builtins(global.env_list, cmd_arr) == NONE)
-			{
-				gest_shell(global.env_list, cmd_arr);
-				free_arr(cmd_arr);
-			}
+			gest_shell(list, cmd);
+			free_arr(cmd);
 		}
-		free_cmds(global.cmds);
-		free_arr(global.full);
 	}
 	rl_clear_history();
-	free_list(global.env_list);
+	free_list(list);
 	return (0);
 }

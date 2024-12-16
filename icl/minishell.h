@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 17:50:57 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/16 12:56:43 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,47 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
-# include <sys/wait.h>
-
-typedef enum state
-{
-	NONE,
-	VALID,
-	ERROR,
-	SQUOTE,
-	DQUOTE,
-	REDIR,
-	APPREDIR,
-	HEREDOC,
-	PIPE,
-}	t_state;
-
-typedef struct s_env
-{
-	char			*name;
-	char			*content;
-	struct s_env	*next;
-}	t_env;
-
-typedef struct s_command
-{
-	char	*exec;
-	char	*args;
-	char	*full;
-	int		infile;
-	int		outfile;
-	int		fd[2];
-}	t_command;
-
-typedef struct s_global
-{
-	char		**env;
-	char		**argv;
-	char		**full;
-	t_env		*env_list;
-	pid_t		pid;
-	t_command	**cmds;
-}	t_global;
+# include "struct.h"
 
 int		ft_strlen(const char *str);
 bool	ft_strcmp(char *s1, char *s2);
@@ -87,4 +47,5 @@ char	*update_venv(t_env *lenv, char *str);
 char	*remq(char *str);
 void	free_global(t_global *global);
 void	free_node(t_env *node);
+
 #endif
