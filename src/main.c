@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/16 14:25:22 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/17 15:43:10 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,21 @@ static void	print_test(t_global *global)
 	}
 }
 
+
+
+bool	gest_err(char *str)
+{
+	while (*str == '\t' || *str == 32)
+		str++;
+	if (*str == '|')
+		return (perror("error: pipe\n"), true);
+	if (*str && !is_in_set(*str, "><|\"'"))
+		str++;
+	return (false);
+}
+
+*/
+
 int	is_in_set(char c, char *set)
 {
 	int	i;
@@ -107,38 +122,35 @@ int	is_in_set(char c, char *set)
 	return (0);
 }
 
-bool	gest_err(char *str)
+static void init_cmd_test(t_command *cmd)
 {
-	while (*str == '\t' || *str == 32)
-		str++;
-	if (*str == '|')
-		return (perror("error: pipe\n"), true);
-	if (*str && !is_in_set(*str, "><|\"'"))
-		str++;
-	return (false);
+	cmd->infile = -1;
+	cmd->outfile = -1;
+	cmd->prev_fd = -1;
 }
-
-*/
 int	main(int ac, char **av, char **env)
 {
 	t_env		*list;
-	char		**cmd;
+	char		**arr;
 	char		*line;
+	t_command	cmd;
 
 	list = arr2list(env);
 	while (ac && av)
 	{
 		line = readline("$> ");
 		add_history(line);
+		init_cmd_test(&cmd);
 		/*
 		if (gest_err(line))
 			continue ;
 			*/
-		cmd = str2arr(line, " \t", true);
-		if (gest_builtins(list, cmd) == NONE)
+		arr = str2arr(line, " \t", true);
+		ft_redir(&cmd, line);
+		if (gest_builtins(list, arr) == NONE)
 		{
-			gest_shell(list, cmd);
-			free_arr(cmd);
+			gest_shell(list, arr);
+			free_arr(arr);
 		}
 	}
 	rl_clear_history();

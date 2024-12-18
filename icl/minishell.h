@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/16 12:56:43 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/18 08:59:18 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <readline/history.h>
 # include <stdbool.h>
 # include "struct.h"
+# include <fcntl.h>
 
 int		ft_strlen(const char *str);
 bool	ft_strcmp(char *s1, char *s2);
@@ -38,7 +39,6 @@ char	*pwrapper(char *name, char *content, char sep);
 void	gest_shell(t_env *lenv, char **arr);
 bool	inq(char *str, int index, char quote);
 char	*gest_sign(t_env *lenv, char *str, int i);
-t_state	ft_redir(t_global *global);
 int		count_rows(const char *chr, char *str, bool quote);
 void	free_arr(char **arr);
 void	listening(void);
@@ -47,5 +47,11 @@ char	*update_venv(t_env *lenv, char *str);
 char	*remq(char *str);
 void	free_global(t_global *global);
 void	free_node(t_env *node);
-
+int     ft_redir(t_command *cmd, char *line);
+bool	ft_str_inc(char *s1, char *s2, size_t n);
+int     ft_append(t_command *cmd, char *line);
+int     ft_overwrite(t_command *cmd, char *line);
+int     is_in_set(char c, char *set);
+int     ft_skip_whitespaces(char *str);
+int     ft_backslash_count(char *str);
 #endif

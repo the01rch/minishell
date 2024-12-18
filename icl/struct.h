@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:54:36 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/16 12:57:00 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:02:21 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,10 @@ typedef struct s_env
 
 typedef struct s_command
 {
-	char	*exec;
-	char	*args;
-	char	*full;
 	int		infile;
 	int		outfile;
-	int		fd[2];
+	int		prev_fd;
+	int		pipe[2];
 }	t_command;
 
 typedef struct s_global
