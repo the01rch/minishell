@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:54:36 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/17 12:02:21 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/19 09:32:25 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_global
 	pid_t		pid;
 	char		**argv;
 	char		**full;
+	int			ext_val;
 }	t_global;
 
 #endif

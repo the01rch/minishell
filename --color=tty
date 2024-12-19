@@ -1,7 +1,0 @@
---color=tty
-icl
-lib
-libft.a
-Makefile
-minishell
-src

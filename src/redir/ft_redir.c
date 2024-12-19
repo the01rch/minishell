@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/18 10:40:29 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/19 10:15:37 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ int	ft_redir(t_command *cmd, char *line)
 	while (line[i])
 	{
 		if (ft_str_inc(line + i, ">>", 2))
-			tmp = ft_append(cmd, line + i + 2); 
+			tmp = ft_append(cmd, line + i + 2);
 		else if (line[i] == '>')
-			tmp = ft_overwrite(cmd, line + i + 1); 
+			tmp = ft_overwrite(cmd, line + i + 1);
 		if (ft_str_inc(line + i, "<<", 2))
 			tmp = ft_append(cmd, line + i + 2);
 		else if (line[i] == '<')
-			tmp = ft_append(cmd, line + i + 1);
+			tmp = ft_redirect_input(cmd, line + i + 1);
 		if (tmp < 0)
 			i += skip_cmd(line + i);
 		if (!line[i])

@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/18 08:59:18 by kpires           ###   ########.fr       */
-/*                                                                            */
+/*															 */
+/*											 :::	 ::::::::   */
+/*   minishell.h								:+:	 :+:    :+:   */
+/*										  +:+ +:+	    +:+	*/
+/*   By: kpires <kpires@student.42.fr>		    +#+  +:+	  +#+	   */
+/*									   +#+#+#+#+#+   +#+		 */
+/*   Created: 2024/11/06 15:33:18 by redrouic		#+#    #+#		   */
+/*   Updated: 2024/12/19 09:33:40 by kpires		 ###   ########.fr	  */
+/*															 */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
@@ -47,11 +47,12 @@ char	*update_venv(t_env *lenv, char *str);
 char	*remq(char *str);
 void	free_global(t_global *global);
 void	free_node(t_env *node);
-int     ft_redir(t_command *cmd, char *line);
+int		ft_redir(t_command *cmd, char *line);
 bool	ft_str_inc(char *s1, char *s2, size_t n);
-int     ft_append(t_command *cmd, char *line);
-int     ft_overwrite(t_command *cmd, char *line);
-int     is_in_set(char c, char *set);
-int     ft_skip_whitespaces(char *str);
-int     ft_backslash_count(char *str);
+int		ft_append(t_command *cmd, char *line);
+int		ft_overwrite(t_command *cmd, char *line);
+int		is_in_set(char c, char *set);
+int		ft_skip_whitespaces(char *str);
+int		ft_backslash_count(char *str);
+int		ft_redirect_input(t_command *cmd, char *line);
 #endif

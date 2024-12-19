@@ -6,19 +6,18 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/16 14:26:29 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/19 10:18:07 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-char	*check_access(t_env *lenv, char **arr)
+char	*check_access(t_env *lenv, char **arr, int i)
 {
 	char	**tab;
 	char	*path;
 	char	*full_path;
 	char	*path_str;
-	int		i;
 
 	path_str = plist(lenv, "PATH");
 	if (!path_str)
@@ -27,8 +26,7 @@ char	*check_access(t_env *lenv, char **arr)
 	free(path_str);
 	if (!tab)
 		return (NULL);
-	i = 0;
-	while (tab[i])
+	while (tab[i++])
 	{
 		full_path = pwrapper(tab[i], arr[0], '/');
 		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
@@ -38,8 +36,6 @@ char	*check_access(t_env *lenv, char **arr)
 			free_arr(tab);
 			return (path);
 		}
-		free(full_path);
-		i++;
 	}
 	free_arr(tab);
 	return (NULL);
@@ -77,7 +73,7 @@ void	gest_shell(t_env *lenv, char **arr)
 	char	*path;
 	pid_t	pid;
 
-	path = check_access(lenv, arr);
+	path = check_access(lenv, arr, -1);
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork failed"), exit(0), (void)0);
