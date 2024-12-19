@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/16 13:08:11 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:58:51 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_state	gest_env(t_env *lenv, char **arr)
 	if (ft_strcmp(arr[0], "env"))
 	{
 		if (arr[1])
-			return (printf("env: '%s': No such file or directory\n", arr[1]), ERROR);
+			return (printf(EENV, arr[1]), ERROR);
 		return (plist(lenv, NULL), VALID);
 	}
 	if (ft_strcmp(arr[0], "pwd"))

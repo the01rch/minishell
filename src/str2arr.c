@@ -6,13 +6,13 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:21 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 17:45:03 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/17 17:28:25 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-static bool	is_charset(const char *chr, char c)
+bool	is_chr(const char *chr, char c)
 {
 	while (*chr)
 	{
@@ -30,13 +30,13 @@ int	count_rows(const char *chr, char *str, bool quote)
 
 	rows = 0;
 	i = 0;
-	while (is_charset(chr, str[i]))
+	while (str[i] && is_chr(chr, str[i]))
 		i++;
 	while (str[i])
 	{
-		if ((!quote && str[i + 1] && is_charset(chr, str[i])
-				&& !is_charset(chr, str[i + 1])) || (quote && str[i + 1]
-				&& is_charset(chr, str[i]) && !is_charset(chr, str[i + 1])
+		if ((!quote && str[i + 1] && is_chr(chr, str[i])
+				&& !is_chr(chr, str[i + 1])) || (quote && str[i + 1]
+				&& is_chr(chr, str[i]) && !is_chr(chr, str[i + 1])
 				&& !inq(str, i, 0)))
 			rows++;
 		i++;
@@ -58,11 +58,11 @@ static int	*count_cols(const char *chr, char *str, int rows, bool quote)
 	i = 0;
 	while (str[i])
 	{
-		if ((!is_charset(chr, str[i]) && str[i])
-			|| (quote && is_charset(chr, str[i]) && inq(str, i, 0)))
+		if ((!is_chr(chr, str[i]) && str[i])
+			|| (quote && is_chr(chr, str[i]) && inq(str, i, 0)))
 			vec[0]++;
-		if ((!quote && vec[0] > 0 && is_charset(chr, str[i])) || (quote
-				&& vec[0] > 0 && is_charset(chr, str[i]) && !inq(str, i, 0)))
+		if ((!quote && vec[0] > 0 && is_chr(chr, str[i])) || (quote
+				&& vec[0] > 0 && is_chr(chr, str[i]) && !inq(str, i, 0)))
 		{
 			cols[vec[1]++] = vec[0];
 			vec[0] = 0;
@@ -116,11 +116,11 @@ char	**str2arr(char *str, const char *chr, bool quote)
 	i = 0;
 	while (str[i])
 	{
-		if ((!is_charset(chr, str[i]) && str[i])
-			|| (quote && is_charset(chr, str[i]) && inq(str, i, 0)))
+		if ((!is_chr(chr, str[i]) && str[i])
+			|| (quote && is_chr(chr, str[i]) && inq(str, i, 0)))
 			arr[vec[1]][vec[0]++] = str[i];
-		if ((!quote && vec[0] > 0 && is_charset(chr, str[i])) || (quote
-				&& vec[0] > 0 && is_charset(chr, str[i]) && !inq(str, i, 0)))
+		if ((!quote && vec[0] > 0 && is_chr(chr, str[i])) || (quote
+				&& vec[0] > 0 && is_chr(chr, str[i]) && !inq(str, i, 0)))
 		{
 			arr[vec[1]++][vec[0]] = '\0';
 			vec[0] = 0;

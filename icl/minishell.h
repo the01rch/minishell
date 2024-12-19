@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/16 12:56:43 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:06:15 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 int		ft_strlen(const char *str);
 bool	ft_strcmp(char *s1, char *s2);
+bool	ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strdup(char *src);
 char	*ft_concat(char *str, char *str2);
 void	ft_strncpy(char *dst, char *src, int n);
@@ -47,5 +48,8 @@ char	*update_venv(t_env *lenv, char *str);
 char	*remq(char *str);
 void	free_global(t_global *global);
 void	free_node(t_env *node);
+bool	is_chr(const char *chr, char c);
+int		is_unclosed(char *str, int idx);
+bool	is_syntax_valid(char *str);
 
 #endif

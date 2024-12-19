@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 18:09:06 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/19 12:57:32 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ t_env	*create_node(char *str)
 	new->name = ft_strdup(arr[0]);
 	new->content = ft_strdup(arr[1]);
 	new->next = NULL;
-	free_arr(arr);
 	return (new);
 }
 

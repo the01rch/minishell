@@ -6,31 +6,34 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/16 12:50:29 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:47:43 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-bool	is_unclosed(char *str)
+int	is_unclosed(char *str, int i)
 {
 	char	openq;
-	int		i;
+	int		idx;
 
 	openq = 0;
-	i = 0;
-	while (str[i])
+	idx = 0;
+	if (str[i] == 34 || str[i] == 39)
 	{
-		if (str[i] == 34 || str[i] == 39)
+		idx = i;
+		while (str[idx])
 		{
 			if (openq == 0)
-				openq = str[i];
-			else if (str[i] == openq)
+				openq = str[idx];
+			else if (str[idx] == openq)
 				openq = 0;
+			idx++;
 		}
-		i++;
 	}
-	return (openq == 0);
+	if (openq != 0)
+		return (-1);
+	return (idx);
 }
 
 bool	inq(char *str, int index, char quote)
@@ -92,8 +95,6 @@ char	*gest_sign(t_env *lenv, char *str, int i)
 	if (!copy)
 		return (NULL);
 	ft_strncpy(copy, str, ft_strlen(str));
-	if (is_quoted(copy) && !is_unclosed(copy))
-		return (free(copy), "");
 	while (copy[i])
 	{
 		if (copy[0] == 36)

@@ -6,16 +6,19 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:54:36 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/16 12:57:00 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:58:44 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	STRUCT_H 
+#ifndef STRUCT_H
 # define STRUCT_H
 
 # include <sys/wait.h>
-# define	SQUOTE	34
-# define	DQUOTE	39
+# define SQUOTE 34
+# define DQUOTE 39
+# define EALL "Error: allocation failed.\n"
+# define FPIPE "bash: syntax error near unexpected token `|'\n"
+# define EENV "env: '%s': No such file or directory\n"
 
 typedef enum state
 {
@@ -33,12 +36,10 @@ typedef struct s_env
 
 typedef struct s_command
 {
-	char	*exec;
-	char	*args;
-	char	*full;
+	char	**args;
+	char	*redir;
 	int		infile;
 	int		outfile;
-	int		fd[2];
 }	t_command;
 
 typedef struct s_global

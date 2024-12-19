@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/12/13 16:06:40 by kpires           ###   ########.fr        #
+#    Updated: 2024/12/19 13:07:55 by redrouic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,13 +16,14 @@ SRC		=	src/main.c\
 			src/list.c\
 			src/executer.c\
 			src/expander.c\
-			src/redir.c\
 			src/signal.c\
-			src/env.c
+			src/env.c\
+			src/gest_err.c
 
 SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strlen.c\
 			lib/ft_strncpy.c\
+			lib/ft_strncmp.c\
 			lib/ft_strdup.c\
 			lib/ft_concat.c\
 			lib/ft_free.c

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/13 18:31:21 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/18 19:10:29 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,27 @@ char	*check_access(t_env *lenv, char **arr)
 	char	*path;
 	char	*full_path;
 	char	*path_str;
-	int		i;
 
 	path_str = plist(lenv, "PATH");
 	if (!path_str)
-		return (NULL);
+		return (free(path_str), NULL);
 	tab = str2arr(path_str, ":", false);
-	free(path_str);
 	if (!tab)
-		return (NULL);
-	i = 0;
-	while (tab[i])
+		return (free_arr(tab), NULL);
+	while (*tab)
 	{
-		full_path = pwrapper(tab[i], arr[0], '/');
+		full_path = pwrapper(*tab, arr[0], '/');
 		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
 		{
 			path = ft_strdup(full_path);
-			free(full_path);
-			free_arr(tab);
-			return (path);
+			if (!path)
+				return (free(full_path), free_arr(tab), exit(0), path);
+			return (free(full_path), free_arr(tab), path);
 		}
 		free(full_path);
-		i++;
+		tab++;
 	}
-	free_arr(tab);
-	return (NULL);
+	return (free_arr(tab), free(path_str), NULL);
 }
 
 char	**list2arr(t_env *lenv)
@@ -64,8 +60,7 @@ char	**list2arr(t_env *lenv)
 	i = 0;
 	while (tmp)
 	{
-		arr[i] = pwrapper(tmp->name, tmp->content, '=');
-		i++;
+		arr[i++] = pwrapper(tmp->name, tmp->content, '=');
 		tmp = tmp->next;
 	}
 	arr[i] = NULL;
@@ -86,10 +81,10 @@ void	gest_shell(t_env *lenv, char **arr)
 		if (!path)
 		{
 			printf("%s: Command not found.\n", arr[0]);
+			free(path);
 			exit(0);
 		}
 		execve(path, arr, list2arr(lenv));
-		free(path);
 	}
 	if (pid > 0)
 		wait(NULL);
