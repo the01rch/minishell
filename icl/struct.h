@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:54:36 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/19 12:58:44 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:45:08 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,19 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_command
+typedef struct s_cmd
 {
 	char	**args;
 	char	*redir;
 	int		infile;
 	int		outfile;
-}	t_command;
+}	t_cmd;
 
 typedef struct s_global
 {
-	t_command	**cmds;
-	pid_t		pid;
-	char		**argv;
-	char		**full;
+	t_cmd		**cmds;
+	pid_t		last_pid;
+	int			exit_val;
 }	t_global;
 
 #endif

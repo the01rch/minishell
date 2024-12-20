@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_validation.c                                :+:      :+:    :+:   */
+/*   gest_err.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/19 13:04:10 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:55:07 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,30 @@ static int	check_redir(char *str)
 	return (idx);
 }
 
+static int	check_quotes(char *str, int i)
+{
+	char	openq;
+	int		idx;
+
+	openq = 0;
+	idx = 0;
+	if (str[i] == 34 || str[i] == 39)
+	{
+		idx = i;
+		while (str[idx])
+		{
+			if (openq == 0 && (str[idx] == 34 || str[idx] == 39))
+				openq = str[idx];
+			else if (str[idx] == openq)
+				openq = 0;
+			idx++;
+		}
+	}
+	if (openq != 0)
+		return (-1);
+	return (idx);
+}
+
 static int	token_indices(char *str, int i)
 {
 	int	tmp;
@@ -58,7 +82,7 @@ static int	token_indices(char *str, int i)
 	tmp = 0;
 	while (str[i] && !is_chr("><|\"'", str[i]))
 		i++;
-	tmp = is_unclosed(str, i);
+	tmp = check_quotes(str, i);
 	if (tmp < 0)
 		return (-1);
 	i += tmp;

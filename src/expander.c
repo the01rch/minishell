@@ -6,35 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/19 12:47:43 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/20 19:41:16 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
-
-int	is_unclosed(char *str, int i)
-{
-	char	openq;
-	int		idx;
-
-	openq = 0;
-	idx = 0;
-	if (str[i] == 34 || str[i] == 39)
-	{
-		idx = i;
-		while (str[idx])
-		{
-			if (openq == 0)
-				openq = str[idx];
-			else if (str[idx] == openq)
-				openq = 0;
-			idx++;
-		}
-	}
-	if (openq != 0)
-		return (-1);
-	return (idx);
-}
 
 bool	inq(char *str, int index, char quote)
 {
@@ -102,7 +78,7 @@ char	*gest_sign(t_env *lenv, char *str, int i)
 			res = plist(lenv, &copy[1]);
 			if (!res)
 				return (free(copy), "");
-			return (free(copy), ft_strdup(res));
+			return (free(copy), res);
 		}
 		if (copy[i] == 36 && inq(copy, i, 34))
 			return (free(copy), ft_strdup(update_venv(lenv, str)));
