@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/21 12:30:51 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/21 13:58:51 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	ft_export(t_env *lenv, char *str);
 t_state	gest_env(t_env *lenv, char **arr);
 t_state	gest_builtins(t_env *lenv, t_cmd *cmd);
 char	*plist(t_env *lenv, char *name);
-void	gest_shell(t_env *lenv, t_cmd *cmd);
+void	gest_shell(t_env *lenv, t_cmd *cmd, int *std_save);
 char	*update_venv(t_env *lenv, char *str);
 char	*gest_sign(t_env *lenv, char *str, int i);
 int		ft_exec(t_cmd cmd, t_env *list);
@@ -74,5 +74,7 @@ int		ft_overwrite(t_cmd *cmd, char *redir);
 int		ft_append(t_cmd *cmd, char *redir);
 int		ft_redirect_input(t_cmd *cmd, char *redir);
 int		ft_heredoc(t_cmd *cmd, char *redir);
+int		dup_inf_out(t_cmd *cmd, int *std_save);
+int		close_fd(t_cmd *cmd, int *std_save, bool is_error);
 
 #endif

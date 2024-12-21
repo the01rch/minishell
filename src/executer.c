@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/21 12:35:34 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/21 14:00:05 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**list2arr(t_env *lenv)
 	return (arr);
 }
 
-void	gest_shell(t_env *lenv, t_cmd *cmd)
+void	gest_shell(t_env *lenv, t_cmd *cmd, int *std_save)
 {
 	char	*path;
 	pid_t	pid;
@@ -84,6 +84,16 @@ void	gest_shell(t_env *lenv, t_cmd *cmd)
 		return (perror("fork failed"), exit(0), (void)0);
 	else if (pid == 0)
 	{
+		if (cmd->infile != -1)
+		{
+			close(std_save[0]);
+			close(cmd->infile);
+		}
+		if (cmd->outfile != -1)
+		{
+			close(std_save[1]);
+			close(cmd->outfile);
+		}
 		if (!path)
 		{
 			printf("%s: Command not found.\n", cmd->args[0]);

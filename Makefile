@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/12/21 12:23:24 by kpires           ###   ########.fr        #
+#    Updated: 2024/12/21 13:20:18 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC		=	src/main.c\
 			src/redir/out_in.c\
 			src/redir/ft_redir.c\
 			src/exec/ft_exec.c\
+			src/exec/ft_one.c\
 
 SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strlen.c\
