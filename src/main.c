@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/21 01:26:48 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/21 12:31:36 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,19 +104,16 @@ int	main(int ac, char **av, char **env)
 	char		*line;
 
 	list = arr2list(env);
-	signal(SIGINT, handler_sigint);
-	signal(SIGQUIT, handler_sigquit);
 	while (ac && av)
 	{
+		signal(SIGINT, handler_sigint);
+		signal(SIGQUIT, handler_sigquit);
 		g_signal = 0;
 		line = readline("$> ");
 		if (!line)
 		{
 			printf("exit\n");
-			free_cmd(&cmd);
-			free(line);
 			exit(1);
-			break ;
 		}
 		if (!is_syntax_valid(line))
 		{

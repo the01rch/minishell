@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/12/20 23:30:57 by kpires           ###   ########.fr        #
+#    Updated: 2024/12/21 12:23:24 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,9 @@ SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strdup.c\
 			lib/ft_concat.c\
 			lib/ft_free.c\
-			lib/ft_skip_whitespaces.c
+			lib/ft_skip_whitespaces.c\
+			lib/ft_strlcat.c\
+			lib/ft_memcpy.c\
 
 OBJ		=	$(SRC:.c=.o)
 

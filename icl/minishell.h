@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/20 23:58:10 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/21 12:30:51 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ char	*ft_strdup(char *src);
 char	*ft_concat(char *str, char *str2);
 void	ft_strncpy(char *dst, char *src, int n);
 int		ft_skip_whitespaces(char *str);
+size_t	ft_strlcat(char *dest, const char *src, size_t n);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+bool	ft_export(t_env *lenv, char *str);
 
 /*UNDEFINED*/
 t_state	gest_env(t_env *lenv, char **arr);
@@ -40,7 +43,7 @@ char	*plist(t_env *lenv, char *name);
 void	gest_shell(t_env *lenv, t_cmd *cmd);
 char	*update_venv(t_env *lenv, char *str);
 char	*gest_sign(t_env *lenv, char *str, int i);
-void	ft_exec(t_cmd cmd, t_env *list);
+int		ft_exec(t_cmd cmd, t_env *list);
 
 /*SIGNALS*/
 void	handler_sigint(int sig);
