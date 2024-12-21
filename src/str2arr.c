@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:21 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/19 14:53:07 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:27:10 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ static char	**init_arr(const char *chr, char *str, bool quote)
 	int		*cols;
 	int		rows;
 	int		y;
-	int		x;
 
 	rows = count_rows(chr, str, quote);
 	cols = count_cols(chr, str, rows, quote);
@@ -89,13 +88,12 @@ static char	**init_arr(const char *chr, char *str, bool quote)
 	if (!arr)
 		return (free(cols), NULL);
 	y = 0;
-	x = 0;
 	while (y < rows)
 	{
 		arr[y] = malloc(sizeof(char) * (cols[y] + 1));
-		while (x <= cols[y])
-			arr[y][x++] = '\0';
-		x = 0;
+		if (!arr[y])
+			return (free_arr(arr), free(cols), NULL);
+		memset(arr[y], 0, cols[y] + 1);
 		y++;
 	}
 	arr[y] = NULL;
@@ -110,7 +108,7 @@ char	**str2arr(char *str, const char *chr, bool quote)
 
 	arr = init_arr(chr, str, quote);
 	if (!arr)
-		return (0);
+		return (NULL);
 	vec[0] = 0;
 	vec[1] = 0;
 	i = 0;

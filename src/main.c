@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/20 20:50:01 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:26:48 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ static void	fill_redir(t_cmd *cmd, char *line, int len)
 {
 	int	i;
 
-	if (len == ft_strlen(line))
+	if (len == (int)ft_strlen(line))
 		cmd->redir = NULL;
-	else if (len < ft_strlen(line))
+	else if (len < (int)ft_strlen(line))
 	{
-		cmd->redir = malloc(sizeof(char) * len + 1);
+		cmd->redir = malloc(sizeof(char) * (ft_strlen(line) - len + 1));
 		if (!cmd->redir)
 			return (printf("%s", EALL), exit(1), (void)0);
 		i = 0;
-		while (len < ft_strlen(line))
+		while (len < (int)ft_strlen(line))
 			cmd->redir[i++] = line[len++];
 		cmd->redir[i] = '\0';
 	}
@@ -46,11 +46,12 @@ static void	fill_s_cmd(t_cmd *cmd, char *line)
 	}
 	fill_redir(cmd, line, i);
 	printf("redir :%s\n", cmd->redir);
-	tmp = malloc(sizeof(char) * i + 1);
+	tmp = malloc(sizeof(char) * (i + 1));
 	if (!tmp)
 		return (printf(EALL), exit(1), (void)0);
 	ft_strncpy(tmp, line, i);
 	cmd->args = str2arr(tmp, " \t", true);
+	free(tmp);
 	if (!cmd->args)
 		return (printf(EALL), exit(1), (void)0);
 	i = 0;
@@ -93,6 +94,9 @@ t_state	gest_builtins(t_env *lenv, t_cmd *cmd)
 // 		[ ] env -i
 // 		[ ] handling signals
 // 		[ ] fix leaks
+
+int	g_signal = 0;
+
 int	main(int ac, char **av, char **env)
 {
 	t_env		*list;
@@ -100,17 +104,32 @@ int	main(int ac, char **av, char **env)
 	char		*line;
 
 	list = arr2list(env);
+	signal(SIGINT, handler_sigint);
+	signal(SIGQUIT, handler_sigquit);
 	while (ac && av)
 	{
+		g_signal = 0;
 		line = readline("$> ");
+		if (!line)
+		{
+			printf("exit\n");
+			free_cmd(&cmd);
+			free(line);
+			exit(1);
+			break ;
+		}
 		if (!is_syntax_valid(line))
+		{
+			free(line);
 			continue ;
+		}
 		fill_s_cmd(&cmd, line);
-		if (gest_builtins(list, &cmd) == NONE)
-			gest_shell(list, &cmd);
+		if (ft_redir(&cmd))
+			ft_exec(cmd, list);
+		free_cmd(&cmd);
+		free(line);
 	}
 	rl_clear_history();
-	free(line);
 	free_list(list);
 	return (0);
 }

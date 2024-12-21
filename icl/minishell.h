@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/20 20:31:01 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/20 23:58:10 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,56 @@
 # include <readline/history.h>
 # include <stdbool.h>
 # include "struct.h"
+# include <fcntl.h>
 
+extern int	g_signal;
+
+/*LIB*/
 int		ft_strlen(const char *str);
 bool	ft_strcmp(char *s1, char *s2);
 bool	ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strdup(char *src);
 char	*ft_concat(char *str, char *str2);
 void	ft_strncpy(char *dst, char *src, int n);
-t_env	*arr2list(char **env);
-t_env	*create_node(char *str);
+int		ft_skip_whitespaces(char *str);
+
+/*UNDEFINED*/
 t_state	gest_env(t_env *lenv, char **arr);
 t_state	gest_builtins(t_env *lenv, t_cmd *cmd);
 char	*plist(t_env *lenv, char *name);
-void	free_list(t_env *list);
-char	**str2arr(char *str, const char *chr, bool quote);
-void	free_arr(char **arr);
-char	*pwrapper(char *name, char *content, char sep);
 void	gest_shell(t_env *lenv, t_cmd *cmd);
-bool	inq(char *str, int index, char quote);
-char	*gest_sign(t_env *lenv, char *str, int i);
-t_state	ft_redir(t_global *global);
-int		count_rows(const char *chr, char *str, bool quote);
-void	free_arr(char **arr);
-void	listening(void);
 char	*update_venv(t_env *lenv, char *str);
-char	*remq(char *str);
-//void	free_global(t_global *global);
+char	*gest_sign(t_env *lenv, char *str, int i);
+void	ft_exec(t_cmd cmd, t_env *list);
+
+/*SIGNALS*/
+void	handler_sigint(int sig);
+void	handler_sigquit(int sig);
+
+/*FREE*/
 void	free_node(t_env *node);
-bool	is_chr(const char *chr, char c);
+void	free_arr(char **arr);
+void	free_list(t_env *list);
+void	free_cmd(t_cmd *cmd);
+
+/*PARSING*/
 bool	is_syntax_valid(char *str);
+t_env	*arr2list(char **env);
+t_env	*create_node(char *str);
+char	**str2arr(char *str, const char *chr, bool quote);
+char	*pwrapper(char *name, char *content, char sep);
+int		count_rows(const char *chr, char *str, bool quote);
+
+/*UTILS*/
+bool	inq(char *str, int index, char quote);
+char	*remq(char *str);
+bool	is_chr(const char *chr, char c);
+
+/*REDIR*/
+int		ft_redir(t_cmd *cmd);
+int		ft_overwrite(t_cmd *cmd, char *redir);
+int		ft_append(t_cmd *cmd, char *redir);
+int		ft_redirect_input(t_cmd *cmd, char *redir);
+int		ft_heredoc(t_cmd *cmd, char *redir);
 
 #endif

@@ -6,39 +6,45 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/20 20:31:34 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:57:53 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-char	*check_access(t_env *lenv, char **arr)
+static char	*check_access(t_env *lenv, char **arr)
 {
 	char	**tab;
 	char	*path;
 	char	*full_path;
 	char	*path_str;
+	char	**tab_start;
 
 	path_str = plist(lenv, "PATH");
 	if (!path_str)
-		return (free(path_str), NULL);
+		return (NULL);
 	tab = str2arr(path_str, ":", false);
+	free(path_str);
 	if (!tab)
-		return (free_arr(tab), NULL);
+		return (NULL);
+	tab_start = tab;
 	while (*tab)
 	{
 		full_path = pwrapper(*tab, arr[0], '/');
+		if (!full_path)
+			return (free_arr(tab_start), NULL);
 		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
 		{
 			path = ft_strdup(full_path);
+			free(full_path);
 			if (!path)
-				return (free(full_path), free_arr(tab), exit(0), path);
-			return (free(full_path), free_arr(tab), path);
+				return (free_arr(tab_start), exit(0), path);
+			return (free_arr(tab_start), path);
 		}
 		free(full_path);
 		tab++;
 	}
-	return (free_arr(tab), free(path_str), NULL);
+	return (free_arr(tab_start), NULL);
 }
 
 char	**list2arr(t_env *lenv)
@@ -81,7 +87,6 @@ void	gest_shell(t_env *lenv, t_cmd *cmd)
 		if (!path)
 		{
 			printf("%s: Command not found.\n", cmd->args[0]);
-			free(path);
 			exit(0);
 		}
 		execve(path, cmd->args, list2arr(lenv));

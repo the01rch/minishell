@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/19 14:50:12 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/21 00:57:15 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_env	*create_node(char *str)
 	new->name = ft_strdup(arr[0]);
 	new->content = ft_strdup(arr[1]);
 	new->next = NULL;
+	if (!new->name || (arr[1] && !new->content))
+		return (free_arr(arr), free_node(new), NULL);
 	free_arr(arr);
 	return (new);
 }
@@ -72,16 +74,4 @@ char	*plist(t_env *lenv, char *name)
 		tmp = tmp->next;
 	}
 	return (NULL);
-}
-
-void	free_list(t_env *list)
-{
-	t_env	*tmp;
-
-	while (list)
-	{
-		tmp = list;
-		list = list->next;
-		free_node(tmp);
-	}
 }

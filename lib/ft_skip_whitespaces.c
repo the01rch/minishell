@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redir.c                                            :+:      :+:    :+:   */
+/*   ft_skip_whitespaces.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/12 22:23:41 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/13 18:19:39 by kpires           ###   ########.fr       */
+/*   Created: 2024/12/18 08:53:56 by kpires            #+#    #+#             */
+/*   Updated: 2024/12/20 22:11:37 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-t_state	ft_redir(t_global *global)
+int	ft_skip_whitespaces(char *str)
 {
-	int			i;
-	t_command	**cmd;
+	int	i;
 
+	if (!str)
+		return (0);
 	i = 0;
-	cmd = global->cmds;
-	printf("ft_redir\n");
-	while (cmd[i] && cmd[i]->full)
-	{
-		if (ft_strcmp(cmd[i]->full, ">>"))
-			printf("ft_redir >>\n");
-		else if (ft_strcmp(cmd[i]->full, ">"))
-			printf("ft_redir >\n");
-		else if (ft_strcmp(cmd[i]->full, "<"))
-			printf("ft_redir <\n");
-		else if (ft_strcmp(cmd[i]->full, "<<"))
-			printf("ft_redir <<\n");
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
 		i++;
-	}
-	return (NONE);
+	return (i);
 }

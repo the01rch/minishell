@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/12/19 17:52:50 by redrouic         ###   ########.fr        #
+#    Updated: 2024/12/20 23:30:57 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,10 @@ SRC		=	src/main.c\
 			src/expander.c\
 			src/signal.c\
 			src/env.c\
-			src/gest_err.c
+			src/gest_err.c\
+			src/redir/out_in.c\
+			src/redir/ft_redir.c\
+			src/exec/ft_exec.c\
 
 SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strlen.c\
@@ -26,7 +29,8 @@ SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strncmp.c\
 			lib/ft_strdup.c\
 			lib/ft_concat.c\
-			lib/ft_free.c
+			lib/ft_free.c\
+			lib/ft_skip_whitespaces.c
 
 OBJ		=	$(SRC:.c=.o)
 

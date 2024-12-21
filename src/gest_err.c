@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gest_err.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/20 19:55:07 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/21 01:24:39 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ static int	check_redir(char *str)
 	if (!*str || !is_chr("><", *str))
 		return (0);
 	idx = 0;
-	if (ft_strncmp(&str[idx], ">>", 2) == 0)
+	if (ft_strncmp(&str[idx], ">>", 2))
 		idx += 2;
 	else if (str[idx] == '>')
 		idx++;
-	else if (ft_strncmp(&str[idx], "<<", 2) == 0)
+	else if (ft_strncmp(&str[idx], "<<", 2))
 		idx += 2;
 	else if (str[idx] == '<')
 		idx++;

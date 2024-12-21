@@ -1,36 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/13 15:55:25 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/20 23:47:26 by kpires           ###   ########.fr       */
+/*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
+/*   Updated: 2024/12/20 23:48:24 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../../icl/minishell.h"
 
-void	handler_sigint(int sig)
+void	ft_exec(t_cmd cmd, t_env *list)
 {
-	printf("\n");
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	if (wait(NULL) == -1)
-		rl_redisplay();
-	g_signal = sig;
-}
-
-void	handler_sigquit(int sig)
-{
-	rl_on_new_line();
-	if (wait(NULL) == -1)
-	{
-		printf("\e[2K\r");
-		rl_redisplay();
-	}
-	else
-		write(STDERR_FILENO, "Quit (core dumped)\n", 20);
-	g_signal = sig;
+	if (gest_builtins(list, &cmd) == NONE)
+		gest_shell(list, &cmd);
 }
