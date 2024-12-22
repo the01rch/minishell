@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/22 01:33:56 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 14:19:37 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int	main(int ac, char **av, char **env)
 		if (!line)
 		{
 			printf("exit\n");
+			free_list(list);
 			exit(1);
 		}
 		if (!is_syntax_valid(line))

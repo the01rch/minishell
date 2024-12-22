@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/21 01:24:39 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 17:15:25 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,40 @@
 
 static int	check_pipes(char *str)
 {
-	int	idx;
+	int		idx;
+	int		len;
 
-	idx = 1;
-	if (*str != '|')
+	if (!str || !*str || *str != '|')
 		return (0);
-	while (is_chr("\t ", idx))
+	len = ft_strlen(str);
+	idx = 1;
+	while (idx < len && is_chr("\t ", str[idx]))
 		idx++;
-	if (!str[idx] || str[idx] == '|')
+	if (idx >= len || str[idx] == '|')
 		return (printf("%s", FPIPE), -1);
-	idx++;
 	return (1);
 }
 
 static int	check_redir(char *str)
 {
-	int	idx;
+	int		idx;
+	int		len;
 
-	if (!*str || !is_chr("><", *str))
+	if (!str || !*str || !is_chr("><", *str))
 		return (0);
+	len = ft_strlen(str);
 	idx = 0;
-	if (ft_strncmp(&str[idx], ">>", 2))
+	if (idx + 1 < len && ft_strncmp(&str[idx], ">>", 2) == 0)
 		idx += 2;
-	else if (str[idx] == '>')
+	else if (*str == '>')
 		idx++;
-	else if (ft_strncmp(&str[idx], "<<", 2))
+	else if (idx + 1 < len && ft_strncmp(&str[idx], "<<", 2) == 0)
 		idx += 2;
-	else if (str[idx] == '<')
+	else if (*str == '<')
 		idx++;
-	while (str[idx] && is_chr("\t ", str[idx]))
+	while (idx < len && is_chr("\t ", str[idx]))
 		idx++;
-	if (!str[idx])
+	if (idx >= len)
 		return (printf("Error: Token\n"), -1);
 	if (is_chr("><|", str[idx]))
 		return (printf("Error: Token\n"), -1);
@@ -108,6 +111,8 @@ bool	is_syntax_valid(char *str)
 	i = 0;
 	while (str[i] && is_chr("\t ", str[i]))
 		i++;
+	if (!str[i])
+		return (false);
 	if (str[i] == '|')
 		return (printf("%s", FPIPE), false);
 	while (str[i])
@@ -116,6 +121,8 @@ bool	is_syntax_valid(char *str)
 		if (tmp < 0)
 			return (false);
 		i += tmp;
+		if (i > ft_strlen(str))
+			break ;
 	}
 	return (true);
 }

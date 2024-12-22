@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/21 00:50:26 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 16:42:30 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ bool	ft_export(t_env *lenv, char *str)
 	char	**arr;
 
 	tmp = lenv;
+	arr = str2arr(str, "=", false);
+	if (!arr)
+		return (false);
 	while (tmp->next != NULL)
 	{
-		arr = str2arr(str, "=", false);
-		if (!arr)
-			return (false);
 		if (ft_strcmp(arr[0], tmp->name))
 		{
 			free(tmp->content);

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/21 22:57:27 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 17:14:56 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ extern int	g_signal;
 /*LIB*/
 int		ft_strlen(const char *str);
 bool	ft_strcmp(char *s1, char *s2);
-bool	ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strdup(char *src);
 char	*ft_concat(char *str, char *str2);
 void	ft_strncpy(char *dst, char *src, int n);

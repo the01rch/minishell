@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/21 00:57:15 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 16:43:02 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,26 @@ t_env	*create_node(char *str)
 	t_env	*new;
 	char	**arr;
 
+	if (!str)
+		return (NULL);
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
-		exit(1);
+		return (NULL);
 	arr = str2arr(str, "=", false);
 	if (!arr)
 	{
 		free(new);
-		exit(1);
+		return (NULL);
 	}
 	new->name = ft_strdup(arr[0]);
 	new->content = ft_strdup(arr[1]);
 	new->next = NULL;
 	if (!new->name || (arr[1] && !new->content))
-		return (free_arr(arr), free_node(new), NULL);
+	{
+		free_arr(arr);
+		free_node(new);
+		return (NULL);
+	}
 	free_arr(arr);
 	return (new);
 }
@@ -44,10 +50,17 @@ t_env	*arr2list(char **env)
 	if (!env)
 		return (NULL);
 	head = create_node("a=b");
+	if (!head)
+		return (NULL);
 	tmp = head;
 	while (*env)
 	{
 		tmp->next = create_node(*env);
+		if (!tmp->next)
+		{
+			free_list(head);
+			return (NULL);
+		}
 		tmp = tmp->next;
 		env++;
 	}

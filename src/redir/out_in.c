@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/22 01:38:05 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 17:55:45 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,20 @@ static char	*ft_file_name(char *redir)
 	int		i;
 
 	i = 0;
-	redir = redir + ft_skip_whitespaces(redir);
 	if (!redir)
 		return (NULL);
+	redir = redir + ft_skip_whitespaces(redir);
 	while (redir[i] && !is_chr("<>| ", redir[i]))
 		i++;
-	file = malloc(sizeof(char) * i + 1);
-	if (!file)
+	file = malloc(sizeof(char) * (i + 1));
+	if (!file || !redir)
 		return (NULL);
-	i = -1;
-	while (redir[i++] && !is_chr("<>| ", redir[i]))
+	i = 0;
+	while (redir[i] && !is_chr("<>| ", redir[i]))
+	{
 		file[i] = redir[i];
+		i++;
+	}
 	file[i] = '\0';
 	return (file);
 }
@@ -116,9 +119,10 @@ int	ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv)
 	char	*del;
 	int		fd[2];
 
-	(void)cmd;
-	(void)lenv;
-	del = ft_file_name(redir + ft_skip_whitespaces(redir));
+	redir = redir + ft_skip_whitespaces(redir);
+	del = ft_file_name(redir);
+	if (ft_strlen(del) < ft_strlen(redir))
+		printf("dif:%d\n", (ft_strlen(redir) - ft_strlen(del)));
 	if (pipe(fd) == -1)
 		return (free(del), -1);
 	if (inq(del, ft_strlen(del), DQUOTE))
@@ -127,5 +131,5 @@ int	ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv)
 		printf("in single quotes \n");
 	else
 		return (ft_here_nquote(cmd, fd, del, lenv));
-	return (2);
+	return (2 + ft_strlen(del));
 }

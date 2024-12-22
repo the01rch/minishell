@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/22 01:34:18 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 16:38:24 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,8 @@ static void	update_last_cmd(t_cmd *cmd, t_env *list)
 	result = plist(list, "_");
 	if (result)
 	{
-		if (ft_export(list, v_))
-		{
-			result = plist(list, "_");
-			printf("✅[UPDATED]$_=%s\n", result);
-		}
+		ft_export(list, v_);
+		free(result);
 	}
 	free(v_);
 }
