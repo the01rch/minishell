@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/19 11:55:44 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/22 01:14:23 by kpires           ###   ########.fr       */
+/*   Created: 2024/12/21 22:55:23 by kpires            #+#    #+#             */
+/*   Updated: 2024/12/22 01:39:39 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-bool	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	size_t	i;
+	void	*ptr;
+	size_t	fsize;
 
-	if (!s1 || !s2)
-		return (false);
-	i = 0;
-	while (i < n && s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return (i == n);
+	if (!nmemb || !size)
+		return (malloc(0));
+	fsize = nmemb * size;
+	if ((fsize < size) || (fsize < nmemb))
+		return (NULL);
+	ptr = malloc(fsize);
+	if (!ptr)
+		return (NULL);
+	return (ft_memset(ptr, 0, fsize));
 }

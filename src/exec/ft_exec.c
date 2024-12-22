@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/21 14:01:45 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 01:34:18 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,6 @@ static int	exec_cmd(t_cmd *cmd, t_env *list)
 
 	if (set_check_cmd(cmd, list, -1))
 		return (1);
-	printf("1\n");
-	printf("[BEFORE]infile: std_save[0]=%d\n", std_save[0]);
-	printf("[BEFORE]outfile: std_save[1]=%d\n", std_save[1]);
 	if (dup_inf_out(cmd, std_save) == 1)
 	{
 		printf("exec: error with dup\n");
@@ -86,8 +83,6 @@ static int	exec_cmd(t_cmd *cmd, t_env *list)
 	if (gest_builtins(list, cmd) == NONE)
 		gest_shell(list, cmd, std_save);
 	close_fd(cmd, std_save, false);
-	printf("[AFTER]infile: std_save[0]=%d\n", std_save[0]);
-	printf("[AFTER]outfile: std_save[1]=%d\n", std_save[1]);
 	return (0);
 }
 

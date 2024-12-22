@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/20 23:20:35 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 01:33:42 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	skip_cmd(char *redir)
 	return (i);
 }
 
-int	ft_redir(t_cmd *cmd)
+int	ft_redir(t_cmd *cmd, t_env *lenv)
 {
 	int	i;
 	int	tmp;
@@ -71,14 +71,15 @@ int	ft_redir(t_cmd *cmd)
 		else if (cmd->redir[i] == '>')
 			tmp = ft_overwrite(cmd, cmd->redir + i + 1);
 		if (ft_strncmp(cmd->redir + i, "<<", 2))
-			tmp = ft_heredoc(cmd, cmd->redir + i + 2);
+			tmp = ft_heredoc(cmd, cmd->redir + i + 2, lenv);
 		else if (cmd->redir[i] == '<')
 			tmp = ft_redirect_input(cmd, cmd->redir + i + 1);
 		if (tmp < 0)
 			i += skip_cmd(cmd->redir + i);
 		if (!cmd->redir[i])
 			return (1);
-		i += tmp + skip_nonredir(cmd->redir, i);
+		i += tmp;
+		i += skip_nonredir(cmd->redir, i);
 	}
 	return (1);
 }

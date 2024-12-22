@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/20 22:27:52 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 01:38:05 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,22 +111,21 @@ int	ft_redirect_input(t_cmd *cmd, char *redir)
 	return (1);
 }
 
-static char	*ft_getdel(t_cmd *cmd, char *redir)
-{
-	char	*file;
-
-	file = ft_file_name(redir);
-	printf("redir :[%s]\n", file);
-	(void)cmd;
-	(void)redir;
-	return (NULL);
-}
-
-int	ft_heredoc(t_cmd *cmd, char *redir)
+int	ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv)
 {
 	char	*del;
+	int		fd[2];
 
-	(void)del;
-	del = ft_getdel(cmd, redir + ft_skip_whitespaces(redir));
+	(void)cmd;
+	(void)lenv;
+	del = ft_file_name(redir + ft_skip_whitespaces(redir));
+	if (pipe(fd) == -1)
+		return (free(del), -1);
+	if (inq(del, ft_strlen(del), DQUOTE))
+		printf("in doule quotes \n");
+	else if (inq(del, ft_strlen(del), SQUOTE))
+		printf("in single quotes \n");
+	else
+		return (ft_here_nquote(cmd, fd, del, lenv));
 	return (2);
 }

@@ -1,9 +1,10 @@
 Makefile
 icl
-la
 lib
 libft.a
+ll
 lol
 minishell
 minishell.supp
+ol2
 src

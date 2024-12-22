@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/19 11:55:44 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/22 01:14:23 by kpires           ###   ########.fr       */
+/*   Created: 2024/12/21 22:56:21 by kpires            #+#    #+#             */
+/*   Updated: 2024/12/21 22:57:06 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../icl/minishell.h"
 
-bool	ft_strncmp(const char *s1, const char *s2, size_t n)
+void	*ft_memset(void *p, int i, size_t len)
 {
-	size_t	i;
+	char	*c;
 
-	if (!s1 || !s2)
-		return (false);
-	i = 0;
-	while (i < n && s1[i] && s2[i] && s1[i] == s2[i])
-		i++;
-	return (i == n);
+	c = p;
+	while (len)
+	{
+		*c = (unsigned char) i;
+		c++;
+		len--;
+	}
+	return (p);
 }

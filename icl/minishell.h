@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/21 13:58:51 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/21 22:57:27 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdbool.h>
 # include "struct.h"
 # include <fcntl.h>
+# include <errno.h>
 
 extern int	g_signal;
 
@@ -35,6 +36,9 @@ int		ft_skip_whitespaces(char *str);
 size_t	ft_strlcat(char *dest, const char *src, size_t n);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 bool	ft_export(t_env *lenv, char *str);
+int		ft_isalnum(int c);
+void	*ft_calloc(size_t nmemb, size_t size);
+void	*ft_memset(void *p, int i, size_t len);
 
 /*UNDEFINED*/
 t_state	gest_env(t_env *lenv, char **arr);
@@ -69,12 +73,12 @@ char	*remq(char *str);
 bool	is_chr(const char *chr, char c);
 
 /*REDIR*/
-int		ft_redir(t_cmd *cmd);
+int		ft_redir(t_cmd *cmd, t_env *lenv);
 int		ft_overwrite(t_cmd *cmd, char *redir);
 int		ft_append(t_cmd *cmd, char *redir);
 int		ft_redirect_input(t_cmd *cmd, char *redir);
-int		ft_heredoc(t_cmd *cmd, char *redir);
+int		ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv);
 int		dup_inf_out(t_cmd *cmd, int *std_save);
 int		close_fd(t_cmd *cmd, int *std_save, bool is_error);
-
+int		ft_here_nquote(t_cmd *cmd, int *fd, char *del, t_env *lenv);
 #endif

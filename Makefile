@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/12/21 13:20:18 by kpires           ###   ########.fr        #
+#    Updated: 2024/12/21 22:57:44 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC		=	src/main.c\
 			src/redir/ft_redir.c\
 			src/exec/ft_exec.c\
 			src/exec/ft_one.c\
+			src/redir/ft_heredoc.c\
 
 SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strlen.c\
@@ -34,6 +35,9 @@ SLiB	=	lib/ft_strcmp.c\
 			lib/ft_skip_whitespaces.c\
 			lib/ft_strlcat.c\
 			lib/ft_memcpy.c\
+			lib/ft_isalnum.c\
+			lib/ft_memset.c\
+			lib/ft_calloc.c
 
 OBJ		=	$(SRC:.c=.o)
 

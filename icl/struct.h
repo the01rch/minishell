@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:54:36 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/21 11:46:12 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/22 01:38:18 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 # define STRUCT_H
 
 # include <sys/wait.h>
-# define SQUOTE 34
-# define DQUOTE 39
+# define SQUOTE 39
+# define DQUOTE 34
 # define EALL "Error: allocation failed.\n"
 # define FPIPE "bash: syntax error near unexpected token `|'\n"
 # define EENV "env: '%s': No such file or directory\n"
+# define ERR_HD_EOF "warning: here-document delimited by end-of-file\n"
+# define ERR_ALLOC "An error has occured, it may\
+ be related with a malloc failure\n"
 
 typedef enum state
 {
