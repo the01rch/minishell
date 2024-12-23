@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 09:31:12 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 09:47:24 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,3 @@ char	*gest_sign(t_env *lenv, char *str, int i)
 		return (free(copy), ft_strdup(remq(str)));
 	return (free(copy), str);
 }
-

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 09:31:23 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 09:46:24 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	check_redir(char *str)
 	return (idx);
 }
 
-static int	check_quotes(char *str, int i)
+int	check_quotes(char *str, int i)
 {
 	char	openq;
 	int		idx;

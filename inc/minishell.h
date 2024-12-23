@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 07:57:34 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 09:47:43 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ bool	is_chr(const char *chr, char c);
 char	*pwrapper(char *name, char *content, char sep);
 int		count_rows(const char *chr, char *str, bool quote);
 int		skip_spaces(char *str);
+int		check_quotes(char *str, int i);
 
 /*FREE*/
 void	free_node(t_env *node);
