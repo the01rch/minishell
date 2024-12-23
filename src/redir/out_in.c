@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/22 17:55:45 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 06:53:25 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../icl/minishell.h"
+#include "../../inc/minishell.h"
 
 static char	*ft_file_name(char *redir)
 {
@@ -20,7 +20,7 @@ static char	*ft_file_name(char *redir)
 	i = 0;
 	if (!redir)
 		return (NULL);
-	redir = redir + ft_skip_whitespaces(redir);
+	redir += skip_spaces(redir);
 	while (redir[i] && !is_chr("<>| ", redir[i]))
 		i++;
 	file = malloc(sizeof(char) * (i + 1));
@@ -119,7 +119,7 @@ int	ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv)
 	char	*del;
 	int		fd[2];
 
-	redir = redir + ft_skip_whitespaces(redir);
+	redir += skip_spaces(redir);
 	del = ft_file_name(redir);
 	if (ft_strlen(del) < ft_strlen(redir))
 		printf("dif:%d\n", (ft_strlen(redir) - ft_strlen(del)));

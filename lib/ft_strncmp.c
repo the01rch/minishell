@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:55:44 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/22 17:15:12 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 06:21:03 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../inc/minishell.h"
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {

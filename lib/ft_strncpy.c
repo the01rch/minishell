@@ -6,11 +6,11 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 00:21:31 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/10 00:21:42 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 06:21:03 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../inc/minishell.h"
 
 void	ft_strncpy(char *dst, char *src, int n)
 {

@@ -1,50 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   executer.c                                         :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/21 14:00:05 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 09:17:15 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../../inc/minishell.h"
 
 static char	*check_access(t_env *lenv, char **arr)
 {
 	char	**tab;
 	char	*path;
-	char	*full_path;
-	char	*path_str;
-	char	**tab_start;
 
-	path_str = plist(lenv, "PATH");
-	if (!path_str)
+	path = plist(lenv, "PATH");
+	if (!path)
 		return (NULL);
-	tab = str2arr(path_str, ":", false);
-	free(path_str);
+	tab = str2arr(path, ":", false);
 	if (!tab)
 		return (NULL);
-	tab_start = tab;
+	free(path);
+	path = NULL;
 	while (*tab)
 	{
-		full_path = pwrapper(*tab, arr[0], '/');
-		if (!full_path)
-			return (free_arr(tab_start), NULL);
-		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
-		{
-			path = ft_strdup(full_path);
-			free(full_path);
-			if (!path)
-				return (free_arr(tab_start), exit(0), path);
-			return (free_arr(tab_start), path);
-		}
-		free(full_path);
+		path = pwrapper(*tab, arr[0], '/');
+		if (!path)
+			return (NULL);
+		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
+			return (path);
+		free(path);
+		path = NULL;
 		tab++;
 	}
-	return (free_arr(tab_start), NULL);
+	return (NULL);
 }
 
 char	**list2arr(t_env *lenv)
@@ -75,13 +67,13 @@ char	**list2arr(t_env *lenv)
 
 void	gest_shell(t_env *lenv, t_cmd *cmd, int *std_save)
 {
-	char	*path;
 	pid_t	pid;
+	char	*path;
 
-	path = check_access(lenv, cmd->args);
 	pid = fork();
+	path = check_access(lenv, cmd->args);
 	if (pid < 0)
-		return (perror("fork failed"), exit(0), (void)0);
+		return (perror("Error :Fork failed\n"), exit(0), (void)0);
 	else if (pid == 0)
 	{
 		if (cmd->infile != -1)

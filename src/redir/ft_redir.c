@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/22 17:34:27 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 06:55:35 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../icl/minishell.h"
+#include "../../inc/minishell.h"
 
 static int	ft_skipquotes(char *str, char quote)
 {

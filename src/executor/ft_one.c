@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:20:05 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/21 14:02:11 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 06:55:05 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../icl/minishell.h"
+#include "../../inc/minishell.h"
 
 int	close_fd(t_cmd *cmd, int *std_save, bool is_error)
 {

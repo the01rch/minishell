@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/22 16:42:30 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 07:24:36 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../../inc/minishell.h"
 
 bool	ft_export(t_env *lenv, char *str)
 {
@@ -35,7 +35,7 @@ bool	ft_export(t_env *lenv, char *str)
 	return (free_arr(arr), true);
 }
 
-void	ft_unset(t_env *lenv, char *str)
+static void	ft_unset(t_env *lenv, char *str)
 {
 	t_env	*tmp;
 	t_env	*to_delete;
@@ -63,27 +63,7 @@ void	ft_unset(t_env *lenv, char *str)
 	}
 }
 
-char	*pwrapper(char *name, char *content, char sep)
-{
-	char	*dest;
-	int		len;
-	int		i;
-
-	len = ft_strlen(name) + ft_strlen(content) + 1;
-	i = 0;
-	dest = malloc(sizeof(char) * (len + 1));
-	if (!dest)
-		return (NULL);
-	while (*name)
-		dest[i++] = *name++;
-	dest[i++] = sep;
-	while (*content)
-		dest[i++] = *content++;
-	dest[i] = '\0';
-	return (dest);
-}
-
-bool	ft_cd(t_env *lenv, char **arr)
+static bool	ft_cd(t_env *lenv, char **arr)
 {
 	char	cwd[1024];
 
@@ -104,7 +84,7 @@ bool	ft_cd(t_env *lenv, char **arr)
 	return (true);
 }
 
-t_state	gest_env(t_env *lenv, char **arr)
+static t_state	gest_env(t_env *lenv, char **arr)
 {
 	char	*result;
 
@@ -118,11 +98,8 @@ t_state	gest_env(t_env *lenv, char **arr)
 	{
 		result = plist(lenv, "PWD");
 		if (result)
-		{
-			printf("%s\n", result);
-			free(result);
-		}
-		return (VALID);
+			return (printf("%s\n", result), free(result), VALID);
+		return (printf(EENV, arr[1]), ERROR);
 	}
 	if (ft_strcmp(arr[0], "unset"))
 		return (ft_unset(lenv, arr[1]), VALID);
@@ -131,4 +108,33 @@ t_state	gest_env(t_env *lenv, char **arr)
 	if (ft_strcmp(arr[0], "cd"))
 		return (ft_cd(lenv, arr), VALID);
 	return (NONE);
+}
+
+t_state	gest_builtins(t_env *lenv, t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strcmp(cmd->args[0], "exit"))
+	{
+		if (cmd->args[1])
+			return (printf("exit: too many arguments\n"), ERROR);
+		printf("exit\n");
+		free_list(lenv);
+		free_cmd(cmd);
+		exit(1);
+		return (printf("exit\n"), VALID);
+	}
+	if (ft_strcmp(cmd->args[0], "echo"))
+	{
+		i++;
+		if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n"))
+			i++;
+		while (cmd->args[i] != NULL)
+			printf("%s ", cmd->args[i++]);
+		if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n"))
+			return (VALID);
+		return (printf("\n"), VALID);
+	}
+	return (gest_env(lenv, cmd->args));
 }

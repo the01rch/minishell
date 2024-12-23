@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 21:33:05 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/21 21:33:19 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 06:21:03 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../inc/minishell.h"
 
 int	ft_isalnum(int c)
 {

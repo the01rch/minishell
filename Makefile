@@ -6,24 +6,24 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/12/21 22:57:44 by kpires           ###   ########.fr        #
+#    Updated: 2024/12/23 09:32:31 by redrouic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=	src/main.c\
-			src/str2arr.c\
-			src/gest_env.c\
-			src/list.c\
-			src/executer.c\
-			src/expander.c\
-			src/signal.c\
-			src/env.c\
-			src/gest_err.c\
+			src/utils.c\
+			src/free.c\
+			src/parsing/str2arr.c\
+			src/parsing/env2list.c\
+			src/parsing/gest_err.c\
+			src/parsing/expander.c\
 			src/redir/out_in.c\
 			src/redir/ft_redir.c\
-			src/exec/ft_exec.c\
-			src/exec/ft_one.c\
 			src/redir/ft_heredoc.c\
+			src/executor/builtins.c\
+			src/executor/executor.c\
+			src/executor/ft_exec.c\
+			src/executor/ft_one.c\
 
 SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strlen.c\
@@ -31,8 +31,6 @@ SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strncmp.c\
 			lib/ft_strdup.c\
 			lib/ft_concat.c\
-			lib/ft_free.c\
-			lib/ft_skip_whitespaces.c\
 			lib/ft_strlcat.c\
 			lib/ft_memcpy.c\
 			lib/ft_isalnum.c\

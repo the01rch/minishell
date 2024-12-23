@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/22 16:38:24 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 08:36:55 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../icl/minishell.h"
+#include "../../inc/minishell.h"
 
 static void	update_last_cmd(t_cmd *cmd, t_env *list)
 {

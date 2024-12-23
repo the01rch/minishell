@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:52:04 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/22 17:25:58 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 06:55:25 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../icl/minishell.h"
+#include "../../inc/minishell.h"
 
 static int	ft_here_return(t_cmd *cmd, int	*fd, char *line)
 {

@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/22 17:15:25 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 09:31:23 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../../inc/minishell.h"
 
 static int	check_pipes(char *str)
 {
@@ -21,8 +21,7 @@ static int	check_pipes(char *str)
 		return (0);
 	len = ft_strlen(str);
 	idx = 1;
-	while (idx < len && is_chr("\t ", str[idx]))
-		idx++;
+	idx += skip_spaces(str);
 	if (idx >= len || str[idx] == '|')
 		return (printf("%s", FPIPE), -1);
 	return (1);
@@ -108,9 +107,7 @@ bool	is_syntax_valid(char *str)
 	if (!str)
 		return (false);
 	add_history(str);
-	i = 0;
-	while (str[i] && is_chr("\t ", str[i]))
-		i++;
+	i = skip_spaces(str);
 	if (!str[i])
 		return (false);
 	if (str[i] == '|')

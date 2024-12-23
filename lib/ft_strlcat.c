@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 12:19:35 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/21 12:23:09 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 06:21:03 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../inc/minishell.h"
 
 static size_t	ft_strnlen(const char *s, size_t n)
 {

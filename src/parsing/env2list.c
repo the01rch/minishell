@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.c                                             :+:      :+:    :+:   */
+/*   env2list.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/22 16:43:02 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 09:31:01 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../../inc/minishell.h"
 
 t_env	*create_node(char *str)
 {
@@ -24,19 +24,12 @@ t_env	*create_node(char *str)
 		return (NULL);
 	arr = str2arr(str, "=", false);
 	if (!arr)
-	{
-		free(new);
-		return (NULL);
-	}
+		return (free_arr(arr), free(new), NULL);
 	new->name = ft_strdup(arr[0]);
 	new->content = ft_strdup(arr[1]);
 	new->next = NULL;
 	if (!new->name || (arr[1] && !new->content))
-	{
-		free_arr(arr);
-		free_node(new);
-		return (NULL);
-	}
+		return (free_arr(arr), free_node(new), NULL);
 	free_arr(arr);
 	return (new);
 }
@@ -57,10 +50,7 @@ t_env	*arr2list(char **env)
 	{
 		tmp->next = create_node(*env);
 		if (!tmp->next)
-		{
-			free_list(head);
-			return (NULL);
-		}
+			return (free_list(head), NULL);
 		tmp = tmp->next;
 		env++;
 	}

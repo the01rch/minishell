@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 00:23:16 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/11 18:26:20 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 06:21:03 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../inc/minishell.h"
 
 char	*ft_strdup(char *src)
 {

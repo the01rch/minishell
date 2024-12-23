@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 22:55:23 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/22 01:39:39 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/23 06:16:47 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../inc/minishell.h"
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {

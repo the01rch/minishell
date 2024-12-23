@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/20 19:41:16 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 09:31:12 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../icl/minishell.h"
+#include "../../inc/minishell.h"
 
 bool	inq(char *str, int index, char quote)
 {
@@ -62,6 +62,28 @@ bool	is_quoted(char *str)
 	return (false);
 }
 
+char	*update_venv(t_env *lenv, char *str)
+{
+	char	*check;
+	char	*res;
+	int		len;
+
+	len = 0;
+	while (str[len] && str[len] != 32)
+		len++;
+	check = malloc(sizeof(char) * len + 1);
+	ft_strncpy(check, str, len);
+	if (inq(check, 1, 0))
+		check = ft_strdup(remq(check));
+	res = plist(lenv, &check[1]);
+	if (res && len == ft_strlen(str))
+		return (free(check), res);
+	else if (res && len < ft_strlen(str))
+		return (free(check), ft_concat(res, &str[len]));
+	res = ft_strdup(&str[len]);
+	return (free(check), remq(res));
+}
+
 char	*gest_sign(t_env *lenv, char *str, int i)
 {
 	char	*copy;
@@ -88,3 +110,4 @@ char	*gest_sign(t_env *lenv, char *str, int i)
 		return (free(copy), ft_strdup(remq(str)));
 	return (free(copy), str);
 }
+
