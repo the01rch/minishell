@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/24 18:30:49 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/24 19:25:31 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	ft_append(t_cmd *cmd, char *redir)
 	cmd2 = cmd;
 	if (cmd2->outfile > 1)
 		close(cmd2->outfile);
-	redir = redir + skp_spaces(redir);
+	redir = redir + skip_spaces(redir);
 	file = ft_fname(redir, 0, 0, "<>| ");
 	if (!file)
 		return (-1);
@@ -97,7 +97,7 @@ int	ft_redirect_input(t_cmd *cmd, char *redir)
 	cmd2 = cmd;
 	if (cmd2->infile > 1)
 		close(cmd2->infile);
-	redir = redir + skp_spaces(redir);
+	redir = redir + skip_spaces(redir);
 	file = ft_fname(redir, 0, 0, "<>| ");
 	if (!file)
 		return (-1);
@@ -124,12 +124,12 @@ int	ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv)
 	while (redir[i])
 	{
 		if (ft_strncmp(redir + i, "<<", 2) == 0)
-			skp = i + 2 + skp_spaces(redir + i + 2);
+			skp = i + 2 + skip_spaces(redir + i + 2);
 		if (skp > ft_strlen(redir) || !redir[skp])
 			break ;
 		i++;
 	}
-	skp += skp_spaces(redir + skp);
+	skp += skip_spaces(redir + skp);
 	if (pipe(fd) == -1)
 		return (-1);
 	if (check_quotes(redir + skp, 0) || *redir + skp == '\\')
