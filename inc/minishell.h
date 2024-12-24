@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 09:47:43 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/24 01:12:49 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <stdarg.h>
 # include "struct.h"
 
 extern int	g_signal;
@@ -29,7 +30,7 @@ extern int	g_signal;
 int		ft_strlen(const char *str);
 bool	ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
-char	*ft_strdup(char *src);
+char	*ft_strdup(const char *src);
 char	*ft_concat(char *str, char *str2);
 void	ft_strncpy(char *dst, char *src, int n);
 size_t	ft_strlcat(char *dest, const char *src, size_t n);
@@ -37,6 +38,16 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_isalnum(int c);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	*ft_memset(void *p, int i, size_t len);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+int		ft_perrorf(const char *format, ...);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_ltoa_hexa(unsigned long long n, char format);
+void	ft_putchar_fd(char c, int fd);
+void	ft_putstr_fd(char *s, int fd);
+char	*printf_s(const char *src);
+char	*ft_itoa(int n);
+char	*ft_utoa(unsigned int n);
 
 /*UNDEFINED*/
 t_state	gest_builtins(t_env *lenv, t_cmd *cmd);
@@ -76,5 +87,8 @@ int		ft_redirect_input(t_cmd *cmd, char *redir);
 int		ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv);
 int		dup_inf_out(t_cmd *cmd, int *std_save);
 int		close_fd(t_cmd *cmd, int *std_save, bool is_error);
-int		ft_here_nquote(t_cmd *cmd, int *fd, char *del, t_env *lenv);
+int		ft_hd_nq(t_cmd *cmd, int *fd, char *del, t_env *lenv);
+int		ft_hd_q(t_cmd *cmd, int *fd, char *del);
+ssize_t	write_here(const void *buffer, int fd, size_t count);
+int		extract_varlen(char *line, int len, char **v_name, bool del_sign);
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 09:17:15 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 23:20:01 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static char	*check_access(t_env *lenv, char **arr)
 	if (!path)
 		return (NULL);
 	tab = str2arr(path, ":", false);
+	free(path);
 	if (!tab)
 		return (NULL);
-	free(path);
 	path = NULL;
 	while (*tab)
 	{
@@ -36,7 +36,7 @@ static char	*check_access(t_env *lenv, char **arr)
 		path = NULL;
 		tab++;
 	}
-	return (NULL);
+	return (free_arr(tab), NULL);
 }
 
 char	**list2arr(t_env *lenv)
@@ -77,15 +77,9 @@ void	gest_shell(t_env *lenv, t_cmd *cmd, int *std_save)
 	else if (pid == 0)
 	{
 		if (cmd->infile != -1)
-		{
-			close(std_save[0]);
-			close(cmd->infile);
-		}
+			(close(std_save[0]), close(cmd->infile));
 		if (cmd->outfile != -1)
-		{
-			close(std_save[1]);
-			close(cmd->outfile);
-		}
+			(close(std_save[1]), close(cmd->outfile));
 		if (!path)
 		{
 			printf("%s: Command not found.\n", cmd->args[0]);

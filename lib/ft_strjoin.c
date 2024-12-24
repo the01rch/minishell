@@ -1,29 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/21 22:55:23 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/23 22:45:53 by kpires           ###   ########.fr       */
+/*   Created: 2024/12/23 21:36:54 by kpires            #+#    #+#             */
+/*   Updated: 2024/12/23 22:46:51 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	void	*ptr;
-	size_t	fsize;
+	char	*dest;
+	size_t	i;
+	size_t	j;
 
-	if (!nmemb || !size)
-		return (malloc(0));
-	fsize = nmemb * size;
-	if ((fsize < size) || (fsize < nmemb))
+	dest = malloc(sizeof(*s1) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (!dest)
 		return (NULL);
-	ptr = malloc(fsize);
-	if (!ptr)
-		return (NULL);
-	return (ft_memset(ptr, 0, fsize));
+	i = 0;
+	j = 0;
+	while (s1[i])
+	{
+		dest[j++] = s1[i];
+		i++;
+	}
+	i = 0;
+	while (s2[i])
+	{
+		dest[j++] = s2[i];
+		i++;
+	}
+	dest[j] = 0;
+	return (dest);
 }

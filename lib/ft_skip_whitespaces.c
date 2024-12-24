@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_skip_whitespaces.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/21 22:55:23 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/23 22:45:53 by kpires           ###   ########.fr       */
+/*   Created: 2024/12/18 08:53:56 by kpires            #+#    #+#             */
+/*   Updated: 2024/12/23 22:46:42 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+int	ft_skip_whitespaces(char *str)
 {
-	void	*ptr;
-	size_t	fsize;
+	int	i;
 
-	if (!nmemb || !size)
-		return (malloc(0));
-	fsize = nmemb * size;
-	if ((fsize < size) || (fsize < nmemb))
-		return (NULL);
-	ptr = malloc(fsize);
-	if (!ptr)
-		return (NULL);
-	return (ft_memset(ptr, 0, fsize));
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+		i++;
+	return (i);
 }

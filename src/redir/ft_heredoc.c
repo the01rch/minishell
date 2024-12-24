@@ -6,93 +6,39 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:52:04 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/23 06:55:25 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/24 01:12:53 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static int	ft_here_return(t_cmd *cmd, int	*fd, char *line)
-{
-	close(fd[0]);
-	close(fd[1]);
-	free(line);
-	cmd->infile = -2;
-	return (-1);
-}
-
-static ssize_t	write_here(const void *buffer, int fd, size_t count)
-{
-	const char	*buf;
-	size_t		total;
-	ssize_t		bytes;
-
-	buf = buffer;
-	total = 0;
-	while (total < count)
-	{
-		bytes = write(fd, buf + total, count - total);
-		if (bytes > 0)
-			total += bytes;
-		else if (bytes == -1)
-		{
-			if (errno == EAGAIN || errno == EWOULDBLOCK)
-				continue ;
-			else
-				return (-1);
-		}
-	}
-	write(fd, "\n", 1);
-	return (total);
-}
-
-static int	extract_varlen(char *line, int len, char **v_name)
-{
-	int	start;
-	int	var_len;
-
-	start = len;
-	while (line[len] && (ft_isalnum(line[len]) || line[len] == '_'))
-		len++;
-	var_len = len - start;
-	*v_name = malloc(sizeof(char) * (var_len + 1));
-	if (!*v_name)
-		return (-1);
-	ft_strncpy(*v_name, line + start, var_len);
-	(*v_name)[var_len] = '\0';
-	return (len);
-}
-
-char	*init_hd(char *line, t_env *lenv, int i, int v_size)
+char	*init_hd(char *line, t_env *lenv, int i, size_t total_size)
 {
 	char	*v_name;
 	char	*v_content;
-	int		v_len;
 
-	while (line[i])
+	while (i < ft_strlen(line) && line[i])
 	{
-		if (line[i++] == '$')
+		if (line[i] == '$')
 		{
-			v_len = extract_varlen(line, i, &v_name) - i;
-			if (v_len == -1)
+			i = extract_varlen(line, ++i, &v_name, true);
+			if (i == -1)
 				return (NULL);
 			v_content = plist(lenv, v_name);
 			free(v_name);
 			if (v_content)
 			{
-				v_size += ft_strlen(v_content);
-				i += v_len;
+				total_size += ft_strlen(v_content);
 				free(v_content);
 			}
 			else
-				i += v_len;
+				total_size++;
 		}
 		else
-			v_size++;
+			total_size++;
+		i++;
 	}
-	if (!v_size)
-		v_size++;
-	return (ft_calloc(v_size + 1, sizeof(char)));
+	return (ft_calloc(total_size + 1, sizeof(char)));
 }
 
 char	*fill_hd(char *line, t_env *lenv, char *hd, int i)
@@ -100,19 +46,16 @@ char	*fill_hd(char *line, t_env *lenv, char *hd, int i)
 	char	*v_name;
 	char	*v_content;
 	int		v_size;
-	int		len;
 
 	v_size = 0;
 	while (line[i])
 	{
 		if (line[i] == '$')
 		{
-			i++;
-			len = extract_varlen(line, i, &v_name);
-			if (len - i == -1)
+			i = extract_varlen(line, ++i, &v_name, false);
+			if (i == -1)
 				return (NULL);
 			v_content = plist(lenv, v_name);
-			i = len;
 			free(v_name);
 			if (!v_content)
 				continue ;
@@ -140,10 +83,32 @@ char	*ft_here_parse(char *line, t_env *lenv)
 	return (hd);
 }
 
-int	ft_here_nquote(t_cmd *cmd, int *fd, char *del, t_env *lenv)
+int	ft_hd_q(t_cmd *cmd, int *fd, char *del)
 {
 	char	*hd;
-	char	*new;
+
+	while (777)
+	{
+		hd = readline("heredoc (not parsed)> ");
+		if (!hd)
+		{
+			printf("%s\n", ERR_HD_EOF);
+			break ;
+		}
+		if ((ft_strncmp(hd, del, ft_strlen(del)) == 0
+				&& hd[ft_strlen(del)] == 0) || hd[0] == '\0')
+			break ;
+		write_here(hd, fd[1], ft_strlen(hd));
+		free(hd);
+	}
+	(free(del), free(hd), close(fd[1]));
+	cmd->infile = fd[0];
+	return (2);
+}
+
+int	ft_hd_nq(t_cmd *cmd, int *fd, char *del, t_env *lenv)
+{
+	char	*hd;
 
 	while (777)
 	{
@@ -153,17 +118,19 @@ int	ft_here_nquote(t_cmd *cmd, int *fd, char *del, t_env *lenv)
 			printf("%s\n", ERR_HD_EOF);
 			break ;
 		}
-		if (ft_strncmp(hd, del, ft_strlen(del)) == 0
-			&& ft_strlen(hd) && hd[ft_strlen(del)] == 0)
+		if ((ft_strncmp(hd, del, ft_strlen(del)) == 0
+				&& hd[ft_strlen(del)] == 0) || hd[0] == '\0')
 			break ;
-		new = ft_here_parse(hd, lenv);
-		if (!new)
-			return (ft_here_return(cmd, fd, hd));
-		write_here(new, fd[1], ft_strlen(new));
-		(free(hd), free(new));
+		hd = ft_here_parse(hd, lenv);
+		if (!hd)
+		{
+			cmd->infile = -2;
+			return (close(fd[0]), close(fd[1]), free(del), (int)-1);
+		}
+		write_here(hd, fd[1], ft_strlen(hd));
+		(free(hd));
 	}
-	(free(del), free(hd));
-	close(fd[1]);
+	(free(del), free(hd), close(fd[1]));
 	cmd->infile = fd[0];
 	return (2);
 }

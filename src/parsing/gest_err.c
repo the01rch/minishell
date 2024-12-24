@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 09:46:24 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/24 01:32:40 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ int	check_quotes(char *str, int i)
 		}
 	}
 	if (openq != 0)
+	{
+		printf("Error: Quote\n");
 		return (-1);
+	}
 	return (idx);
 }
 
@@ -104,8 +107,6 @@ bool	is_syntax_valid(char *str)
 	int	i;
 	int	tmp;
 
-	if (!str)
-		return (false);
 	add_history(str);
 	i = skip_spaces(str);
 	if (!str[i])

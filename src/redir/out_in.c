@@ -6,33 +6,34 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/23 06:53:25 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/24 01:30:11 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static char	*ft_file_name(char *redir)
+static char	*ft_fname(char *redir, int i, int len, char *dels)
 {
 	char	*file;
-	int		i;
 
-	i = 0;
 	if (!redir)
 		return (NULL);
-	redir += skip_spaces(redir);
-	while (redir[i] && !is_chr("<>| ", redir[i]))
+	while (redir[i] && !is_chr(dels, redir[i]))
 		i++;
 	file = malloc(sizeof(char) * (i + 1));
-	if (!file || !redir)
+	if (!file)
 		return (NULL);
 	i = 0;
-	while (redir[i] && !is_chr("<>| ", redir[i]))
+	while (redir[i] && !is_chr(dels, redir[i]))
 	{
-		file[i] = redir[i];
-		i++;
+		if (redir[i] == '"')
+		{
+			i++;
+			continue ;
+		}
+		file[len++] = redir[i++];
 	}
-	file[i] = '\0';
+	file[len] = '\0';
 	return (file);
 }
 
@@ -43,18 +44,17 @@ int	ft_overwrite(t_cmd *cmd, char *redir)
 	char	*file;
 
 	cmd2 = cmd;
-	printf("ft_overwrite\n");
 	if (cmd2->outfile > 1)
 		close(cmd2->outfile);
-	file = ft_file_name(redir);
+	redir = redir + skip_spaces(redir);
+	file = ft_fname(redir, 0, 0, "<>| ");
 	if (!file)
 		return (-1);
-	printf("file:[%s]\n", file);
 	cmd->outfile = open(file, O_CREAT | O_TRUNC | O_RDWR, 0666);
 	if (cmd->outfile == -1)
 	{
 		cmd->outfile = -2;
-		printf("error ft_overwrite\n");
+		perror(file);
 		free(file);
 		return (-1);
 	}
@@ -69,18 +69,17 @@ int	ft_append(t_cmd *cmd, char *redir)
 	char	*file;
 
 	cmd2 = cmd;
-	printf("ft_append\n");
 	if (cmd2->outfile > 1)
 		close(cmd2->outfile);
-	file = ft_file_name(redir);
+	redir = redir + skip_spaces(redir);
+	file = ft_fname(redir, 0, 0, "<>| ");
 	if (!file)
 		return (-1);
-	printf("file:[%s]\n", file);
 	cmd->outfile = open(file, O_CREAT | O_APPEND | O_RDWR, 0666);
 	if (cmd->outfile == -1)
 	{
 		cmd->outfile = -2;
-		printf("error ft_append\n");
+		perror(file);
 		free(file);
 		return (-1);
 	}
@@ -95,18 +94,17 @@ int	ft_redirect_input(t_cmd *cmd, char *redir)
 	char	*file;
 
 	cmd2 = cmd;
-	printf("ft_redirect_input\n");
 	if (cmd2->infile > 1)
 		close(cmd2->infile);
-	file = ft_file_name(redir);
+	redir = redir + skip_spaces(redir);
+	file = ft_fname(redir, 0, 0, "<>| ");
 	if (!file)
 		return (-1);
-	printf("file:[%s]\n", file);
 	cmd->infile = open(file, O_RDONLY);
 	if (cmd->infile == -1)
 	{
 		cmd->infile = -2;
-		printf("error ft_redirect_input\n");
+		perror(file);
 		free(file);
 		return (-1);
 	}
@@ -116,20 +114,26 @@ int	ft_redirect_input(t_cmd *cmd, char *redir)
 
 int	ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv)
 {
-	char	*del;
 	int		fd[2];
+	int		i;
+	int		skip;
 
-	redir += skip_spaces(redir);
-	del = ft_file_name(redir);
-	if (ft_strlen(del) < ft_strlen(redir))
-		printf("dif:%d\n", (ft_strlen(redir) - ft_strlen(del)));
+	redir = redir + skip_spaces(redir);
+	i = 0;
+	skip = 0;
+	while (redir[i])
+	{
+		if (ft_strncmp(redir + i, "<<", 2) == 0)
+			skip = i + 2 + skip_spaces(redir + i + 2);
+		i++;
+	}
+	redir = redir + skip;
+	if (skip == 0)
+		skip = 2;
 	if (pipe(fd) == -1)
-		return (free(del), -1);
-	if (inq(del, ft_strlen(del), DQUOTE))
-		printf("in doule quotes \n");
-	else if (inq(del, ft_strlen(del), SQUOTE))
-		printf("in single quotes \n");
+		return (-1);
+	if (check_quotes(redir, 0) || *redir == '\\')
+		return (skip + ft_hd_q(cmd, fd, ft_fname(redir, 0, 0, "<>|")));
 	else
-		return (ft_here_nquote(cmd, fd, del, lenv));
-	return (2 + ft_strlen(del));
+		return (skip + ft_hd_nq(cmd, fd, ft_fname(redir, 0, 0, "<>| "), lenv));
 }

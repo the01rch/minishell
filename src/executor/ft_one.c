@@ -6,12 +6,13 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:20:05 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/23 06:55:05 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 23:04:35 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+/* is_error free needed and exit*/
 int	close_fd(t_cmd *cmd, int *std_save, bool is_error)
 {
 	if (cmd->infile != -1)
@@ -22,10 +23,7 @@ int	close_fd(t_cmd *cmd, int *std_save, bool is_error)
 			if (cmd->outfile != -1)
 				close(std_save[1]);
 			if (is_error)
-			{
-				//free
 				exit(1);
-			}
 		}
 		close(std_save[0]);
 	}
@@ -35,10 +33,7 @@ int	close_fd(t_cmd *cmd, int *std_save, bool is_error)
 		{
 			close(std_save[1]);
 			if (is_error)
-			{
-				//free
 				exit(1);
-			}
 		}
 		close(std_save[1]);
 	}

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 09:31:01 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 11:02:14 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_env	*arr2list(char **env)
 	t_env	*tmp;
 	t_env	*result;
 
-	if (!env)
+	if (!*env)
 		return (NULL);
 	head = create_node("a=b");
 	if (!head)

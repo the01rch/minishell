@@ -6,28 +6,21 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 00:23:16 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 06:21:03 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 22:46:49 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*ft_strdup(char *src)
+char	*ft_strdup(const char *src)
 {
-	char	*dest;
-	int		len;
+	char	*dup;
 
-	len = 0;
 	if (!src)
 		return (NULL);
-	while (src[len])
-		len++;
-	dest = malloc(sizeof(char) * len + 1);
-	if (!dest)
+	dup = ft_calloc(ft_strlen(src) + 1, 1);
+	if (!dup)
 		return (NULL);
-	len = 0;
-	while (*src)
-		dest[len++] = *src++;
-	dest[len] = '\0';
-	return (dest);
+	ft_strlcpy(dup, src, ft_strlen(src) + 1);
+	return (dup);
 }

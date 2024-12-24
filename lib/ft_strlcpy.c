@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/21 22:55:23 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/23 22:45:53 by kpires           ###   ########.fr       */
+/*   Created: 2024/12/23 09:19:49 by kpires            #+#    #+#             */
+/*   Updated: 2024/12/23 22:46:56 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	void	*ptr;
-	size_t	fsize;
+	size_t	i;
 
-	if (!nmemb || !size)
-		return (malloc(0));
-	fsize = nmemb * size;
-	if ((fsize < size) || (fsize < nmemb))
-		return (NULL);
-	ptr = malloc(fsize);
-	if (!ptr)
-		return (NULL);
-	return (ft_memset(ptr, 0, fsize));
+	i = 0;
+	while (src[i] && i + 1 < dstsize)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	if (dstsize > 0)
+	{
+		dst[i] = '\0';
+		i++;
+	}
+	return (ft_strlen(src));
 }

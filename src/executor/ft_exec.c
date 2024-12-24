@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/23 08:36:55 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 23:05:39 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,12 @@ void	close_all_fd_child(t_cmd *cmd)
 static int	set_check_cmd(t_cmd *cmd, t_env *list, int i)
 {
 	(void)list;
-	//set $_ at last path cmd running
 	if (cmd && cmd->args && cmd->args[0])
 	{
 		update_last_cmd(cmd, list);
 		if (cmd->infile != -2 && cmd->outfile != -2)
 			return (0);
 	}
-	//multiple pipes gest
 	if (i != -1)
 	{
 		close_all_fd_child(cmd);
@@ -65,6 +63,7 @@ static int	set_check_cmd(t_cmd *cmd, t_env *list, int i)
 	return (1);
 }
 
+/* if (dup_inf_out(cmd, std_save) == 1) exit value in struct*/
 static int	exec_cmd(t_cmd *cmd, t_env *list)
 {
 	int		std_save[2];
@@ -74,7 +73,6 @@ static int	exec_cmd(t_cmd *cmd, t_env *list)
 	if (dup_inf_out(cmd, std_save) == 1)
 	{
 		printf("exec: error with dup\n");
-		//exit value;
 		return (1);
 	}
 	if (gest_builtins(list, cmd) == NONE)
