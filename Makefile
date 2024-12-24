@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/12/24 01:33:19 by kpires           ###   ########.fr        #
+#    Updated: 2024/12/24 01:38:55 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,11 +38,6 @@ SLiB	=	lib/ft_strcmp.c\
 			lib/ft_memset.c\
 			lib/ft_calloc.c\
 			lib/ft_strlcpy.c\
-			lib/ft_perrorf.c\
-			lib/ft_printf_utilities.c\
-			lib/ft_strjoin.c\
-			lib/ft_putchar_fd.c\
-			lib/ft_putstr_fd.c
 
 OBJ		=	$(SRC:.c=.o)
 

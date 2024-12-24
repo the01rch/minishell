@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/24 01:12:49 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/24 01:38:55 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,6 @@ int		ft_isalnum(int c);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	*ft_memset(void *p, int i, size_t len);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-int		ft_perrorf(const char *format, ...);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_ltoa_hexa(unsigned long long n, char format);
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *s, int fd);
-char	*printf_s(const char *src);
-char	*ft_itoa(int n);
-char	*ft_utoa(unsigned int n);
 
 /*UNDEFINED*/
 t_state	gest_builtins(t_env *lenv, t_cmd *cmd);
