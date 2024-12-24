@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/24 16:34:49 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/24 18:30:49 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_overwrite(t_cmd *cmd, char *redir)
 	cmd2 = cmd;
 	if (cmd2->outfile > 1)
 		close(cmd2->outfile);
-	redir = redir + skp_spaces(redir);
+	redir = redir + skip_spaces(redir);
 	file = ft_fname(redir, 0, 0, "<>| ");
 	if (!file)
 		return (-1);
