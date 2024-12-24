@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/24 01:30:33 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/24 16:33:04 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,28 @@ int	extract_varlen(char *line, int len, char **v_name, bool del_sign)
 
 static int	skip_nonredir(char *redir, int i)
 {
-	int	skipped;
+	int	count;
+	int	qlen;
+	int	rlen;
 
-	skipped = -1;
-	while (redir[i + skipped] && !is_chr("><|", redir[i + skipped]))
-	{
-		if (!is_chr("'\"", redir[i + skipped]))
-			skipped++;
-		if (check_quotes(redir + i + skipped, 0) > 0)
-			skipped += check_quotes(redir + i + skipped, 0);
-	}
-	if (skipped == -1)
+	count = 0;
+	rlen = ft_strlen(redir);
+	if (i > rlen || count > rlen || i + count > rlen)
 		return (0);
-	return (skipped);
+	while (redir[i + count] && !is_chr("><|", redir[i + count]))
+	{
+		if (is_chr("'\"", redir[i + count]))
+		{
+			qlen = check_quotes(redir + i + count, 0);
+			if (qlen > 0)
+				count += qlen;
+			else
+				count++;
+		}
+		else
+			count++;
+	}
+	return (count);
 }
 
 static int	skip_cmd(char *redir)
@@ -92,7 +101,7 @@ int	ft_redir(t_cmd *cmd, t_env *lenv)
 		return (1);
 	i = 0;
 	tmp = 0;
-	while (cmd->redir[i])
+	while (i < ft_strlen(cmd->redir) && cmd->redir[i])
 	{
 		if (ft_strncmp(cmd->redir + i, ">>", 2) == 0)
 			tmp = ft_append(cmd, cmd->redir + i + 2);

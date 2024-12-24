@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:52:04 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/24 01:12:53 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/24 15:27:01 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	ft_hd_q(t_cmd *cmd, int *fd, char *del)
 			break ;
 		}
 		if ((ft_strncmp(hd, del, ft_strlen(del)) == 0
-				&& hd[ft_strlen(del)] == 0) || hd[0] == '\0')
+				&& hd[ft_strlen(del)] == 0))
 			break ;
 		write_here(hd, fd[1], ft_strlen(hd));
 		free(hd);
@@ -119,7 +119,7 @@ int	ft_hd_nq(t_cmd *cmd, int *fd, char *del, t_env *lenv)
 			break ;
 		}
 		if ((ft_strncmp(hd, del, ft_strlen(del)) == 0
-				&& hd[ft_strlen(del)] == 0) || hd[0] == '\0')
+				&& hd[ft_strlen(del)] == 0))
 			break ;
 		hd = ft_here_parse(hd, lenv);
 		if (!hd)

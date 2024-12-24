@@ -1,0 +1,10 @@
+KIS
+LOL
+Makefile
+inc
+lib
+libft.a
+lol
+minishell
+minishell.supp
+src
