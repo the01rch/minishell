@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 09:47:24 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/24 18:06:06 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,26 @@
 
 bool	inq(char *str, int index, char quote)
 {
-	int	i;
+	int		i;
+	char	current;
 
 	i = 0;
-	while (i < index)
+	current = '\0';
+	if (!str || index < 0 || index >= ft_strlen(str))
+		return (false);
+	while (i <= index)
 	{
-		if (quote != 0 && str[i] == quote)
-			return (true);
-		else if (quote == 0 && (str[i] == 34 || str[i] == 39))
-			return (true);
+		if (current == '\0')
+		{
+			if ((quote == '\0' && (str[i] == 34 || str[i] == 39))
+				|| str[i] == quote)
+				current = str[i];
+		}
+		else if (str[i] == current)
+			current = '\0';
 		i++;
 	}
-	return (false);
+	return (current != '\0');
 }
 
 char	*remq(char *str)

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 08:11:29 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/24 18:02:51 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,74 +37,32 @@ static void	handler_sigquit(int sig)
 	g_signal = sig;
 }
 
-static void	fill_redir(t_cmd *cmd, char *line, int len)
-{
-	int	i;
-
-	if (len == (int)ft_strlen(line))
-		cmd->redir = NULL;
-	else if (len < (int)ft_strlen(line))
-	{
-		cmd->redir = malloc(sizeof(char) * (ft_strlen(line) - len + 1));
-		if (!cmd->redir)
-			return (printf("%s", EALL), exit(1), (void)0);
-		i = 0;
-		while (len < (int)ft_strlen(line))
-			cmd->redir[i++] = line[len++];
-		cmd->redir[i] = '\0';
-	}
-}
-
-static void	fill_s_cmd(t_cmd *cmd, char *line)
-{
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	cmd->infile = -1;
-	cmd->outfile = -1;
-	while (line[i] && line[i] != '|')
-	{
-		if (is_chr("><", line[i]) && !inq(line, i, true))
-			break ;
-		i++;
-	}
-	fill_redir(cmd, line, i);
-	tmp = malloc(sizeof(char) * (i + 1));
-	if (!tmp)
-		return (printf(EALL), exit(1), (void)0);
-	ft_strncpy(tmp, line, i);
-	cmd->args = str2arr(tmp, " \t", true);
-	free(tmp);
-	if (!cmd->args)
-		return (printf(EALL), exit(1), (void)0);
-}
-
 int	main(int ac, char **av, char **env)
 {
 	t_env		*list;
-	t_cmd		cmd;
+	t_cmd		*cmd;
 	char		*line;
 
-	g_signal = 0;
 	list = arr2list(env);
 	while (ac && av)
 	{
+		g_signal = 0;
 		signal(SIGINT, handler_sigint);
 		signal(SIGQUIT, handler_sigquit);
 		line = readline("$> ");
+		if (!line)
+			return (free_list(list), free(line), printf("exit\n"), exit(1), 0);
 		if (!is_syntax_valid(line))
 		{
 			free(line);
 			continue ;
 		}
-		fill_s_cmd(&cmd, line);
-		if (ft_redir(&cmd, list))
-			ft_exec(cmd, list);
-		free_cmd(&cmd);
-		free(line);
+		init_s_cmd(&cmd, line);
+		/*
+		if (ft_redir(cmd, list))
+			ft_exec(*cmd, list);
+			*/
+		(free_cmd(cmd), free(line));
 	}
-	rl_clear_history();
-	free_list(list);
-	return (0);
+	return (rl_clear_history(), free_list(list), 0);
 }

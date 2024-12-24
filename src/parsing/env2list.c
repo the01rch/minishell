@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 09:31:01 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/24 18:04:31 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,29 @@ t_env	*create_node(char *str)
 	return (new);
 }
 
+static char	**new_env(void)
+{
+	char	cwd[1024];
+	char	**new;
+
+	new = malloc(sizeof(char *) * 4);
+	if (!new)
+		return (NULL);
+	getcwd(cwd, sizeof(cwd));
+	new[0] = ft_concat("PWD=", cwd);
+	new[1] = ft_strdup("SHLVL=1");
+	new[2] = ft_strdup("_=/usr/bin/env");
+	return (new);
+}
+
 t_env	*arr2list(char **env)
 {
 	t_env	*head;
 	t_env	*tmp;
 	t_env	*result;
 
-	if (!env)
-		return (NULL);
+	if (!*env)
+		env = new_env();
 	head = create_node("a=b");
 	if (!head)
 		return (NULL);
@@ -57,24 +72,4 @@ t_env	*arr2list(char **env)
 	result = head->next;
 	free_node(head);
 	return (result);
-}
-
-char	*plist(t_env *lenv, char *name)
-{
-	t_env	*tmp;
-	char	*result;
-
-	tmp = lenv;
-	while (tmp != NULL)
-	{
-		if (name && ft_strcmp(name, tmp->name))
-		{
-			result = ft_strdup(tmp->content);
-			return (result);
-		}
-		else if (!name)
-			printf("%s=%s\n", tmp->name, tmp->content);
-		tmp = tmp->next;
-	}
-	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 09:47:43 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/24 18:03:26 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	gest_shell(t_env *lenv, t_cmd *cmd, int *std_save);
 char	*update_venv(t_env *lenv, char *str);
 char	*gest_sign(t_env *lenv, char *str, int i);
 int		ft_exec(t_cmd cmd, t_env *list);
+void	init_s_cmd(t_cmd **cmd, char *line);
 
 /*PARSING*/
 bool	is_syntax_valid(char *str);

@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 06:04:27 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 06:21:02 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 10:12:00 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,24 @@ int	skip_spaces(char *str)
 	while (str[i] && (is_chr("\t ", str[i])))
 		i++;
 	return (i);
+}
+
+char	*plist(t_env *lenv, char *name)
+{
+	t_env	*tmp;
+	char	*result;
+
+	tmp = lenv;
+	while (tmp != NULL)
+	{
+		if (name && ft_strcmp(name, tmp->name))
+		{
+			result = ft_strdup(tmp->content);
+			return (result);
+		}
+		else if (!name)
+			printf("%s=%s\n", tmp->name, tmp->content);
+		tmp = tmp->next;
+	}
+	return (NULL);
 }

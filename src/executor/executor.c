@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 09:17:15 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/23 13:59:08 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ static char	*check_access(t_env *lenv, char **arr)
 {
 	char	**tab;
 	char	*path;
+	int		i;
 
+	i = 0;
 	path = plist(lenv, "PATH");
 	if (!path)
 		return (NULL);
@@ -25,18 +27,17 @@ static char	*check_access(t_env *lenv, char **arr)
 		return (NULL);
 	free(path);
 	path = NULL;
-	while (*tab)
+	while (tab[i] != NULL)
 	{
-		path = pwrapper(*tab, arr[0], '/');
+		path = pwrapper(tab[i++], arr[0], '/');
 		if (!path)
-			return (NULL);
+			return (free_arr(tab), NULL);
 		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
-			return (path);
+			return (free_arr(tab), path);
 		free(path);
 		path = NULL;
-		tab++;
 	}
-	return (NULL);
+	return (free_arr(tab), NULL);
 }
 
 char	**list2arr(t_env *lenv)
@@ -89,6 +90,7 @@ void	gest_shell(t_env *lenv, t_cmd *cmd, int *std_save)
 		if (!path)
 		{
 			printf("%s: Command not found.\n", cmd->args[0]);
+			(free_cmd(cmd), free_list(lenv));
 			exit(0);
 		}
 		execve(path, cmd->args, list2arr(lenv));
