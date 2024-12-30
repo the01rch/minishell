@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/24 18:02:51 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/28 18:59:01 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ int	main(int ac, char **av, char **env)
 		signal(SIGQUIT, handler_sigquit);
 		line = readline("$> ");
 		if (!line)
-			return (free_list(list), free(line), printf("exit\n"), exit(1), 0);
+			return (free(line), free_list(list), printf("exit\n"), exit(1), 0);
 		if (!is_syntax_valid(line))
 		{
 			free(line);
 			continue ;
 		}
-		init_s_cmd(&cmd, line);
+		init_s_cmd(list, &cmd, line);
 		/*
 		if (ft_redir(cmd, list))
 			ft_exec(*cmd, list);
 			*/
-		(free_cmd(cmd), free(line));
+		(free(line));
 	}
 	return (rl_clear_history(), free_list(list), 0);
 }

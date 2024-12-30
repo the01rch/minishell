@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 00:21:31 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 06:21:03 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/28 19:25:16 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_strncpy(char *dst, char *src, int n)
 	int	i;
 
 	i = 0;
-	while (i < n)
+	while (src[i] && i < n)
 	{
 		dst[i] = src[i];
 		i++;

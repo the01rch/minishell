@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/24 18:03:06 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/28 19:10:00 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	fill_s_cmd(t_cmd *cmd, char *line)
 		return (printf(EALL), exit(1), (void)0);
 }
 
-void	init_s_cmd(t_cmd **cmd, char *line)
+void	init_s_cmd(t_env *lenv, t_cmd **cmd, char *line)
 {
 	char	**arr;
 	int		rows;
@@ -71,6 +71,7 @@ void	init_s_cmd(t_cmd **cmd, char *line)
 	i = 0;
 	while (i < rows)
 	{
+		printf("size = %ld\n", get_exp_size(lenv, arr[i]));
 		fill_s_cmd(cmd[i], arr[i]);
 		i++;
 	}

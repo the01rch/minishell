@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 13:59:08 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/28 18:59:29 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	gest_shell(t_env *lenv, t_cmd *cmd, int *std_save)
 		if (!path)
 		{
 			printf("%s: Command not found.\n", cmd->args[0]);
-			(free_cmd(cmd), free_list(lenv));
+			(free_list(lenv));
 			exit(0);
 		}
 		execve(path, cmd->args, list2arr(lenv));

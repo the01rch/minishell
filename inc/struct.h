@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:54:36 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 04:54:25 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/24 22:32:00 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ typedef struct s_cmd
 
 typedef struct s_global
 {
-	t_cmd		**cmds;
+	t_cmd		*cmds;
+	t_env		*list;
 	pid_t		last_pid;
 	int			exit_val;
 }	t_global;
