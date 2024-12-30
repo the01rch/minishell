@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/24 01:38:55 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/30 15:45:39 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,14 @@ void	gest_shell(t_env *lenv, t_cmd *cmd, int *std_save);
 char	*update_venv(t_env *lenv, char *str);
 char	*gest_sign(t_env *lenv, char *str, int i);
 int		ft_exec(t_cmd cmd, t_env *list);
+void	init_s_cmd(t_env *lenv, t_cmd **cmd, char *line);
 
 /*PARSING*/
 bool	is_syntax_valid(char *str);
 t_env	*create_node(char *str);
 t_env	*arr2list(char **env);
 char	**str2arr(char *str, const char *chr, bool quote);
+size_t	get_exp_size(t_env *lenv, char *arr);
 
 /*UTILS*/
 bool	inq(char *str, int index, char quote);
@@ -68,7 +70,6 @@ int		check_quotes(char *str, int i);
 void	free_node(t_env *node);
 void	free_arr(char **arr);
 void	free_list(t_env *list);
-void	free_cmd(t_cmd *cmd);
 
 /*REDIR*/
 int		ft_redir(t_cmd *cmd, t_env *lenv);

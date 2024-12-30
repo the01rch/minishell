@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/24 01:32:40 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/30 15:44:40 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	check_pipes(char *str)
 	int		idx;
 	int		len;
 
-	if (!str || !*str || *str != '|')
+	if (*str != '|')
 		return (0);
 	len = ft_strlen(str);
 	idx = 1;
@@ -32,7 +32,7 @@ static int	check_redir(char *str)
 	int		idx;
 	int		len;
 
-	if (!str || !*str || !is_chr("><", *str))
+	if (!*str || !is_chr("><", *str))
 		return (0);
 	len = ft_strlen(str);
 	idx = 0;
@@ -91,11 +91,13 @@ static int	token_indices(char *str, int i)
 	if (tmp < 0)
 		return (-1);
 	i += tmp;
-	tmp = check_pipes(&str[i]);
+	if (i <= ft_strlen(str))
+		tmp = check_pipes(str + i);
 	if (tmp < 0)
 		return (-1);
 	i += tmp;
-	tmp = check_redir(&str[i]);
+	if (i <= ft_strlen(str))
+		tmp = check_redir(str + i);
 	if (tmp < 0)
 		return (-1);
 	i += tmp;

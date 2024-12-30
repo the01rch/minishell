@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gest_env.c                                         :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 07:24:36 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/28 18:59:16 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ t_state	gest_builtins(t_env *lenv, t_cmd *cmd)
 			return (printf("exit: too many arguments\n"), ERROR);
 		printf("exit\n");
 		free_list(lenv);
-		free_cmd(cmd);
 		exit(1);
 		return (printf("exit\n"), VALID);
 	}

@@ -6,13 +6,14 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2024/12/24 01:38:55 by kpires           ###   ########.fr        #
+#    Updated: 2024/12/30 15:44:55 by redrouic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC		=	src/main.c\
 			src/utils.c\
 			src/free.c\
+			src/fill_struct.c\
 			src/parsing/str2arr.c\
 			src/parsing/env2list.c\
 			src/parsing/gest_err.c\

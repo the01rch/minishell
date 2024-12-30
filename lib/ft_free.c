@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:54:11 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/23 22:45:57 by kpires           ###   ########.fr       */
+/*   Updated: 2024/12/30 15:45:26 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_arr(char **arr)
 	}
 	free(arr);
 }
-
+/*
 void	free_cmd(t_cmd *cmd)
 {
 	if (!cmd)
@@ -36,6 +36,7 @@ void	free_cmd(t_cmd *cmd)
 	if (cmd->args)
 		free_arr(cmd->args);
 }
+*/
 
 void	free_node(t_env *node)
 {
