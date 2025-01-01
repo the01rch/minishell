@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/30 15:43:42 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/01 18:05:20 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,32 +37,39 @@ static void	handler_sigquit(int sig)
 	g_signal = sig;
 }
 
+void	signal_ctrd(t_global *g)
+{
+	printf("exit\n");
+	free_cmds(g);
+	rl_clear_history();
+	exit(g->exit_val);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_env		*list;
-	t_cmd		*cmd;
+	t_global	global;
 	char		*line;
 
 	list = arr2list(env);
+	global.exit_val = 0;
 	while (ac && av)
 	{
 		g_signal = 0;
 		signal(SIGINT, handler_sigint);
 		signal(SIGQUIT, handler_sigquit);
 		line = readline("$> ");
-		if (!line)
-			return (free(line), free_list(list), printf("exit\n"), exit(1), 0);
-		if (!is_syntax_valid(line))
+		if (!is_syntax_valid(&global, line, list))
 		{
 			free(line);
 			continue ;
 		}
-		init_s_cmd(list, &cmd, line);
-		/*
-		if (ft_redir(cmd, list))
-			ft_exec(*cmd, list);
-			*/
-		(free(line));
+		init_s_cmd(&global.cmds, line, &global.cnt);
+		if (ft_redir(&global, list, -1, 0))
+			ft_exec(&global, list);
+		else
+			global.exit_val = 2;
+		(free(line), free_cmds(&global));
 	}
 	return (rl_clear_history(), free_list(list), 0);
 }

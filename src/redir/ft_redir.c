@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/24 16:33:04 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/01 18:05:49 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,31 +92,31 @@ static int	skip_cmd(char *redir)
 	return (i);
 }
 
-int	ft_redir(t_cmd *cmd, t_env *lenv)
+int	ft_redir(t_global *g, t_env *lenv, int i, int tmp)
 {
-	int	i;
-	int	tmp;
+	int	j;
 
-	if (!cmd || !cmd->redir)
+	if (!g->cmds || !g->cmds[0].redir)
 		return (1);
-	i = 0;
-	tmp = 0;
-	while (i < ft_strlen(cmd->redir) && cmd->redir[i])
+	while (++i < g->cnt)
 	{
-		if (ft_strncmp(cmd->redir + i, ">>", 2) == 0)
-			tmp = ft_append(cmd, cmd->redir + i + 2);
-		else if (cmd->redir[i] == '>')
-			tmp = ft_overwrite(cmd, cmd->redir + i + 1);
-		if (ft_strncmp(cmd->redir + i, "<<", 2) == 0)
-			tmp = ft_heredoc(cmd, cmd->redir + i + 2, lenv);
-		else if (cmd->redir[i] == '<')
-			tmp = ft_redirect_input(cmd, cmd->redir + i + 1);
-		if (tmp < 0)
-			i += skip_cmd(cmd->redir + i);
-		if (!cmd->redir[i])
-			return (1);
-		i += tmp;
-		i += skip_nonredir(cmd->redir, i);
+		j = 0;
+		while (j < ft_strlen(g->cmds[i].redir) && g->cmds[i].redir[j])
+		{
+			if (ft_strncmp(g->cmds[i].redir + i, ">>", 2) == 0)
+				tmp = ft_append(g, &g->cmds[i], g->cmds[i].redir + j + 2);
+			else if (g->cmds[i].redir[j] == '>')
+				tmp = ft_overwrite(g, &g->cmds[i], g->cmds[i].redir + j + 1);
+			if (ft_strncmp(g->cmds[i].redir + i, "<<", 2) == 0)
+				tmp = ft_heredoc(&g->cmds[i], g->cmds[i].redir + j + 2, lenv);
+			else if (g->cmds[i].redir[j] == '<')
+				tmp = ft_redir_input(g, &g->cmds[i], g->cmds[i].redir + j + 1);
+			if (tmp < 0)
+				j += skip_cmd(g->cmds[i].redir + i);
+			if (!g->cmds[i].redir[j])
+				return (1);
+			j += tmp + skip_nonredir(g->cmds[i].redir, (j + tmp));
+		}
 	}
 	return (1);
 }

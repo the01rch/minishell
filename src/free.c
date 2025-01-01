@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:54:11 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/28 18:58:21 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/01 18:07:30 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,23 +45,28 @@ void	free_list(t_env *list)
 		free_node(tmp);
 	}
 }
-/*
-void	free_all(t_cmd **cmd)
+
+void	free_cmds(t_global *g)
 {
 	int	i;
-	
+
 	i = 0;
-	if (!cmd)
+	if (!g->cmds)
 		return ;
-	while ()
+	while (i < g->cnt)
 	{
-		if (cmd[i]->redir)
-			free(cmd[i]->redir);
-		if (cmd[i]->args)
-			free_arr(cmd[i]->args);
+		if (g->cmds[i].redir)
+		{
+			free(g->cmds[i].redir);
+			g->cmds[i].redir = NULL;
+		}
+		if (g->cmds[i].args)
+		{
+			free_arr(g->cmds[i].args);
+			g->cmds[i].args = NULL;
+		}
 		i++;
 	}
-	free_list(list);
-	free(line);
+	free(g->cmds);
+	g->cmds = NULL;
 }
-*/

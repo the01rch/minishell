@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/30 15:46:19 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/01 17:54:59 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static void	fill_s_cmd(t_cmd *cmd, char *line)
 		return (printf(EALL), exit(1), (void)0);
 }
 
-void	init_s_cmd(t_env *lenv, t_cmd **cmd, char *line)
+void	init_s_cmd(t_cmd **cmd, char *line, int	*cnt)
 {
 	char	**arr;
 	int		rows;
@@ -71,8 +71,9 @@ void	init_s_cmd(t_env *lenv, t_cmd **cmd, char *line)
 	i = 0;
 	while (i < rows)
 	{
-		fill_s_cmd(cmd[i], arr[i]);
+		fill_s_cmd(&(*cmd)[i], arr[i]);
 		i++;
 	}
+	*cnt = rows;
 	free_arr(arr);
 }

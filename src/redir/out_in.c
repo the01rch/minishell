@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/24 19:25:31 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/01 18:04:26 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static char	*ft_fname(char *redir, int i, int len, char *dels)
 {
 	char	*file;
+	bool	q;
 
 	if (!redir)
 		return (NULL);
@@ -23,15 +24,17 @@ static char	*ft_fname(char *redir, int i, int len, char *dels)
 	file = malloc(sizeof(char) * (i + 1));
 	if (!file)
 		return (NULL);
-	i = 0;
-	while (redir[i] && !is_chr(dels, redir[i]))
+	i = -1;
+	while (redir[++i] && !is_chr(dels, redir[i]))
 	{
 		if (redir[i] == '"')
 		{
-			i++;
+			if (q)
+				break ;
+			q = !q;
 			continue ;
 		}
-		file[len++] = redir[i++];
+		file[len++] = redir[i];
 	}
 	file[len] = '\0';
 	printf("file: [%s]\n", file);
@@ -39,7 +42,7 @@ static char	*ft_fname(char *redir, int i, int len, char *dels)
 }
 
 /*SET EXIT VALUE -> if (cmd->outfile == -1){}*/
-int	ft_overwrite(t_cmd *cmd, char *redir)
+int	ft_overwrite(t_global *g, t_cmd *cmd, char *redir)
 {
 	t_cmd	*cmd2;
 	char	*file;
@@ -55,8 +58,8 @@ int	ft_overwrite(t_cmd *cmd, char *redir)
 	if (cmd->outfile == -1)
 	{
 		cmd->outfile = -2;
-		perror(file);
-		free(file);
+		g->exit_val = 1;
+		(free(file), perror(file));
 		return (-1);
 	}
 	free(file);
@@ -64,7 +67,7 @@ int	ft_overwrite(t_cmd *cmd, char *redir)
 }
 
 /*SET EXIT VALUE -> if (cmd->outfile == -1){}*/
-int	ft_append(t_cmd *cmd, char *redir)
+int	ft_append(t_global *g, t_cmd *cmd, char *redir)
 {
 	t_cmd	*cmd2;
 	char	*file;
@@ -80,8 +83,8 @@ int	ft_append(t_cmd *cmd, char *redir)
 	if (cmd->outfile == -1)
 	{
 		cmd->outfile = -2;
-		perror(file);
-		free(file);
+		g->exit_val = 1;
+		(free(file), perror(file));
 		return (-1);
 	}
 	free(file);
@@ -89,7 +92,7 @@ int	ft_append(t_cmd *cmd, char *redir)
 }
 
 /*SET EXIT VALUE -> if (cmd->outfile == -1){}*/
-int	ft_redirect_input(t_cmd *cmd, char *redir)
+int	ft_redir_input(t_global *g, t_cmd *cmd, char *redir)
 {
 	t_cmd	*cmd2;
 	char	*file;
@@ -105,8 +108,8 @@ int	ft_redirect_input(t_cmd *cmd, char *redir)
 	if (cmd->infile == -1)
 	{
 		cmd->infile = -2;
-		perror(file);
-		free(file);
+		g->exit_val = 1;
+		(free(file), perror(file));
 		return (-1);
 	}
 	free(file);
@@ -117,24 +120,13 @@ int	ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv)
 {
 	int		fd[2];
 	int		i;
-	int		skp;
 
-	skp = 0;
-	i = 0;
-	while (redir[i])
-	{
-		if (ft_strncmp(redir + i, "<<", 2) == 0)
-			skp = i + 2 + skip_spaces(redir + i + 2);
-		if (skp > ft_strlen(redir) || !redir[skp])
-			break ;
-		i++;
-	}
-	skp += skip_spaces(redir + skp);
+	i = skip_spaces(redir + 0);
 	if (pipe(fd) == -1)
 		return (-1);
-	if (check_quotes(redir + skp, 0) || *redir + skp == '\\')
-		return ((skp) + ft_hd_q(cmd, fd, ft_fname(redir + skp, 0, 0, "<>|")));
+	if (check_quotes(redir + i, 0) || *redir + i == '\\')
+		return ((i) + ft_hd_q(cmd, fd, ft_fname(redir + i, 0, 0, "<>|")));
 	else
-		return ((skp)
-			+ ft_hd_nq(cmd, fd, ft_fname(redir + skp, 0, 0, "<>| "), lenv));
+		return ((i)
+			+ ft_hd_nq(cmd, fd, ft_fname(redir + i, 0, 0, "<>| "), lenv));
 }

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/28 18:59:16 by redrouic         ###   ########.fr       */
+/*   Updated: 2024/12/30 18:16:17 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,15 +115,6 @@ t_state	gest_builtins(t_env *lenv, t_cmd *cmd)
 	int	i;
 
 	i = 0;
-	if (ft_strcmp(cmd->args[0], "exit"))
-	{
-		if (cmd->args[1])
-			return (printf("exit: too many arguments\n"), ERROR);
-		printf("exit\n");
-		free_list(lenv);
-		exit(1);
-		return (printf("exit\n"), VALID);
-	}
 	if (ft_strcmp(cmd->args[0], "echo"))
 	{
 		i++;

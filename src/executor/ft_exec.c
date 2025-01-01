@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/30 15:42:59 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/01 18:31:32 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,58 +36,63 @@ static void	update_last_cmd(t_cmd *cmd, t_env *list)
 	free(v_);
 }
 
-void	close_all_fd_child(t_cmd *cmd)
+static int	set_check_cmd(t_global *g, int i, int c, t_env *list)
 {
-	if (cmd->infile > 2)
-		close(cmd->infile);
-	if (cmd->outfile > 2)
-		close(cmd->outfile);
-}
-
-static int	set_check_cmd(t_cmd *cmd, t_env *list, int i)
-{
-	(void)list;
-	if (cmd && cmd->args && cmd->args[0])
+	if (g->cmds && g->cmds[c].args && g->cmds[c].args[0])
 	{
-		update_last_cmd(cmd, list);
-		if (cmd->infile != -2 && cmd->outfile != -2)
+		update_last_cmd(&g->cmds[c], list);
+		if (g->cmds[c].infile != -2 && g->cmds[c].outfile != -2)
 			return (0);
 	}
 	if (i != -1)
 	{
-		close_all_fd_child(cmd);
+		close_all_fd_child(g);
 		if (i != 0)
-			close(cmd->prev_fd);
-		close(cmd->pipe[1]);
+			close(g->cmds[c].prev_fd);
+		close(g->cmds[c].pipe[1]);
 	}
 	return (1);
 }
 
 /* if (dup_inf_out(cmd, std_save) == 1) exit value in struct*/
-static int	exec_cmd(t_cmd *cmd, t_env *list)
+static int	exec_cmd(t_global *g, t_env *list)
 {
 	int		std_save[2];
 
-	if (set_check_cmd(cmd, list, -1))
+	if (set_check_cmd(g, -1, 0, list))
 		return (1);
-	if (dup_inf_out(cmd, std_save) == 1)
+	if (ft_strcmp(g->cmds->args[0], "exit"))
+	{
+		if (g->cmds->args[1])
+			return (printf("exit: too many arguments\n"), ERROR);
+		(printf("exit\n"), free_list(list), free_cmds(g), exit(1));
+	}
+	if (dup_inf_out(g->cmds, std_save) == 1)
 	{
 		printf("exec: error with dup\n");
-		return (1);
+		g->exit_val = 1;
+		return (g->exit_val);
 	}
-	if (gest_builtins(list, cmd) == NONE)
-		gest_shell(list, cmd, std_save);
-	close_fd(cmd, std_save, false);
-	return (0);
+	if (gest_builtins(list, g->cmds) == NONE)
+		gest_shell(list, g->cmds, std_save);
+	close_fd(g->cmds, std_save, false);
+	return (g->exit_val);
 }
 
-int	ft_exec(t_cmd cmd, t_env *list)
+void	exec_cmds(t_global *g, t_env *list)
 {
-	int		cmd_count;
+	(void)list;
+	(void)g;
+}
 
-	cmd_count = 1;
+int	ft_exec(t_global *g, t_env *list)
+{
 	g_signal = 0;
-	if (cmd_count == 1)
-		return (exec_cmd(&cmd, list));
+	if (!g->cnt)
+		return (0);
+	if (g->cnt == 1)
+		return (exec_cmd(g, list));
+	else
+		exec_cmds(g, list);
 	return (0);
 }

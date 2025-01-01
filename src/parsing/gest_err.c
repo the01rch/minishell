@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/30 15:44:40 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/01 18:00:12 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,15 @@ static int	token_indices(char *str, int i)
 	return (i);
 }
 
-bool	is_syntax_valid(char *str)
+bool	is_syntax_valid(t_global *g, char *str, t_env *lenv)
 {
 	int	i;
 	int	tmp;
 
+	if (g_signal == SIGINT)
+		g->exit_val = 130;
+	if (str == NULL)
+		(free_list(lenv), signal_ctrd(g));
 	add_history(str);
 	i = skip_spaces(str);
 	if (!str[i])
