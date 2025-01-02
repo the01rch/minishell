@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:54:11 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/01 23:11:17 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/03 00:25:32 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,15 @@ void	free_cmds(t_global *g)
 {
 	int	i;
 
-	if (g->cmds)
+	if (!g || !g->cmds)
+		return ;
+	i = 0;
+	while (g->cmds[i])
 	{
-		i = 0;
-		while (g->cmds[i])
-		{
-			free_cmd(g->cmds[i]);
-			g->cmds[i] = NULL;
-			i++;
-		}
-		free(g->cmds);
-		g->cmds = NULL;
+		free_cmd(g->cmds[i]);
+		g->cmds[i] = NULL;
+		i++;
 	}
+	free(g->cmds);
+	g->cmds = NULL;
 }

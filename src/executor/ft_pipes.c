@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 18:14:52 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/02 22:49:19 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/03 00:17:07 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	exec_pipes(t_global *g, int id, t_env *list)
 		if (gest_builtins(list, g->cmds[id]) == NONE)
 			execve_cmd(g, id, list);
 	}
+	close_all_fd_child(g);
 	(free_list(list), free_cmds(g), exit(g->exit_val));
 }
 
@@ -80,7 +81,7 @@ static void	pipe_and_fork(t_global *g, int id, t_env *list)
 	return ;
 }
 
-static void	ft_waitall(t_global *g)
+void	ft_waitall(t_global *g)
 {
 	int	pid;
 	int	exit_status;

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/02 17:36:50 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/03 00:17:14 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
 	cmd->infile = -1;
 	cmd->outfile = -1;
 	cmd->prev_fd = -1;
+	cmd->pipe[0] = -1;
+	cmd->pipe[1] = -1;
 	while (line[i] && line[i] != '|')
 	{
 		if (is_chr("><", line[i]) && !inq(line, i, true))

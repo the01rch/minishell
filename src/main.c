@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/02 23:03:49 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/03 00:26:12 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,31 @@ static void	handl_quit(int sig)
 void	signal_ctrd(t_global *g)
 {
 	printf("exit\n");
-	free_cmds(g);
+	if (g)
+		free_cmds(g);
 	clear_history();
 	rl_clear_history();
 	exit(g->exit_val);
 }
 
-/*
-voir ft_one
-ctrl d probleme de free segfault free cmds
+static void	init_g(t_global *g)
+{
+	g->exit_val = 0;
+	g->cmds = NULL;
+	g->cnt = 0;
+	g->last_pid = -1;
+}
 
+/*
 EXPANDER
 $EMPTY -> sortis vide
 $EMPTY echo hi -> hi
 bash-5.1$ "" ls
 bash: : command not found
+
+ENV
+$?
+check le $_
 */
 
 int	main(int ac, char **av, char **env)
@@ -64,7 +74,7 @@ int	main(int ac, char **av, char **env)
 	char		*line;
 
 	list = arr2list(env);
-	g.exit_val = 0;
+	init_g(&g);
 	while (ac && av)
 	{
 		g_signal = 0;
@@ -80,7 +90,7 @@ int	main(int ac, char **av, char **env)
 			ft_exec(&g, list);
 		else
 			g.exit_val = 2;
-		(free(line), free_cmds(&g));
+		(close_all_fd_child(&g), free(line), free_cmds(&g));
 	}
 	(clear_history(), rl_clear_history());
 	return (free_cmds(&g), free_list(list), 0);

@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2025/01/02 22:22:12 by kpires           ###   ########.fr        #
+#    Updated: 2025/01/02 23:21:09 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,6 @@ SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strncmp.c\
 			lib/ft_strdup.c\
 			lib/ft_concat.c\
-			lib/ft_free.c\
 			lib/ft_strlcat.c\
 			lib/ft_memcpy.c\
 			lib/ft_isalnum.c\

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/02 22:53:43 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/03 00:19:53 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@
 # include <errno.h>
 # include <stdarg.h>
 # include "struct.h"
-
-# include <string.h>
 
 extern int	g_signal;
 
@@ -60,6 +58,7 @@ int		exec_cmd(t_global *g, int id, t_env *list);
 void	close_all_fd_child(t_global *g);
 int		ft_exec(t_global *g, t_env *list);
 void	exec_cmds(t_global *g, t_env *list);
+void	ft_waitall(t_global *g);
 
 /*PARSING*/
 bool	is_syntax_valid(t_global *g, char *str, t_env *lenv);
@@ -93,7 +92,6 @@ int		ft_overwrite(t_global *g, t_cmd *cmd, char *redir);
 int		ft_append(t_global *g, t_cmd *cmd, char *redir);
 int		ft_redir_input(t_global *g, t_cmd *cmd, char *redir);
 int		ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv);
-int		close_fd(t_cmd *cmd, int *std_save, bool is_error);
 int		ft_hd_nq(t_cmd *cmd, int *fd, char *del, t_env *lenv);
 int		ft_hd_q(t_cmd *cmd, int *fd, char *del);
 ssize_t	write_here(const void *buffer, int fd, size_t count);
