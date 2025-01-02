@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/01 18:05:20 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/02 23:03:49 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_signal = 0;
 
-static void	handler_sigint(int sig)
+static void	handl_int(int sig)
 {
 	printf("\n");
 	rl_replace_line("", 0);
@@ -24,7 +24,7 @@ static void	handler_sigint(int sig)
 	g_signal = sig;
 }
 
-static void	handler_sigquit(int sig)
+static void	handl_quit(int sig)
 {
 	rl_on_new_line();
 	if (wait(NULL) == -1)
@@ -41,35 +41,47 @@ void	signal_ctrd(t_global *g)
 {
 	printf("exit\n");
 	free_cmds(g);
+	clear_history();
 	rl_clear_history();
 	exit(g->exit_val);
 }
 
+/*
+voir ft_one
+ctrl d probleme de free segfault free cmds
+
+EXPANDER
+$EMPTY -> sortis vide
+$EMPTY echo hi -> hi
+bash-5.1$ "" ls
+bash: : command not found
+*/
+
 int	main(int ac, char **av, char **env)
 {
 	t_env		*list;
-	t_global	global;
+	t_global	g;
 	char		*line;
 
 	list = arr2list(env);
-	global.exit_val = 0;
+	g.exit_val = 0;
 	while (ac && av)
 	{
 		g_signal = 0;
-		signal(SIGINT, handler_sigint);
-		signal(SIGQUIT, handler_sigquit);
+		(signal(SIGINT, handl_int), signal(SIGQUIT, handl_quit));
 		line = readline("$> ");
-		if (!is_syntax_valid(&global, line, list))
+		if (!is_syntax_valid(&g, line, list))
 		{
 			free(line);
 			continue ;
 		}
-		init_s_cmd(&global.cmds, line, &global.cnt);
-		if (ft_redir(&global, list, -1, 0))
-			ft_exec(&global, list);
+		init_s_cmd(&g, line);
+		if (ft_redir(&g, list, -1, 0))
+			ft_exec(&g, list);
 		else
-			global.exit_val = 2;
-		(free(line), free_cmds(&global));
+			g.exit_val = 2;
+		(free(line), free_cmds(&g));
 	}
-	return (rl_clear_history(), free_list(list), 0);
+	(clear_history(), rl_clear_history());
+	return (free_cmds(&g), free_list(list), 0);
 }

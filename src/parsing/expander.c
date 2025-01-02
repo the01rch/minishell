@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/30 15:46:53 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/02 10:51:47 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,25 @@ size_t	get_env_size(t_env *lenv, char *str, size_t size)
 		}
 	}
 	return (n);
+}
+
+char	*remq(char *str)
+{
+	char	*res;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	res = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	while (str[i])
+	{
+		if (str[i] != 34 && str[i] != 39)
+			res[j++] = str[i];
+		i++;
+	}
+	res[j] = 0;
+	return (res);
 }
 
 /*

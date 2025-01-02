@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/30 15:44:21 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/02 22:39:36 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,30 @@ t_env	*arr2list(char **env)
 	result = head->next;
 	free_node(head);
 	return (result);
+}
+
+char	**list2arr(t_env *lenv)
+{
+	t_env	*tmp;
+	char	**arr;
+	int		i;
+
+	i = 0;
+	tmp = lenv;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	arr = malloc(sizeof(char *) * (i + 1));
+	if (!arr)
+		return (NULL);
+	i = 0;
+	while (tmp)
+	{
+		arr[i++] = pwrapper(tmp->name, tmp->content, '=');
+		tmp = tmp->next;
+	}
+	arr[i] = NULL;
+	return (arr);
 }

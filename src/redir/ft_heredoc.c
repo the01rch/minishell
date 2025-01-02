@@ -6,13 +6,13 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:52:04 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/24 15:27:01 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/02 22:47:39 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	*init_hd(char *line, t_env *lenv, int i, size_t total_size)
+static char	*init_hd(char *line, t_env *lenv, int i, size_t total_size)
 {
 	char	*v_name;
 	char	*v_content;
@@ -41,7 +41,7 @@ char	*init_hd(char *line, t_env *lenv, int i, size_t total_size)
 	return (ft_calloc(total_size + 1, sizeof(char)));
 }
 
-char	*fill_hd(char *line, t_env *lenv, char *hd, int i)
+static char	*fill_hd(char *line, t_env *lenv, char *hd, int i)
 {
 	char	*v_name;
 	char	*v_content;
@@ -70,7 +70,7 @@ char	*fill_hd(char *line, t_env *lenv, char *hd, int i)
 	return (hd);
 }
 
-char	*ft_here_parse(char *line, t_env *lenv)
+static char	*ft_here_parse(char *line, t_env *lenv)
 {
 	char	*hd;
 

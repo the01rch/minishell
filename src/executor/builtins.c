@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/30 18:16:17 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/02 11:32:15 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,12 @@ t_state	gest_builtins(t_env *lenv, t_cmd *cmd)
 		if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n"))
 			i++;
 		while (cmd->args[i] != NULL)
-			printf("%s ", cmd->args[i++]);
+		{
+			if (cmd->args[i + 1] != NULL)
+				printf("%s ", cmd->args[i++]);
+			else
+				printf("%s", cmd->args[i++]);
+		}
 		if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n"))
 			return (VALID);
 		return (printf("\n"), VALID);

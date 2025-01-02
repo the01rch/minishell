@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/01 18:30:59 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/02 22:53:43 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # include <stdarg.h>
 # include "struct.h"
 
+# include <string.h>
+
 extern int	g_signal;
 
 /*LIB*/
@@ -39,25 +41,34 @@ int		ft_isalnum(int c);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	*ft_memset(void *p, int i, size_t len);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+int		ft_isdigit(int c);
+int		ft_atoi(const char *str);
+int		ft_is_nb(char *cmd);
 
-/*UNDEFINED*/
+/*BUILTINS*/
 t_state	gest_builtins(t_env *lenv, t_cmd *cmd);
+int		ft_exit(t_global *g, t_cmd *cmd, bool print, t_env *lenv);
 bool	ft_export(t_env *lenv, char *str);
-char	*plist(t_env *lenv, char *name);
-void	gest_shell(t_env *lenv, t_cmd *cmd, int *std_save);
-char	*update_venv(t_env *lenv, char *str);
-char	*gest_sign(t_env *lenv, char *str, int i);
-int		ft_exec(t_global *g, t_env *list);
-void	close_all_fd_child(t_global *g);
-void	init_s_cmd(t_cmd **cmd, char *line, int *cnt);
+
+/*SIGNAL*/
 void	signal_ctrd(t_global *g);
+
+/*EXEC*/
+void	execve_cmd(t_global *g, int id, t_env *lenv);
+int		set_check_cmd(t_global *g, int i, int c, t_env *list);
+int		exec_cmd(t_global *g, int id, t_env *list);
+void	close_all_fd_child(t_global *g);
+int		ft_exec(t_global *g, t_env *list);
+void	exec_cmds(t_global *g, t_env *list);
 
 /*PARSING*/
 bool	is_syntax_valid(t_global *g, char *str, t_env *lenv);
 t_env	*create_node(char *str);
 t_env	*arr2list(char **env);
+char	**list2arr(t_env *lenv);
 char	**str2arr(char *str, const char *chr, bool quote);
 size_t	get_exp_size(t_env *lenv, char *arr);
+void	init_s_cmd(t_global *g, char *line);
 
 /*UTILS*/
 bool	inq(char *str, int index, char quote);
@@ -67,12 +78,14 @@ char	*pwrapper(char *name, char *content, char sep);
 int		count_rows(const char *chr, char *str, bool quote);
 int		skip_spaces(char *str);
 int		check_quotes(char *str, int i);
+char	*plist(t_env *lenv, char *name);
 
 /*FREE*/
 void	free_node(t_env *node);
 void	free_arr(char **arr);
 void	free_list(t_env *list);
 void	free_cmds(t_global *g);
+void	free_cmd(t_cmd *cmd);
 
 /*REDIR*/
 int		ft_redir(t_global *g, t_env *lenv, int i, int tmp);
@@ -80,10 +93,10 @@ int		ft_overwrite(t_global *g, t_cmd *cmd, char *redir);
 int		ft_append(t_global *g, t_cmd *cmd, char *redir);
 int		ft_redir_input(t_global *g, t_cmd *cmd, char *redir);
 int		ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv);
-int		dup_inf_out(t_cmd *cmd, int *std_save);
 int		close_fd(t_cmd *cmd, int *std_save, bool is_error);
 int		ft_hd_nq(t_cmd *cmd, int *fd, char *del, t_env *lenv);
 int		ft_hd_q(t_cmd *cmd, int *fd, char *del);
 ssize_t	write_here(const void *buffer, int fd, size_t count);
 int		extract_varlen(char *line, int len, char **v_name, bool del_sign);
+
 #endif

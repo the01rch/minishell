@@ -6,11 +6,37 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/01 18:31:32 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/02 22:41:10 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+int	ft_exit(t_global *g, t_cmd *cmd, bool print, t_env *lenv)
+{
+	int	nb;
+
+	if (print)
+		printf("exit\n");
+	if (!cmd->args[1] || cmd->args[1] == NULL)
+		(free_cmds(g), free_list(lenv), exit(g->exit_val));
+	if ((ft_is_nb(cmd->args[1]) || ft_strlen(cmd->args[1]) >= 19)
+		&& ft_strncmp("9223372036854775807", cmd->args[1], 19) < 0)
+	{
+		write(2, "exit: ", 6);
+		write(2, cmd->args[1], ft_strlen(cmd->args[1]));
+		write(2, ": numeric argument required\n", 28);
+		(free_cmds(g), free_list(lenv), exit(2));
+	}
+	if (ft_is_nb(cmd->args[1]) == 0 && cmd->args[1] && cmd->args[2] == NULL)
+	{
+		nb = ft_atoi(cmd->args[1]);
+		(free_cmds(g), free_list(lenv), exit(nb % 256));
+	}
+	write(2, "exit: too many arguments\n", 25);
+	g->exit_val = 1;
+	return (1);
+}
 
 static void	update_last_cmd(t_cmd *cmd, t_env *list)
 {
@@ -36,53 +62,39 @@ static void	update_last_cmd(t_cmd *cmd, t_env *list)
 	free(v_);
 }
 
-static int	set_check_cmd(t_global *g, int i, int c, t_env *list)
+void	close_all_fd_child(t_global *g)
 {
-	if (g->cmds && g->cmds[c].args && g->cmds[c].args[0])
+	int	i;
+
+	i = 0;
+	while (i < g->cnt)
 	{
-		update_last_cmd(&g->cmds[c], list);
-		if (g->cmds[c].infile != -2 && g->cmds[c].outfile != -2)
+		if (g->cmds[i]->infile > 2)
+			close(g->cmds[i]->infile);
+		if (g->cmds[i]->outfile > 2)
+			close(g->cmds[i]->outfile);
+		i++;
+	}
+}
+
+int	set_check_cmd(t_global *g, int i, int c, t_env *list)
+{
+	if (g->cmds[c] && g->cmds[c]->args && g->cmds[c]->args[0])
+	{
+		if (ft_strcmp(g->cmds[0]->args[0], "exit"))
+			return (0);
+		update_last_cmd(g->cmds[c], list);
+		if (g->cmds[c]->infile != -2 && g->cmds[c]->outfile != -2)
 			return (0);
 	}
 	if (i != -1)
 	{
 		close_all_fd_child(g);
 		if (i != 0)
-			close(g->cmds[c].prev_fd);
-		close(g->cmds[c].pipe[1]);
+			close(g->cmds[c]->prev_fd);
+		close(g->cmds[c]->pipe[1]);
 	}
 	return (1);
-}
-
-/* if (dup_inf_out(cmd, std_save) == 1) exit value in struct*/
-static int	exec_cmd(t_global *g, t_env *list)
-{
-	int		std_save[2];
-
-	if (set_check_cmd(g, -1, 0, list))
-		return (1);
-	if (ft_strcmp(g->cmds->args[0], "exit"))
-	{
-		if (g->cmds->args[1])
-			return (printf("exit: too many arguments\n"), ERROR);
-		(printf("exit\n"), free_list(list), free_cmds(g), exit(1));
-	}
-	if (dup_inf_out(g->cmds, std_save) == 1)
-	{
-		printf("exec: error with dup\n");
-		g->exit_val = 1;
-		return (g->exit_val);
-	}
-	if (gest_builtins(list, g->cmds) == NONE)
-		gest_shell(list, g->cmds, std_save);
-	close_fd(g->cmds, std_save, false);
-	return (g->exit_val);
-}
-
-void	exec_cmds(t_global *g, t_env *list)
-{
-	(void)list;
-	(void)g;
 }
 
 int	ft_exec(t_global *g, t_env *list)
@@ -91,7 +103,7 @@ int	ft_exec(t_global *g, t_env *list)
 	if (!g->cnt)
 		return (0);
 	if (g->cnt == 1)
-		return (exec_cmd(g, list));
+		return (exec_cmd(g, 0, list));
 	else
 		exec_cmds(g, list);
 	return (0);

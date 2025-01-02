@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/30 15:42:41 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/02 23:02:50 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,56 +40,98 @@ static char	*check_access(t_env *lenv, char **arr)
 	return (free_arr(tab), NULL);
 }
 
-char	**list2arr(t_env *lenv)
+void	execve_absolute_path(t_global *g, int id, t_env *lenv)
 {
-	t_env	*tmp;
-	char	**arr;
-	int		i;
-
-	i = 0;
-	tmp = lenv;
-	while (tmp)
+	if (execve(g->cmds[id]->args[0], g->cmds[id]->args, list2arr(lenv)) == -1)
 	{
-		i++;
-		tmp = tmp->next;
+		if (access(g->cmds[id]->args[0], F_OK) == 0)
+		{
+			write(2, g->cmds[id]->args[0], ft_strlen(g->cmds[id]->args[0]));
+			if (access(g->cmds[id]->args[0], X_OK) != 0)
+				write(2, ": Permission denied\n", 20);
+			else
+				write(2, ": Is a directory\n", 17);
+			free_cmds(g);
+			exit(126);
+		}
+		else
+			perror(g->cmds[id]->args[0]);
+		free_cmds(g);
+		exit(127);
 	}
-	arr = malloc(sizeof(char *) * (i + 1));
-	if (!arr)
-		return (NULL);
-	i = 0;
-	while (tmp)
-	{
-		arr[i++] = pwrapper(tmp->name, tmp->content, '=');
-		tmp = tmp->next;
-	}
-	arr[i] = NULL;
-	return (arr);
 }
 
-void	gest_shell(t_env *lenv, t_cmd *cmd, int *std_save)
+void	execve_cmd_path(t_global *g, int id, t_env *lenv)
 {
-	pid_t	pid;
 	char	*path;
 
-	pid = fork();
-	path = check_access(lenv, cmd->args);
-	if (pid < 0)
-		return (perror("Error :Fork failed\n"), exit(0), (void)0);
-	else if (pid == 0)
+	path = check_access(lenv, g->cmds[id]->args);
+	if (!path)
 	{
-		if (cmd->infile != -1)
-			(close(std_save[0]), close(cmd->infile));
-		if (cmd->outfile != -1)
-			(close(std_save[1]), close(cmd->outfile));
-		if (!path)
-		{
-			printf("%s: Command not found.\n", cmd->args[0]);
-			(free_list(lenv));
-			exit(0);
-		}
-		execve(path, cmd->args, list2arr(lenv));
+		write(2, g->cmds[id]->args[0], ft_strlen(g->cmds[id]->args[0]));
+		write(2, ": command not found\n", 20);
+		free_list(lenv);
+		free_cmds(g);
+		exit(127);
 	}
-	if (pid > 0)
-		wait(NULL);
-	free(path);
+	if (execve(path, g->cmds[id]->args, list2arr(lenv)) == -1)
+	{
+		perror("execve");
+		free_list(lenv);
+		free(path);
+		free_cmds(g);
+		exit(1);
+	}
+}
+
+/*
+	if (g->cmds[id]->args[0][0] == '\0')
+	{
+		i = 0;
+		free(g->cmds[id]->args[0]);
+		while (g->cmds[id]->args[i + 1])
+		{
+			g->cmds[id]->args[i] = g->cmds[id]->args[i + 1];
+			i++;
+		}
+		g->cmds[id]->args[i] = NULL;
+		if (g->cmds[id]->args[0])
+		{
+			i = 0;
+			while (g->cmds[id]->args[0][i])
+			{
+				if (g->cmds[id]->args[0][i] == '/')
+				{
+					execve_absolute_path(g, id, lenv);
+					return ;
+				}
+				i++;
+			}
+			execve_cmd_path(g, id, lenv);
+		}
+		return ;
+	}
+*/
+
+void	execve_cmd(t_global *g, int id, t_env *lenv)
+{
+	int		i;
+
+	if (g->cmds[id] == NULL)
+	{
+		if (g->cmds[id + 1])
+			execve_cmd(g, id + 1, lenv);
+		return ;
+	}
+	i = 0;
+	while (g->cmds[id]->args[0][i])
+	{
+		if (g->cmds[id]->args[0][i] == '/')
+		{
+			execve_absolute_path(g, id, lenv);
+			return ;
+		}
+		i++;
+	}
+	execve_cmd_path(g, id, lenv);
 }

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/01 18:04:26 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/02 21:48:14 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,9 @@ static char	*ft_fname(char *redir, int i, int len, char *dels)
 		file[len++] = redir[i];
 	}
 	file[len] = '\0';
-	printf("file: [%s]\n", file);
 	return (file);
 }
 
-/*SET EXIT VALUE -> if (cmd->outfile == -1){}*/
 int	ft_overwrite(t_global *g, t_cmd *cmd, char *redir)
 {
 	t_cmd	*cmd2;
@@ -59,14 +57,13 @@ int	ft_overwrite(t_global *g, t_cmd *cmd, char *redir)
 	{
 		cmd->outfile = -2;
 		g->exit_val = 1;
-		(free(file), perror(file));
+		(perror(file), free(file));
 		return (-1);
 	}
 	free(file);
 	return (1);
 }
 
-/*SET EXIT VALUE -> if (cmd->outfile == -1){}*/
 int	ft_append(t_global *g, t_cmd *cmd, char *redir)
 {
 	t_cmd	*cmd2;
@@ -84,14 +81,13 @@ int	ft_append(t_global *g, t_cmd *cmd, char *redir)
 	{
 		cmd->outfile = -2;
 		g->exit_val = 1;
-		(free(file), perror(file));
+		(perror(file), free(file));
 		return (-1);
 	}
 	free(file);
 	return (2);
 }
 
-/*SET EXIT VALUE -> if (cmd->outfile == -1){}*/
 int	ft_redir_input(t_global *g, t_cmd *cmd, char *redir)
 {
 	t_cmd	*cmd2;
@@ -109,7 +105,7 @@ int	ft_redir_input(t_global *g, t_cmd *cmd, char *redir)
 	{
 		cmd->infile = -2;
 		g->exit_val = 1;
-		(free(file), perror(file));
+		(perror(file), free(file));
 		return (-1);
 	}
 	free(file);

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/01 18:00:12 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/02 08:47:53 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ bool	is_syntax_valid(t_global *g, char *str, t_env *lenv)
 		g->exit_val = 130;
 	if (str == NULL)
 		(free_list(lenv), signal_ctrd(g));
-	add_history(str);
 	i = skip_spaces(str);
 	if (!str[i])
 		return (false);
@@ -128,5 +127,6 @@ bool	is_syntax_valid(t_global *g, char *str, t_env *lenv)
 		if (i > ft_strlen(str))
 			break ;
 	}
+	add_history(str);
 	return (true);
 }
