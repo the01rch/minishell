@@ -6,27 +6,33 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 00:22:03 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 22:45:56 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/04 07:30:55 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-char	*ft_concat(char *str, char *str2)
+static size_t	ft_strnlen(const char *s, size_t n)
 {
-	char	*tmp;
+	size_t	i;
+
+	i = 0;
+	while (s[i] && i != n)
+		i++;
+	return (i);
+}
+
+void	ft_strncat(char *dest, char *src, size_t n)
+{
 	int		i;
 	int		j;
 
-	i = 0;
+	i = n;
 	j = 0;
-	tmp = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(str2) + 1));
-	if (!tmp)
-		return (NULL);
-	while (*str)
-		tmp[i++] = *str++;
-	while (str2[j])
-		tmp[i++] = str2[j++];
-	tmp[i] = 0;
-	return (tmp);
+	while (src[j])
+	{
+		dest[i] = src[j++];
+		i++;
+	}
+	dest[ft_strnlen(dest, n)] = '\0';
 }

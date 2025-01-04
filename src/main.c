@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/03 00:26:12 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/03 16:42:17 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ void	signal_ctrd(t_global *g)
 	exit(g->exit_val);
 }
 
-static void	init_g(t_global *g)
+static void	init_g(t_global *g, char **env)
 {
+	g->lenv = arr2list(env);
 	g->exit_val = 0;
 	g->cmds = NULL;
 	g->cnt = 0;
@@ -69,29 +70,27 @@ check le $_
 
 int	main(int ac, char **av, char **env)
 {
-	t_env		*list;
 	t_global	g;
 	char		*line;
 
-	list = arr2list(env);
-	init_g(&g);
+	init_g(&g, env);
 	while (ac && av)
 	{
 		g_signal = 0;
 		(signal(SIGINT, handl_int), signal(SIGQUIT, handl_quit));
 		line = readline("$> ");
-		if (!is_syntax_valid(&g, line, list))
+		if (!is_syntax_valid(&g, line, g.lenv))
 		{
 			free(line);
 			continue ;
 		}
 		init_s_cmd(&g, line);
-		if (ft_redir(&g, list, -1, 0))
-			ft_exec(&g, list);
+		if (ft_redir(&g, g.lenv, -1, 0))
+			ft_exec(&g, g.lenv);
 		else
 			g.exit_val = 2;
 		(close_all_fd_child(&g), free(line), free_cmds(&g));
 	}
 	(clear_history(), rl_clear_history());
-	return (free_cmds(&g), free_list(list), 0);
+	return (free_cmds(&g), free_list(g.lenv), 0);
 }

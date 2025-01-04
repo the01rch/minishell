@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/03 00:19:53 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/04 08:26:45 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int		ft_strlen(const char *str);
 bool	ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strdup(const char *src);
-char	*ft_concat(char *str, char *str2);
 void	ft_strncpy(char *dst, char *src, int n);
 size_t	ft_strlcat(char *dest, const char *src, size_t n);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
@@ -42,6 +41,8 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int		ft_isdigit(int c);
 int		ft_atoi(const char *str);
 int		ft_is_nb(char *cmd);
+void	ft_strncat(char *dest, char *src, size_t n);
+char	*ft_itoa(int n);
 
 /*BUILTINS*/
 t_state	gest_builtins(t_env *lenv, t_cmd *cmd);
@@ -66,8 +67,8 @@ t_env	*create_node(char *str);
 t_env	*arr2list(char **env);
 char	**list2arr(t_env *lenv);
 char	**str2arr(char *str, const char *chr, bool quote);
-size_t	get_exp_size(t_env *lenv, char *arr);
 void	init_s_cmd(t_global *g, char *line);
+char	*gest_expand(t_global *g, char *str);
 
 /*UTILS*/
 bool	inq(char *str, int index, char quote);

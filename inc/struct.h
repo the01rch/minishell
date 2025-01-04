@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:54:36 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/01 22:30:29 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/04 02:25:07 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,19 @@ typedef struct s_cmd
 {
 	char	**args;
 	char	*redir;
+	int		pipe[2];
 	int		infile;
 	int		outfile;
-	int		pipe[2];
 	int		prev_fd;
 }	t_cmd;
 
 typedef struct s_global
 {
 	t_cmd		**cmds;
-	int			cnt;
+	t_env		*lenv;
 	pid_t		last_pid;
 	int			exit_val;
+	int			cnt;
 }	t_global;
 
 #endif

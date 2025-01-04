@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/02 10:51:47 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/04 08:32:37 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,33 +36,6 @@ bool	inq(char *str, int index, char quote)
 	return (current != '\0');
 }
 
-size_t	get_env_size(t_env *lenv, char *str, size_t size)
-{
-	char	*res;	
-	char	*test;
-	size_t	j;
-	size_t	n;
-
-	j = ++size;
-	n = 0;
-	while (str[j] && (ft_isalnum(str[j]) || str[j] == '_'))
-		j++;
-	if (j > size)
-	{
-		test = malloc(sizeof(char) * (j - size) + 1);
-		if (!test)
-			return (printf(EALL), exit(1), size);
-		ft_strncpy(test, &str[size], j - size);
-		res = plist(lenv, test);
-		if (res != NULL)
-		{
-			n = ft_strlen(res);
-			(free(test), free(res));
-		}
-	}
-	return (n);
-}
-
 char	*remq(char *str)
 {
 	char	*res;
@@ -82,53 +55,70 @@ char	*remq(char *str)
 	return (res);
 }
 
-/*
-size_t	get_exp_size(t_env *lenv, char *arr)
+char	*ret_venv(t_env *lenv, char *src, int *i)
 {
-	size_t	size;
-	int		i;
+	char	*str;
+	char	*res;
+	int		len;
 
-	size = 0;
-	while (arr[size])
-	{
-		if (arr[size] == 36)
-			size += get_env_size(lenv, arr, size);
-		else
-			size++;
-	}
-	return (size);
+	len = 0;
+	while (src[len] && (ft_isalnum(src[len]) || src[len] == '_'))
+		len++;
+	if (len == 0)
+		return (NULL);
+	*i += len;
+	str = malloc(sizeof(char) * len + 1);
+	if (!str)
+		return (printf(EALL), NULL);
+	ft_strncpy(str, src, len);
+	res = plist(lenv, str);
+	free(str);
+	if (!res)
+		return (NULL);
+	return (res);
 }
 
-#ifndef QUOTE
-# define QUOTE
+#ifndef BUF_SIZ
+# define BUF_SIZ
 
-# define SINGLE 0
-# define DOUBLE 1
+# define BUFF_SIZ 256
 
-void	expand_venv(t_env *lenv, char **arr)
+char	*gest_expand(t_global *g, char *str)
 {
-	bool	quote[2];
+	char	*buf;
+	char	*res;
 	int		i;
+	int		y;
 
-	quote[0] = false;
-	quote[1] = false;
+	buf = ft_calloc(sizeof(char), BUFF_SIZ);
+	if (!buf)
+		return (printf(EALL), NULL);
 	i = 0;
-	while (*arr[i])
+	y = 0;
+	while (str[i] != '\0')
 	{
-		if (*arr[i] == 34 && !quote[SINGLE])
+		if (str[i] == '$' && !inq(str, i, '\''))
 		{
-			quote[DOUBLE] = !quote[DOUBLE];
 			i++;
+			if (str[i] == '?')
+			{
+				res = ft_itoa(g->exit_val);
+				for (int b = 0; res[b]; b++)
+					buf[y++] = res[b];
+				free(res);
+				i++;
+			}
+			res = ret_venv(g->lenv, &str[i], &i);
+			if (!res)
+				continue ;
+			for (int b = 0; res[b]; b++)
+				buf[y++] = res[b];
+			free(res);
 		}
-		else if (*arr[i] == 39 && !quote[DOUBLE])
-		{
-			quote[SINGLE] = !quote[SINGLE];
-			i++;
-		}
-		else if (*arr[i] == 36 && !quote[SINGLE])
-			resolve_var();
-		i++;
+		else
+			buf[y++] = str[i++];
 	}
+	buf[y] = '\0';
+	return (remq(buf));
 }
 #endif
-*/
