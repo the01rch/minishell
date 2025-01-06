@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 11:53:21 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/06 12:15:32 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	check_pipes(char *str)
 	idx += skip_spaces(str);
 	if (!str[idx] || str[idx] == '|')
 		return (ft_perror(FPIPE), -1);
-	return (1);
+	return (idx);
 }
 
 static int	check_redir(char *str)
@@ -43,7 +43,7 @@ static int	check_redir(char *str)
 		idx++;
 	while (str[idx] && is_chr("\t ", str[idx]))
 		idx++;
-	if (!str[idx])
+	if (!str[idx] || idx == ft_strlen(str))
 		return (ft_perror(FPIPE), -1);
 	if (is_chr("><|", str[idx]))
 		return (ft_perror(FPIPE), -1);
@@ -71,6 +71,7 @@ int check_quotes(char *str, int i)
 
 	openq = 0;
 	idx = i;
+	//comment
 	if (quote_exist(str) == false)
 		return (i);
     while (str[idx])
@@ -96,14 +97,12 @@ static int	token_indices(char *str, int i)
 	tmp = check_quotes(str, i);
 	if (tmp < 0)
 		return (-1);
-	i += tmp;
-	if (i <= ft_strlen(str))
-		tmp = check_pipes(str + i);
+	i += tmp - i;
+	tmp = check_pipes(str + i);
 	if (tmp < 0)
 		return (-1);
 	i += tmp;
-	if (i <= ft_strlen(str))
-		tmp = check_redir(str + i);
+	tmp = check_redir(str + i);
 	if (tmp < 0)
 		return (-1);
 	i += tmp;
