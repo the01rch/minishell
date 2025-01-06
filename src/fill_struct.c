@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/04 08:16:23 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/06 12:44:07 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,8 @@ static void	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
 	cmd->prev_fd = -1;
 	cmd->pipe[0] = -1;
 	cmd->pipe[1] = -1;
-	if (len == (int)ft_strlen(line))
-		cmd->redir = NULL;
-	else if (len < (int)ft_strlen(line))
+	cmd->redir = NULL;
+	if (len < (int)ft_strlen(line))
 	{
 		cmd->redir = malloc(sizeof(char) * (ft_strlen(line) - len + 1));
 		if (!cmd->redir)
@@ -41,16 +40,16 @@ static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
 	int		i;
 
 	i = 0;
-	while (line[i] && line[i] != '|')
+	while (line[i])
 	{
-		if (is_chr("><", line[i]) && !inq(line, i, true))
+		if (is_chr(">", line[i]) && !inq(line, i, 0))
 			break ;
 		i++;
 	}
 	fill_redir(g, cmd, line, i);
 	tmp = malloc(sizeof(char) * (i + 1));
 	if (!tmp)
-		return (printf(EALL), exit(1), (void)0);
+		return (ft_perror(EALL), exit(1), (void)0);
 	ft_strncpy(tmp, line, i);
 	cmd->args = str2arr(tmp, " \t", true);
 	free(tmp);

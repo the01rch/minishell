@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 12:15:32 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/06 12:38:43 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int	check_pipes(char *str)
 	if (*str != '|')
 		return (0);
 	idx = 0;
-	//test
 	idx += skip_spaces(str);
 	if (!str[idx] || str[idx] == '|')
 		return (ft_perror(FPIPE), -1);
@@ -71,7 +70,6 @@ int check_quotes(char *str, int i)
 
 	openq = 0;
 	idx = i;
-	//comment
 	if (quote_exist(str) == false)
 		return (i);
     while (str[idx])
