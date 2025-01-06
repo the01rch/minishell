@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:20:05 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/06 15:28:06 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/06 17:23:56 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	close_fd(t_global *g, t_env *list, int *std_save, bool is_error)
 			if (g->cmds[std_save[2]]->outfile != -1)
 				close(std_save[1]);
 			if (is_error)
-				(close_all_fd_child(g), free_cmds(g), free_list(list), exit(1));
+				(free_cmds(g), free_list(list), exit(1));
 		}
 		close(std_save[0]);
 	}
@@ -32,7 +32,7 @@ int	close_fd(t_global *g, t_env *list, int *std_save, bool is_error)
 		{
 			close(std_save[1]);
 			if (is_error)
-				(close_all_fd_child(g), free_cmds(g), free_list(list), exit(1));
+				(free_cmds(g), free_list(list), exit(1));
 		}
 		close(std_save[1]);
 	}

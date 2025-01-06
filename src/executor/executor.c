@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 15:29:30 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/06 17:23:05 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,11 @@ void	execve_absolute_path(t_global *g, int id, t_env *lenv)
 				write(2, ": Permission denied\n", 20);
 			else
 				write(2, ": Is a directory\n", 17);
-			close_all_fd_child(g);
 			free_cmds(g);
 			exit(126);
 		}
 		else
 			perror(g->cmds[id]->args[0]);
-		close_all_fd_child(g);
 		free_cmds(g);
 		exit(127);
 	}
@@ -72,7 +70,6 @@ void	execve_cmd_path(t_global *g, int id, t_env *lenv)
 	{
 		write(2, g->cmds[id]->args[0], ft_strlen(g->cmds[id]->args[0]));
 		write(2, ": command not found\n", 20);
-		close_all_fd_child(g);
 		free_list(lenv);
 		free_cmds(g);
 		exit(127);
@@ -82,7 +79,6 @@ void	execve_cmd_path(t_global *g, int id, t_env *lenv)
 		perror("execve");
 		free_list(lenv);
 		free(path);
-		close_all_fd_child(g);
 		free_cmds(g);
 		exit(1);
 	}

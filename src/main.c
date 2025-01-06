@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 14:26:21 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/06 17:27:09 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ ENV
 $?
 check le $_
 */
-
 int	main(int ac, char **av, char **env)
 {
 	t_global	g;
@@ -89,7 +88,7 @@ int	main(int ac, char **av, char **env)
 			ft_exec(&g);
 		else
 			g.exit_val = 2;
-		(close_all_fd_child(&g), free(line), free_cmds(&g));
+		(free(line), free_cmds(&g));
 	}
 	(clear_history(), rl_clear_history());
 	return (free_cmds(&g), free_list(g.lenv), 0);

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:54:11 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/03 00:25:32 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/06 17:30:58 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	free_cmds(t_global *g)
 
 	if (!g || !g->cmds)
 		return ;
+	close_all_fd_child(g);
 	i = 0;
 	while (g->cmds[i])
 	{

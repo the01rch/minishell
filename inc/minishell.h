@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 14:37:37 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/06 17:47:31 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <stdarg.h>
+# include <signal.h>
+# include <sys/wait.h>
 # include "struct.h"
 
 extern int	g_signal;
