@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/04 06:48:13 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/06 14:46:58 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,23 @@
 t_env	*create_node(char *str)
 {
 	t_env	*new;
-	char	**arr;
+	int		i;
 
 	if (!str)
 		return (NULL);
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		return (NULL);
-	arr = str2arr(str, "=", false);
-	if (!arr)
-		return (free_arr(arr), free(new), NULL);
-	new->name = ft_strdup(arr[0]);
-	new->content = ft_strdup(arr[1]);
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	new->name = ft_substr(str, 0, i);
+	new->content = ft_substr(str, i + 1, ft_strlen(str));
+	printf("name: [%s]\n", new->name);
+	printf("content: [%s]\n", new->content);
 	new->next = NULL;
-	if (!new->name || (arr[1] && !new->content))
-		return (free_arr(arr), free_node(new), NULL);
-	free_arr(arr);
+	if (!new->name || !new->content)
+		return (free_node(new), NULL);
 	return (new);
 }
 

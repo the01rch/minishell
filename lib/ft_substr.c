@@ -6,11 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 21:35:19 by kpires            #+#    #+#             */
-/*   Updated: 2024/12/23 22:47:22 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/06 14:41:40 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../inc/minishell.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
@@ -19,9 +19,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	unsigned int	j;
 	unsigned int	size;
 
-	if (start >= ft_strlen(s))
+	if (start >= (unsigned int)ft_strlen(s))
 		return (ft_strdup(""));
-	size = ft_strlen(s + start);
+	size = (unsigned int)ft_strlen(s + start);
 	if (len < size)
 		size = len;
 	res = malloc(sizeof(char) * (size + 1));
