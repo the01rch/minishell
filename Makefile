@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2025/01/04 08:26:03 by redrouic         ###   ########.fr        #
+#    Updated: 2025/01/04 20:50:22 by redrouic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SLiB	=	lib/ft_strcmp.c\
 			lib/ft_atoi.c\
 			lib/ft_itoa.c\
 			lib/ft_is_nb.c\
+			lib/ft_perror.c
 
 OBJ		=	$(SRC:.c=.o)
 

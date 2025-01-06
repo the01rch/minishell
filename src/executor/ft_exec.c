@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/03 00:17:10 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/04 21:24:34 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_exit(t_global *g, t_cmd *cmd, bool print, t_env *lenv)
 	return (1);
 }
 
-static void	update_last_cmd(t_cmd *cmd, t_env *list)
+static void	update_last_cmd(t_global *g, t_cmd *cmd)
 {
 	char	*v_;
 	int		len;
@@ -56,10 +56,10 @@ static void	update_last_cmd(t_cmd *cmd, t_env *list)
 	}
 	ft_strncpy(v_, "_=/usr/bin/", 12);
 	ft_strlcat(v_, cmd->args[0], len);
-	result = plist(list, "_");
+	result = plist(g->lenv, "_");
 	if (result)
 	{
-		ft_export(list, v_);
+		ft_export(g, v_);
 		free(result);
 	}
 	free(v_);
@@ -80,13 +80,13 @@ void	close_all_fd_child(t_global *g)
 	}
 }
 
-int	set_check_cmd(t_global *g, int i, int c, t_env *list)
+int	set_check_cmd(t_global *g, int i, int c)
 {
 	if (g->cmds[c] && g->cmds[c]->args && g->cmds[c]->args[0])
 	{
 		if (ft_strcmp(g->cmds[0]->args[0], "exit"))
 			return (0);
-		update_last_cmd(g->cmds[c], list);
+		update_last_cmd(g, g->cmds[c]);
 		if (g->cmds[c]->infile != -2 && g->cmds[c]->outfile != -2)
 			return (0);
 	}
@@ -100,14 +100,14 @@ int	set_check_cmd(t_global *g, int i, int c, t_env *list)
 	return (1);
 }
 
-int	ft_exec(t_global *g, t_env *list)
+int	ft_exec(t_global *g)
 {
 	g_signal = 0;
 	if (!g->cnt)
 		return (0);
 	if (g->cnt == 1)
-		return (exec_cmd(g, 0, list));
+		return (exec_cmd(g, 0));
 	else
-		exec_cmds(g, list);
+		exec_cmds(g);
 	return (0);
 }

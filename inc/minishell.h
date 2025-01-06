@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/04 08:26:45 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/04 21:25:01 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,23 @@ int		ft_atoi(const char *str);
 int		ft_is_nb(char *cmd);
 void	ft_strncat(char *dest, char *src, size_t n);
 char	*ft_itoa(int n);
+void	ft_perror(const char *str);
 
 /*BUILTINS*/
-t_state	gest_builtins(t_env *lenv, t_cmd *cmd);
+t_state	gest_builtins(t_global *g, t_cmd *cmd);
 int		ft_exit(t_global *g, t_cmd *cmd, bool print, t_env *lenv);
-bool	ft_export(t_env *lenv, char *str);
+bool	ft_export(t_global *g, char *str);
 
 /*SIGNAL*/
 void	signal_ctrd(t_global *g);
 
 /*EXEC*/
 void	execve_cmd(t_global *g, int id, t_env *lenv);
-int		set_check_cmd(t_global *g, int i, int c, t_env *list);
-int		exec_cmd(t_global *g, int id, t_env *list);
+int		set_check_cmd(t_global *g, int i, int c);
+int		exec_cmd(t_global *g, int id);
 void	close_all_fd_child(t_global *g);
-int		ft_exec(t_global *g, t_env *list);
-void	exec_cmds(t_global *g, t_env *list);
+int		ft_exec(t_global *g);
+void	exec_cmds(t_global *g);
 void	ft_waitall(t_global *g);
 
 /*PARSING*/

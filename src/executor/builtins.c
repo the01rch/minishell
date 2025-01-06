@@ -6,18 +6,18 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/03 00:17:09 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/04 21:15:52 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-bool	ft_export(t_env *lenv, char *str)
+bool	ft_export(t_global *g, char *str)
 {
 	t_env	*tmp;
 	char	**arr;
 
-	tmp = lenv;
+	tmp = g->lenv;
 	arr = str2arr(str, "=", false);
 	if (!arr)
 		return (false);
@@ -35,21 +35,22 @@ bool	ft_export(t_env *lenv, char *str)
 	return (free_arr(arr), true);
 }
 
-static void	ft_unset(t_env *lenv, char *str)
+static void	ft_unset(t_global *g, char *str)
 {
 	t_env	*tmp;
 	t_env	*to_delete;
 
-	if (!lenv || !str)
+	if (!g->lenv || !str)
 		return ;
-	if (ft_strcmp(str, lenv->name))
+	g->exit_val = 0;
+	if (ft_strcmp(str, g->lenv->name))
 	{
-		to_delete = lenv;
-		lenv = lenv->next;
+		to_delete = g->lenv;
+		g->lenv = g->lenv->next;
 		free_node(to_delete);
 		return ;
 	}
-	tmp = lenv;
+	tmp = g->lenv;
 	while (tmp && tmp->next)
 	{
 		if (ft_strcmp(str, tmp->next->name))
@@ -63,54 +64,61 @@ static void	ft_unset(t_env *lenv, char *str)
 	}
 }
 
-static bool	ft_cd(t_env *lenv, char **arr)
+static bool	ft_cd(t_global *g, char **arr)
 {
 	char	cwd[1024];
 
 	if (!arr[1])
 	{
-		chdir(plist(lenv, "HOME"));
-		ft_export(lenv, pwrapper("PWD", plist(lenv, "HOME"), '='));
+		chdir(plist(g->lenv, "HOME"));
+		ft_export(g, pwrapper("PWD", plist(g->lenv, "HOME"), '='));
 		return (true);
 	}
 	if (arr[2])
-		return (printf("cd: too many arguments\n"), false);
+	{
+		g->exit_val = 1;
+		return (ft_perror(" too many arguments\n"), false);
+	}
 	if (chdir(arr[1]) == -1)
+	{	
+		g->exit_val = 1;
 		return (perror("cd"), false);
+	}
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		ft_export(lenv, pwrapper("PWD", cwd, '='));
+		ft_export(g, pwrapper("PWD", cwd, '='));
 	else
 		perror("getcwd");
 	return (true);
 }
 
-static t_state	gest_env(t_env *lenv, char **arr)
+static t_state	gest_env(t_global *g, char **arr)
 {
 	char	*result;
 
 	if (ft_strcmp(arr[0], "env"))
 	{
 		if (arr[1])
-			return (printf(EENV, arr[1]), ERROR);
-		return (plist(lenv, NULL), VALID);
+			return (g->exit_val = 1, printf(EENV, arr[1]), ERROR);
+		return (plist(g->lenv, NULL), VALID);
 	}
 	if (ft_strcmp(arr[0], "pwd"))
 	{
-		result = plist(lenv, "PWD");
+		result = plist(g->lenv, "PWD");
 		if (result)
 			return (printf("%s\n", result), free(result), VALID);
-		return (printf(EENV, arr[1]), ERROR);
+		g->exit_val = 1;
+		return (ERROR);
 	}
 	if (ft_strcmp(arr[0], "unset"))
-		return (ft_unset(lenv, arr[1]), VALID);
+		return (ft_unset(g, arr[1]), VALID);
 	if (ft_strcmp(arr[0], "export"))
-		return (ft_export(lenv, arr[1]), VALID);
+		return (ft_export(g, arr[1]), VALID);
 	if (ft_strcmp(arr[0], "cd"))
-		return (ft_cd(lenv, arr), VALID);
+		return (ft_cd(g, arr), VALID);
 	return (NONE);
 }
 
-t_state	gest_builtins(t_env *lenv, t_cmd *cmd)
+t_state	gest_builtins(t_global *g, t_cmd *cmd)
 {
 	int	i;
 
@@ -131,5 +139,5 @@ t_state	gest_builtins(t_env *lenv, t_cmd *cmd)
 			return (VALID);
 		return (printf("\n"), VALID);
 	}
-	return (gest_env(lenv, cmd->args));
+	return (gest_env(g, cmd->args));
 }

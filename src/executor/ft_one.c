@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:20:05 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/03 00:17:07 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/04 21:25:20 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,23 +83,23 @@ static void	gest_shell(t_global *g, t_env *lenv, int id, int *std_save)
 	ft_waitall(g);
 }
 
-int	exec_cmd(t_global *g, int id, t_env *list)
+int	exec_cmd(t_global *g, int id)
 {
 	int		std_save[3];
 
-	if (set_check_cmd(g, -1, 0, list))
+	if (set_check_cmd(g, -1, 0))
 		return (1);
 	if (ft_strcmp(g->cmds[id]->args[0], "exit"))
-		return (ft_exit(g, g->cmds[id], true, list));
+		return (ft_exit(g, g->cmds[id], true, g->lenv));
 	std_save[2] = id;
-	if (dup_inf_out(g, list, std_save) == 1)
+	if (dup_inf_out(g, g->lenv, std_save) == 1)
 	{
 		printf("exec: error with dup\n");
 		g->exit_val = 1;
 		return (g->exit_val);
 	}
-	if (gest_builtins(list, g->cmds[id]) == NONE)
-		gest_shell(g, list, id, std_save);
-	close_fd(g, list, std_save, false);
+	if (gest_builtins(g, g->cmds[id]) == NONE)
+		gest_shell(g, g->lenv, id, std_save);
+	close_fd(g, g->lenv, std_save, false);
 	return (g->exit_val);
 }

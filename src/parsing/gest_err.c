@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/02 08:47:53 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/06 11:08:08 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,69 +15,62 @@
 static int	check_pipes(char *str)
 {
 	int		idx;
-	int		len;
 
 	if (*str != '|')
 		return (0);
-	len = ft_strlen(str);
 	idx = 1;
 	idx += skip_spaces(str);
-	if (idx >= len || str[idx] == '|')
-		return (printf("%s", FPIPE), -1);
+	if (!str[idx] || str[idx] == '|')
+		return (ft_perror(FPIPE), -1);
 	return (1);
 }
 
 static int	check_redir(char *str)
 {
 	int		idx;
-	int		len;
 
 	if (!*str || !is_chr("><", *str))
 		return (0);
-	len = ft_strlen(str);
 	idx = 0;
-	if (idx + 1 < len && ft_strncmp(&str[idx], ">>", 2) == 0)
+	if (ft_strncmp(str + idx, ">>", 2) == 0)
 		idx += 2;
-	else if (*str == '>')
+	else if (str[idx] == '>')
 		idx++;
-	else if (idx + 1 < len && ft_strncmp(&str[idx], "<<", 2) == 0)
+	else if (ft_strncmp(str + idx, "<<", 2) == 0)
 		idx += 2;
-	else if (*str == '<')
+	else if (str[idx] == '<')
 		idx++;
-	while (idx < len && is_chr("\t ", str[idx]))
+	while (str[idx] && is_chr("\t ", str[idx]))
 		idx++;
-	if (idx >= len)
-		return (printf("Error: Token\n"), -1);
+	if (!str[idx])
+	{
+		return (ft_perror(FPIPE), -1);
+	}
 	if (is_chr("><|", str[idx]))
-		return (printf("Error: Token\n"), -1);
+	{
+		return (ft_perror(FPIPE), -1);
+	}
 	return (idx);
 }
 
-int	check_quotes(char *str, int i)
+int check_quotes(char *str, int i)
 {
-	char	openq;
-	int		idx;
+    char	openq;
+    int		idx;
 
 	openq = 0;
-	idx = 0;
-	if (str[i] == 34 || str[i] == 39)
-	{
-		idx = i;
-		while (str[idx])
-		{
-			if (openq == 0 && (str[idx] == 34 || str[idx] == 39))
-				openq = str[idx];
-			else if (str[idx] == openq)
-				openq = 0;
-			idx++;
-		}
-	}
-	if (openq != 0)
-	{
-		printf("Error: Quote\n");
-		return (-1);
-	}
-	return (idx);
+	idx = i;
+    while (str[idx])
+    {
+        if (openq == 0 && (str[idx] == 34 || str[idx] == 39)) 
+            openq = str[idx];
+        else if (openq != 0 && str[idx] == openq) 
+            openq = 0; 
+        idx++;
+    }
+    if (openq != 0)
+        return (printf("Error: Unmatched quote\n"), -1);
+    return (idx);
 }
 
 static int	token_indices(char *str, int i)
@@ -99,7 +92,7 @@ static int	token_indices(char *str, int i)
 	if (i <= ft_strlen(str))
 		tmp = check_redir(str + i);
 	if (tmp < 0)
-		return (-1);
+		return (ft_perror(" syntax error"), -1);
 	i += tmp;
 	return (i);
 }
@@ -115,14 +108,23 @@ bool	is_syntax_valid(t_global *g, char *str, t_env *lenv)
 		(free_list(lenv), signal_ctrd(g));
 	i = skip_spaces(str);
 	if (!str[i])
+	{
+		g->exit_val = 2;
 		return (false);
+	}
 	if (str[i] == '|')
-		return (printf("%s", FPIPE), false);
+	{
+		g->exit_val = 2;
+		return (ft_perror(FPIPE), false);
+	}
 	while (str[i])
 	{
 		tmp = token_indices(str, i);
 		if (tmp < 0)
+		{
+			g->exit_val = 2;
 			return (false);
+		}
 		i += tmp;
 		if (i > ft_strlen(str))
 			break ;

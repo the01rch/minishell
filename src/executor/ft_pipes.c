@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 18:14:52 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/03 00:17:07 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/04 21:25:45 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int	dup_inf_out_pipes(t_global *g, int id)
 
 static void	exec_pipes(t_global *g, int id, t_env *list)
 {
-	if (!set_check_cmd(g, -1, id, list))
+	if (!set_check_cmd(g, -1, id))
 	{
 		if (dup_inf_out_pipes(g, id))
 		{
@@ -52,7 +52,7 @@ static void	exec_pipes(t_global *g, int id, t_env *list)
 			exit(1);
 		}
 		close_all_fd_child(g);
-		if (gest_builtins(list, g->cmds[id]) == NONE)
+		if (gest_builtins(g, g->cmds[id]) == NONE)
 			execve_cmd(g, id, list);
 	}
 	close_all_fd_child(g);
@@ -101,14 +101,14 @@ void	ft_waitall(t_global *g)
 	}
 }
 
-void	exec_cmds(t_global *g, t_env *list)
+void	exec_cmds(t_global *g)
 {
 	int		i;
 
 	i = 0;
 	while (g->cmds[i])
 	{
-		pipe_and_fork(g, i, list);
+		pipe_and_fork(g, i, g->lenv);
 		close(g->cmds[i]->pipe[1]);
 		if (g->cmds[i + 1])
 		{
