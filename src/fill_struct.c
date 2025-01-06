@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 14:28:33 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/06 15:57:43 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@ static void	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
 
 static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
 {
-	char	*tmp;
+	char	*cmd_line;
 	int		i;
+	char	*tmp;
 
 	i = 0;
 	while (line[i])
@@ -47,18 +48,14 @@ static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
 		i++;
 	}
 	fill_redir(g, cmd, line, i);
-	tmp = malloc(sizeof(char) * (i + 1));
-	if (!tmp)
+	cmd_line = malloc(sizeof(char) * (i + 1));
+	if (!cmd_line)
 		return (ft_perror(EALL), exit(1), (void)0);
-	ft_strncpy(tmp, line, i);
+	ft_strncpy(cmd_line, line, i);
+	tmp = gest_expand(g, cmd_line);
+	free(cmd_line);
 	cmd->args = str2arr(tmp, " \t", true);
 	free(tmp);
-	for (int i = 0; cmd->args[i]; i++)
-	{
-		tmp = gest_expand(g, cmd->args[i]);
-		free(cmd->args[i]);
-		cmd->args[i] = tmp;
-	}
 	if (!cmd->args)
 		return (printf(EALL), free_cmds(g), exit(1), (void)0);
 }

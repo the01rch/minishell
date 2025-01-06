@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 14:46:58 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/06 15:09:10 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ t_env	*create_node(char *str)
 		i++;
 	new->name = ft_substr(str, 0, i);
 	new->content = ft_substr(str, i + 1, ft_strlen(str));
-	printf("name: [%s]\n", new->name);
-	printf("content: [%s]\n", new->content);
 	new->next = NULL;
 	if (!new->name || !new->content)
 		return (free_node(new), NULL);
