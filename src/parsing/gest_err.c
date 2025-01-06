@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 11:08:08 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/06 11:53:21 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static int	check_pipes(char *str)
 
 	if (*str != '|')
 		return (0);
-	idx = 1;
+	idx = 0;
+	//test
 	idx += skip_spaces(str);
 	if (!str[idx] || str[idx] == '|')
 		return (ft_perror(FPIPE), -1);
@@ -43,14 +44,24 @@ static int	check_redir(char *str)
 	while (str[idx] && is_chr("\t ", str[idx]))
 		idx++;
 	if (!str[idx])
-	{
 		return (ft_perror(FPIPE), -1);
-	}
 	if (is_chr("><|", str[idx]))
-	{
 		return (ft_perror(FPIPE), -1);
-	}
 	return (idx);
+}
+
+bool	quote_exist(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == 34 || str[i] == 39)
+			return (true);
+		i++;
+	}
+	return (false);
 }
 
 int check_quotes(char *str, int i)
@@ -60,6 +71,8 @@ int check_quotes(char *str, int i)
 
 	openq = 0;
 	idx = i;
+	if (quote_exist(str) == false)
+		return (i);
     while (str[idx])
     {
         if (openq == 0 && (str[idx] == 34 || str[idx] == 39)) 
@@ -92,7 +105,7 @@ static int	token_indices(char *str, int i)
 	if (i <= ft_strlen(str))
 		tmp = check_redir(str + i);
 	if (tmp < 0)
-		return (ft_perror(" syntax error"), -1);
+		return (-1);
 	i += tmp;
 	return (i);
 }
@@ -108,23 +121,14 @@ bool	is_syntax_valid(t_global *g, char *str, t_env *lenv)
 		(free_list(lenv), signal_ctrd(g));
 	i = skip_spaces(str);
 	if (!str[i])
-	{
-		g->exit_val = 2;
-		return (false);
-	}
+		return (g->exit_val = 2, false);
 	if (str[i] == '|')
-	{
-		g->exit_val = 2;
-		return (ft_perror(FPIPE), false);
-	}
+		return (g->exit_val = 2, false);
 	while (str[i])
 	{
 		tmp = token_indices(str, i);
 		if (tmp < 0)
-		{
-			g->exit_val = 2;
-			return (false);
-		}
+			return (g->exit_val = 2, false);
 		i += tmp;
 		if (i > ft_strlen(str))
 			break ;
