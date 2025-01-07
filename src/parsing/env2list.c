@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 15:09:10 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/07 21:03:47 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ char	**list2arr(t_env *lenv)
 	if (!arr)
 		return (NULL);
 	i = 0;
+	tmp = lenv;
 	while (tmp)
 	{
 		arr[i++] = pwrapper(tmp->name, tmp->content, '=');

@@ -6,13 +6,13 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/06 17:24:18 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/07 21:28:03 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	ft_exit(t_global *g, t_cmd *cmd, bool print, t_env *lenv)
+int	ft_exit(t_global *g, t_cmd *cmd, bool print)
 {
 	int	nb;
 
@@ -20,19 +20,19 @@ int	ft_exit(t_global *g, t_cmd *cmd, bool print, t_env *lenv)
 		printf("exit\n");
 	if (!cmd->args[1] || cmd->args[1] == NULL)
 		(free_cmds(g),
-			free_list(lenv), exit(g->exit_val));
+			free_list(g->lenv), exit(g->exit_val));
 	if ((ft_is_nb(cmd->args[1]) || ft_strlen(cmd->args[1]) >= 19)
 		&& ft_strncmp("9223372036854775807", cmd->args[1], 19) < 0)
 	{
 		write(2, "exit: ", 6);
 		write(2, cmd->args[1], ft_strlen(cmd->args[1]));
 		write(2, ": numeric argument required\n", 28);
-		(free_cmds(g), free_list(lenv), exit(2));
+		(free_cmds(g), free_list(g->lenv), exit(2));
 	}
 	if (ft_is_nb(cmd->args[1]) == 0 && cmd->args[1] && cmd->args[2] == NULL)
 	{
 		nb = ft_atoi(cmd->args[1]);
-		(free_cmds(g), free_list(lenv), exit(nb % 256));
+		(free_cmds(g), free_list(g->lenv), exit(nb % 256));
 	}
 	write(2, "exit: too many arguments\n", 25);
 	g->exit_val = 1;
@@ -78,23 +78,23 @@ void	close_all_fd_child(t_global *g)
 	}
 }
 
-int	set_check_cmd(t_global *g, int i, int c)
+int	set_check_cmd(t_global *g, int id)
 {
-	if (g->cmds[c] && g->cmds[c]->args && g->cmds[c]->args[0]
-		&& ft_strlen(g->cmds[c]->args[0]) != 0)
+	if (g->cmds[id] && g->cmds[id]->args && g->cmds[id]->args[0]
+		&& ft_strlen(g->cmds[id]->args[0]) != 0)
 	{
 		if (ft_strcmp(g->cmds[0]->args[0], "exit"))
 			return (0);
-		update_last_cmd(g, g->cmds[c]);
-		if (g->cmds[c]->infile != -2 && g->cmds[c]->outfile != -2)
+		update_last_cmd(g, g->cmds[id]);
+		if (g->cmds[id]->infile != -2 && g->cmds[id]->outfile != -2)
 			return (0);
 	}
-	if (i != -1)
+	if (g->cnt > 1)
 	{
 		close_all_fd_child(g);
-		if (i != 0)
-			close(g->cmds[c]->prev_fd);
-		close(g->cmds[c]->pipe[1]);
+		if (id != 0)
+			close(g->cmds[id]->prev_fd);
+		close(g->cmds[id]->pipe[1]);
 	}
 	return (1);
 }

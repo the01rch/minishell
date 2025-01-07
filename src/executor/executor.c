@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 17:23:05 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/07 21:31:09 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*check_access(t_env *lenv, char **arr)
 		path = pwrapper(tab[i++], arr[0], '/');
 		if (!path)
 			return (free_arr(tab), NULL);
-		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
+		if (access(path, X_OK) == 0)
 			return (free_arr(tab), path);
 		free(path);
 		path = NULL;
@@ -40,13 +40,13 @@ static char	*check_access(t_env *lenv, char **arr)
 	return (free_arr(tab), NULL);
 }
 
-void	execve_absolute_path(t_global *g, int id, t_env *lenv)
+void	execve_absolute_path(t_global *g, int id)
 {
-	if (execve(g->cmds[id]->args[0], g->cmds[id]->args, list2arr(lenv)) == -1)
+	if (execve(g->cmds[id]->args[0], g->cmds[id]->args
+			, list2arr(g->lenv)) == -1)
 	{
 		if (access(g->cmds[id]->args[0], F_OK) == 0)
 		{
-			write(2, g->cmds[id]->args[0], ft_strlen(g->cmds[id]->args[0]));
 			if (access(g->cmds[id]->args[0], X_OK) != 0)
 				write(2, ": Permission denied\n", 20);
 			else
@@ -61,23 +61,24 @@ void	execve_absolute_path(t_global *g, int id, t_env *lenv)
 	}
 }
 
-void	execve_cmd_path(t_global *g, int id, t_env *lenv)
+/*PROBLEME DE FREE DE ENV , LOOP INF SI ON FREE ICI*/
+void	execve_cmd_path(t_global *g, int id)
 {
 	char	*path;
 
-	path = check_access(lenv, g->cmds[id]->args);
+	path = check_access(g->lenv, g->cmds[id]->args);
 	if (!path)
 	{
 		write(2, g->cmds[id]->args[0], ft_strlen(g->cmds[id]->args[0]));
 		write(2, ": command not found\n", 20);
-		free_list(lenv);
+		// free_list(lenv);
 		free_cmds(g);
 		exit(127);
 	}
-	if (execve(path, g->cmds[id]->args, list2arr(lenv)) == -1)
+	if (execve(path, g->cmds[id]->args, list2arr(g->lenv)) == -1)
 	{
 		perror("execve");
-		free_list(lenv);
+		// free_list(lenv);
 		free(path);
 		free_cmds(g);
 		exit(1);
@@ -113,14 +114,14 @@ void	execve_cmd_path(t_global *g, int id, t_env *lenv)
 	}
 */
 
-void	execve_cmd(t_global *g, int id, t_env *lenv)
+void	execve_cmd(t_global *g, int id)
 {
 	int		i;
 
 	if (g->cmds[id] == NULL)
 	{
 		if (g->cmds[id + 1])
-			execve_cmd(g, id + 1, lenv);
+			execve_cmd(g, id + 1);
 		return ;
 	}
 	i = 0;
@@ -128,10 +129,10 @@ void	execve_cmd(t_global *g, int id, t_env *lenv)
 	{
 		if (g->cmds[id]->args[0][i] == '/')
 		{
-			execve_absolute_path(g, id, lenv);
+			execve_absolute_path(g, id);
 			return ;
 		}
 		i++;
 	}
-	execve_cmd_path(g, id, lenv);
+	execve_cmd_path(g, id);
 }

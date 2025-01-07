@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/04 22:04:08 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:33:50 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,24 +38,25 @@ bool	inq(char *str, int index, char quote)
 
 char	*remq(char *str)
 {
-    char	*res;
-    int		len;
-    int		i;
+	char	*res;
+	int		len;
+	int		i;
 	int		j;
 
 	i = 0;
 	j = 0;
 	len = ft_strlen(str);
-    res = malloc(sizeof(char) * (len + 1));
-    if (!res)
-        return (NULL);
-    while (str[i]) {
-        if (str[i] != '"' && str[i] != '\'')
-            res[j++] = str[i];
-        i++;
-    }
-    res[j] = '\0';
-    return (res);
+	res = malloc(sizeof(char) * (len + 1));
+	if (!res)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] != '"' && str[i] != '\'')
+			res[j++] = str[i];
+		i++;
+	}
+	res[j] = '\0';
+	return (res);
 }
 
 char	*ret_venv(t_env *lenv, char *src, int *i)

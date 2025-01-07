@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 06:04:27 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 16:24:35 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/07 21:30:41 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ char	*plist(t_env *lenv, char *name)
 	char	*result;
 
 	tmp = lenv;
-	int i = 0;
 	while (tmp != NULL)
 	{
 		if (name && ft_strcmp(name, tmp->name))
@@ -60,7 +59,6 @@ char	*plist(t_env *lenv, char *name)
 		}
 		else if (!name)
 			printf("%s=%s\n", tmp->name, tmp->content);
-		i++;
 		tmp = tmp->next;
 	}
 	return (NULL);

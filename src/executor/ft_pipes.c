@@ -6,13 +6,13 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 18:14:52 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/06 17:23:14 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/07 21:27:01 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	dup_infile(t_global *g, int id)
+static int	dup_infile(t_global *g, int id)
 {
 	if (g->cmds[id]->infile != -1)
 	{
@@ -33,7 +33,7 @@ int	dup_infile(t_global *g, int id)
 	return (0);
 }
 
-int	dup_outfile(t_global *g, int id)
+static int	dup_outfile(t_global *g, int id)
 {
 	if (g->cmds[id]->outfile != -1)
 	{
@@ -49,38 +49,9 @@ int	dup_outfile(t_global *g, int id)
 	return (0);
 }
 
-// static int	dup_inf_out_pipes(t_global *g, int id)
-// {
-// 	if (g->cmds[id]->infile != -1)
-// 	{
-// 		if (id != 0)
-// 			close(g->cmds[id]->prev_fd);
-// 		if (dup2(g->cmds[id]->infile, 0) == -1)
-// 			return (1);
-// 	}
-// 	else if (id != 0)
-// 	{
-// 		if (dup2(g->cmds[id]->prev_fd, 0) == -1)
-// 			return (close(g->cmds[id]->prev_fd), (int)1);
-// 		close(g->cmds[id]->prev_fd);
-// 		return (0);
-// 	}
-// 	if (g->cmds[id]->outfile != -1)
-// 	{
-// 		if (dup2(g->cmds[id]->outfile, 1) == -1)
-// 			return (1);
-// 	}
-// 	else if (g->cmds[id + 1])
-// 	{
-// 		if (dup2(g->cmds[id]->pipe[1], 1) == -1)
-// 			return (1);
-// 	}
-// 	return (close(g->cmds[id]->pipe[1]), (int)0);
-// }
-
-static void	exec_pipes(t_global *g, int id, t_env *list)
+static void	exec_pipes(t_global *g, int id)
 {
-	if (!set_check_cmd(g, -1, id))
+	if (!set_check_cmd(g, id))
 	{
 		if (dup_infile(g, id) || dup_outfile(g, id))
 		{
@@ -91,12 +62,12 @@ static void	exec_pipes(t_global *g, int id, t_env *list)
 		}
 		close_all_fd_child(g);
 		if (gest_builtins(g, g->cmds[id]) == NONE)
-			execve_cmd(g, id, list);
+			execve_cmd(g, id);
 	}
-	(free_list(list), free_cmds(g), exit(g->exit_val));
+	(free_list(g->lenv), free_cmds(g), exit(g->exit_val));
 }
 
-static void	pipe_and_fork(t_global *g, int id, t_env *list)
+static void	pipe_and_fork(t_global *g, int id)
 {
 	pid_t	pid;
 
@@ -108,7 +79,7 @@ static void	pipe_and_fork(t_global *g, int id, t_env *list)
 	else if (pid == 0)
 	{
 		close(g->cmds[id]->pipe[0]);
-		exec_pipes(g, id, list);
+		exec_pipes(g, id);
 	}
 	g->last_pid = pid;
 	if (g->cmds[id]->infile > 2)
@@ -145,7 +116,7 @@ void	exec_cmds(t_global *g)
 	i = 0;
 	while (g->cmds[i])
 	{
-		pipe_and_fork(g, i, g->lenv);
+		pipe_and_fork(g, i);
 		close(g->cmds[i]->pipe[1]);
 		if (g->cmds[i + 1])
 		{

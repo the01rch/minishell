@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/04 21:15:52 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:33:22 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static bool	ft_cd(t_global *g, char **arr)
 		return (ft_perror(" too many arguments\n"), false);
 	}
 	if (chdir(arr[1]) == -1)
-	{	
+	{
 		g->exit_val = 1;
 		return (perror("cd"), false);
 	}

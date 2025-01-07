@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 14:07:24 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/07 21:33:37 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,26 +63,26 @@ bool	quote_exist(char *str)
 	return (false);
 }
 
-int check_quotes(char *str, int i)
+int	check_quotes(char *str, int i)
 {
-    char	openq;
-    int		idx;
+	char	openq;
+	int		idx;
 
 	openq = 0;
 	idx = i;
 	if (quote_exist(str) == false)
 		return (i);
-    while (str[idx])
-    {
-        if (openq == 0 && (str[idx] == 34 || str[idx] == 39)) 
-            openq = str[idx];
-        else if (openq != 0 && str[idx] == openq) 
-            openq = 0; 
-        idx++;
-    }
-    if (openq != 0)
-        return (printf("Error: Unmatched quote\n"), -1);
-    return (idx);
+	while (str[idx])
+	{
+		if (openq == 0 && (str[idx] == 34 || str[idx] == 39))
+			openq = str[idx];
+		else if (openq != 0 && str[idx] == openq)
+			openq = 0;
+		idx++;
+	}
+	if (openq != 0)
+		return (printf("Error: Unmatched quote\n"), -1);
+	return (idx);
 }
 
 static int	token_indices(char *str, int i)
@@ -107,7 +107,7 @@ static int	token_indices(char *str, int i)
 	return (i);
 }
 
-bool	is_syntax_valid(t_global *g, char *str, t_env *lenv)
+bool	is_syntax_valid(t_global *g, char *str)
 {
 	int	i;
 	int	tmp;
@@ -115,7 +115,8 @@ bool	is_syntax_valid(t_global *g, char *str, t_env *lenv)
 	if (g_signal == SIGINT)
 		g->exit_val = 130;
 	if (str == NULL)
-		(free_list(lenv), signal_ctrd(g));
+		signal_ctrd(g);
+	//(free_list(lenv), signal_ctrd(g));
 	i = skip_spaces(str);
 	if (!str[i])
 		return (g->exit_val = 2, false);

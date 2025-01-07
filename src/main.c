@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 17:27:09 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/07 21:26:10 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	main(int ac, char **av, char **env)
 		g_signal = 0;
 		(signal(SIGINT, handl_int), signal(SIGQUIT, handl_quit));
 		line = readline("$> ");
-		if (!is_syntax_valid(&g, line, g.lenv))
+		if (!is_syntax_valid(&g, line))
 		{
 			free(line);
 			continue ;

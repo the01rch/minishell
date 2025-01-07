@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 17:47:31 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/07 21:26:21 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,15 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 /*BUILTINS*/
 t_state	gest_builtins(t_global *g, t_cmd *cmd);
-int		ft_exit(t_global *g, t_cmd *cmd, bool print, t_env *lenv);
+int		ft_exit(t_global *g, t_cmd *cmd, bool print);
 bool	ft_export(t_global *g, char *str);
 
 /*SIGNAL*/
 void	signal_ctrd(t_global *g);
 
 /*EXEC*/
-void	execve_cmd(t_global *g, int id, t_env *lenv);
-int		set_check_cmd(t_global *g, int i, int c);
+void	execve_cmd(t_global *g, int id);
+int		set_check_cmd(t_global *g, int id);
 int		exec_cmd(t_global *g, int id);
 void	close_all_fd_child(t_global *g);
 int		ft_exec(t_global *g);
@@ -66,7 +66,7 @@ void	exec_cmds(t_global *g);
 void	ft_waitall(t_global *g);
 
 /*PARSING*/
-bool	is_syntax_valid(t_global *g, char *str, t_env *lenv);
+bool	is_syntax_valid(t_global *g, char *str);
 t_env	*create_node(char *str);
 t_env	*arr2list(char **env);
 char	**list2arr(t_env *lenv);
