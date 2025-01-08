@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/07 21:26:10 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/08 12:14:45 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,17 +56,6 @@ static void	init_g(t_global *g, char **env)
 	g->last_pid = -1;
 }
 
-/*
-EXPANDER
-$EMPTY -> sortis vide
-$EMPTY echo hi -> hi
-bash-5.1$ "" ls
-bash: : command not found
-
-ENV
-$?
-check le $_
-*/
 int	main(int ac, char **av, char **env)
 {
 	t_global	g;
