@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/07 21:33:37 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/08 12:08:28 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,9 @@ bool	is_syntax_valid(t_global *g, char *str)
 		g->exit_val = 130;
 	if (str == NULL)
 		signal_ctrd(g);
-	//(free_list(lenv), signal_ctrd(g));
 	i = skip_spaces(str);
 	if (!str[i])
-		return (g->exit_val = 2, false);
+		return (false);
 	if (str[i] == '|')
 		return (g->exit_val = 2, false);
 	while (str[i])
