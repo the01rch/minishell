@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/08 12:14:45 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/08 15:44:13 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	signal_ctrd(t_global *g)
 	printf("exit\n");
 	if (g)
 		free_cmds(g);
+	free_list(g->lenv);
 	clear_history();
 	rl_clear_history();
 	exit(g->exit_val);

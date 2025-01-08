@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/02 21:48:14 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/08 12:37:44 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static char	*ft_fname(char *redir, int i, int len, char *dels)
 		file[len++] = redir[i];
 	}
 	file[len] = '\0';
+	// printf("file: [%s]\n", file);
 	return (file);
 }
 

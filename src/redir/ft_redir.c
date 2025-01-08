@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/06 14:34:20 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/08 12:37:27 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,16 +103,16 @@ int	ft_redir(t_global *g, t_env *lenv, int i, int tmp)
 		j = 0;
 		while (j < ft_strlen(g->cmds[i]->redir) && g->cmds[i]->redir[j])
 		{
-			if (ft_strncmp(g->cmds[i]->redir + i, ">>", 2) == 0)
+			if (ft_strncmp(g->cmds[i]->redir + j, ">>", 2) == 0)
 				tmp = ft_append(g, g->cmds[i], g->cmds[i]->redir + j + 2);
 			else if (g->cmds[i]->redir[j] == '>')
 				tmp = ft_overwrite(g, g->cmds[i], g->cmds[i]->redir + j + 1);
-			if (ft_strncmp(g->cmds[i]->redir + i, "<<", 2) == 0)
+			if (ft_strncmp(g->cmds[i]->redir + j, "<<", 2) == 0)
 				tmp = ft_heredoc(g->cmds[i], g->cmds[i]->redir + j + 2, lenv);
 			else if (g->cmds[i]->redir[j] == '<')
 				tmp = ft_redir_input(g, g->cmds[i], g->cmds[i]->redir + j + 1);
 			if (tmp < 0)
-				j += skip_cmd(g->cmds[i]->redir + i);
+				j += skip_cmd(g->cmds[i]->redir + j);
 			if (!g->cmds[i]->redir[j])
 				return (1);
 			j += tmp + skip_nonredir(g->cmds[i]->redir, (j + tmp));

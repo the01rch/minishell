@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/07 21:31:09 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/08 13:27:44 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,30 @@ static char	*check_access(t_env *lenv, char **arr)
 
 void	execve_absolute_path(t_global *g, int id)
 {
-	if (execve(g->cmds[id]->args[0], g->cmds[id]->args
-			, list2arr(g->lenv)) == -1)
+	char	**lenv;
+
+	lenv = list2arr(g->lenv);
+	if (execve(g->cmds[id]->args[0], g->cmds[id]->args, lenv) == -1)
 	{
 		if (access(g->cmds[id]->args[0], F_OK) == 0)
 		{
 			if (access(g->cmds[id]->args[0], X_OK) != 0)
-				write(2, ": Permission denied\n", 20);
+			{
+				ft_perror(g->cmds[id]->args[0]);
+				ft_perror(": Permission denied\n");
+			}
 			else
-				write(2, ": Is a directory\n", 17);
-			free_cmds(g);
-			exit(126);
+			{
+				ft_perror(g->cmds[id]->args[0]);
+				ft_perror(": Is a directory\n");
+			}
+			(free_cmds(g), free_list(g->lenv)
+				, free_arr(lenv), exit(126));
 		}
 		else
 			perror(g->cmds[id]->args[0]);
-		free_cmds(g);
-		exit(127);
+		(free_list(g->lenv), free_cmds(g)
+			, free_arr(lenv), exit(127));
 	}
 }
 
@@ -71,14 +79,14 @@ void	execve_cmd_path(t_global *g, int id)
 	{
 		write(2, g->cmds[id]->args[0], ft_strlen(g->cmds[id]->args[0]));
 		write(2, ": command not found\n", 20);
-		// free_list(lenv);
+		free_list(g->lenv);
 		free_cmds(g);
 		exit(127);
 	}
 	if (execve(path, g->cmds[id]->args, list2arr(g->lenv)) == -1)
 	{
 		perror("execve");
-		// free_list(lenv);
+		free_list(g->lenv);
 		free(path);
 		free_cmds(g);
 		exit(1);

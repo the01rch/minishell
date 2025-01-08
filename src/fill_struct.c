@@ -6,32 +6,51 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/06 15:57:43 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/08 15:43:55 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static void	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
+static void	init_cmd(t_cmd *cmd)
 {
-	int	i;
-
+	cmd->args = NULL;
+	cmd->redir = NULL;
 	cmd->infile = -1;
 	cmd->outfile = -1;
 	cmd->prev_fd = -1;
 	cmd->pipe[0] = -1;
 	cmd->pipe[1] = -1;
-	cmd->redir = NULL;
+}
+
+static void	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
+{
+	int		i;
+	char	*t;
+	int		k;
+
+	k = 0;
 	if (len < (int)ft_strlen(line))
 	{
 		cmd->redir = malloc(sizeof(char) * (ft_strlen(line) - len + 1));
+		t = malloc(sizeof(char) * 1484);
 		if (!cmd->redir)
 			return (printf("%s", EALL), free_cmds(g), exit(1), (void)0);
 		i = 0;
 		while (len < (int)ft_strlen(line))
-			cmd->redir[i++] = line[len++];
+		{
+			if (line[len] == 32 && !is_chr("><", line[len - 1]))
+			{
+				while (!is_chr("><", line[len]) && !inq(line, len, 0))
+					t[k++] = line[len++];
+			}
+			if (len < (int)ft_strlen(line))
+				cmd->redir[i++] = line[len++];
+		}
+		printf("t :%s\n", t);
 		cmd->redir[i] = '\0';
 	}
+	printf("redir :%s\n", cmd->redir);
 }
 
 static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
@@ -47,6 +66,7 @@ static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
 			break ;
 		i++;
 	}
+	init_cmd(cmd);
 	fill_redir(g, cmd, line, i);
 	cmd_line = malloc(sizeof(char) * (i + 1));
 	if (!cmd_line)
