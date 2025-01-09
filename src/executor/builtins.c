@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/07 21:33:22 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/08 17:14:13 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,8 @@ t_state	gest_builtins(t_global *g, t_cmd *cmd)
 				printf("%s", cmd->args[i++]);
 		}
 		if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n"))
-			return (VALID);
-		return (printf("\n"), VALID);
+			return (g->exit_val = 0, VALID);
+		return (printf("\n"), g->exit_val = 0, VALID);
 	}
 	return (gest_env(g, cmd->args));
 }

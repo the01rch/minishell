@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/08 15:43:55 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/08 17:02:53 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,10 @@ static void	init_cmd(t_cmd *cmd)
 static void	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
 {
 	int		i;
-	char	*t;
-	int		k;
 
-	k = 0;
 	if (len < (int)ft_strlen(line))
 	{
 		cmd->redir = malloc(sizeof(char) * (ft_strlen(line) - len + 1));
-		t = malloc(sizeof(char) * 1484);
 		if (!cmd->redir)
 			return (printf("%s", EALL), free_cmds(g), exit(1), (void)0);
 		i = 0;
@@ -41,25 +37,25 @@ static void	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
 		{
 			if (line[len] == 32 && !is_chr("><", line[len - 1]))
 			{
-				while (!is_chr("><", line[len]) && !inq(line, len, 0))
-					t[k++] = line[len++];
+				while (line[len] && !is_chr("><", line[len]) && !inq(line, len, 0))
+					len++;
 			}
-			if (len < (int)ft_strlen(line))
-				cmd->redir[i++] = line[len++];
+			cmd->redir[i++] = line[len++];
 		}
-		printf("t :%s\n", t);
 		cmd->redir[i] = '\0';
 	}
-	printf("redir :%s\n", cmd->redir);
 }
 
-static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
-{
-	char	*cmd_line;
+static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line) {
+	char	cmd_line[1024];
 	int		i;
 	char	*tmp;
+	int		w;
+	bool	redirect;
 
 	i = 0;
+	w = 0;
+	redirect = false;
 	while (line[i])
 	{
 		if (is_chr("><", line[i]) && !inq(line, i, 0))
@@ -68,12 +64,26 @@ static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
 	}
 	init_cmd(cmd);
 	fill_redir(g, cmd, line, i);
-	cmd_line = malloc(sizeof(char) * (i + 1));
-	if (!cmd_line)
-		return (ft_perror(EALL), exit(1), (void)0);
-	ft_strncpy(cmd_line, line, i);
+	i = 0;
+	while (line[i])
+	{
+		if (is_chr("><", line[i]))
+			redirect = true;
+		if (redirect)
+		{
+			if (line[i] == 32 && !is_chr("><", line[i - 1]))
+			{
+				while (line[i] && !is_chr("><", line[i]) && !inq(line, i, 0))
+					cmd_line[w++] = line[i++];
+				redirect = false;
+			}
+		}
+		else
+			cmd_line[w++] = line[i];
+		i++;
+	}
+	cmd_line[w] = '\0';
 	tmp = gest_expand(g, cmd_line);
-	free(cmd_line);
 	cmd->args = str2arr(tmp, " \t", true);
 	free(tmp);
 	if (!cmd->args)
