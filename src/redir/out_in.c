@@ -6,38 +6,49 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/08 12:37:44 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 16:41:01 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+bool	debug1 = false;
+
 static char	*ft_fname(char *redir, int i, int len, char *dels)
 {
 	char	*file;
-	bool	q;
+	char	q;
 
 	if (!redir)
 		return (NULL);
-	while (redir[i] && !is_chr(dels, redir[i]))
+	i = skip_spaces(redir);
+	q = '\0';
+	while (redir[i] && (!is_chr(dels, redir[i])
+			|| (is_chr("'\"", q) && redir[i] != q)))
 		i++;
-	file = malloc(sizeof(char) * (i + 1));
+	file = malloc(sizeof(char) * 2 * (i + 1));
 	if (!file)
 		return (NULL);
-	i = -1;
-	while (redir[++i] && !is_chr(dels, redir[i]))
+	i = skip_spaces(redir) - 1;
+	while (redir[++i] && (!is_chr(dels, redir[i])
+			|| (is_chr("'\"", q) && redir[i] != q)))
 	{
-		if (redir[i] == '"')
+		if (is_chr("'\"", redir[i]) && !q)
 		{
-			if (q)
-				break ;
-			q = !q;
+			q = redir[i];
+			continue ;
+		}
+		if (redir[i] == q)
+		{
+			q = '\0';
 			continue ;
 		}
 		file[len++] = redir[i];
 	}
 	file[len] = '\0';
-	// printf("file: [%s]\n", file);
+	file = remq(file);
+	if (debug1)
+		printf("file: [%s]\n", file);
 	return (file);
 }
 

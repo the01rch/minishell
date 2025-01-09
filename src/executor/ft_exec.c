@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/07 21:28:03 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 16:42:05 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ int	ft_exit(t_global *g, t_cmd *cmd, bool print)
 	if (print)
 		printf("exit\n");
 	if (!cmd->args[1] || cmd->args[1] == NULL)
-		(free_cmds(g),
-			free_list(g->lenv), exit(g->exit_val));
+		(free_cmds(g), free_list(g->lenv), exit(g->exit_val));
 	if ((ft_is_nb(cmd->args[1]) || ft_strlen(cmd->args[1]) >= 19)
-		&& ft_strncmp("9223372036854775807", cmd->args[1], 19) < 0)
+		&& ((ft_strncmp("9223372036854775807", cmd->args[1], 19) < 0
+				&& cmd->args[1][0] != '-')
+		|| (ft_strncmp("-9223372036854775808", cmd->args[1], 20) < 0
+			&& cmd->args[1][0] == '-')))
 	{
-		write(2, "exit: ", 6);
-		write(2, cmd->args[1], ft_strlen(cmd->args[1]));
-		write(2, ": numeric argument required\n", 28);
+		(ft_perror("exit: "), ft_perror(cmd->args[1]));
+		ft_perror(": numeric argument required\n");
 		(free_cmds(g), free_list(g->lenv), exit(2));
 	}
 	if (ft_is_nb(cmd->args[1]) == 0 && cmd->args[1] && cmd->args[2] == NULL)

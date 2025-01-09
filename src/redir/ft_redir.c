@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/08 12:37:27 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 16:40:05 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,27 @@ int	extract_varlen(char *line, int len, char **v_name, bool del_sign)
 	return (len);
 }
 
+static int	ft_skipquotes(char *str, char quote)
+{
+	int	idx;
+
+	idx = 0;
+	if (str[idx] && str[idx] == quote)
+	{
+		idx++;
+		while (str[idx] && str[idx] != quote)
+			idx++;
+		if (!str[idx])
+			return (-1);
+		if (str[idx])
+			idx++;
+	}
+	return (idx);
+}
+
 static int	skip_nonredir(char *redir, int i)
 {
 	int	count;
-	int	qlen;
 	int	rlen;
 
 	count = 0;
@@ -68,16 +85,10 @@ static int	skip_nonredir(char *redir, int i)
 		return (0);
 	while (redir[i + count] && !is_chr("><|", redir[i + count]))
 	{
-		if (is_chr("'\"", redir[i + count]))
-		{
-			qlen = check_quotes(redir + i + count, 0);
-			if (qlen > 0)
-				count += qlen;
-			else
-				count++;
-		}
-		else
+		if (!is_chr("'\"", redir[i + count]))
 			count++;
+		count += ft_skipquotes(redir + i + count, '"');
+		count += ft_skipquotes(redir + i + count, '\'');
 	}
 	return (count);
 }
@@ -114,7 +125,7 @@ int	ft_redir(t_global *g, t_env *lenv, int i, int tmp)
 			if (tmp < 0)
 				j += skip_cmd(g->cmds[i]->redir + j);
 			if (!g->cmds[i]->redir[j])
-				return (1);
+				break ;
 			j += tmp + skip_nonredir(g->cmds[i]->redir, (j + tmp));
 		}
 	}

@@ -6,11 +6,13 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/09 10:06:02 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/09 16:34:53 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+bool debug = false;
 
 static void	init_cmd(t_cmd *cmd)
 {
@@ -62,6 +64,8 @@ static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
 	}
 	init_cmd(cmd);
 	fill_redir(g, cmd, line, i);
+	if (debug)
+		printf("redir: [%s]\n", cmd->redir);
 	ft_strncpy(cmd_line, line, i);
 	w = i;
 	while (line[i])
@@ -74,6 +78,8 @@ static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
 		i++;
 	}
 	cmd_line[w] = '\0';
+	if (debug)
+		printf("cmd_line: [%s]\n", cmd_line);
 	tmp = gest_expand(g, cmd_line);
 	cmd->args = str2arr(tmp, " \t", true);
 	free(tmp);
