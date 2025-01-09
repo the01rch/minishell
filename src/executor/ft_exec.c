@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/09 16:42:05 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 23:01:05 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_exit(t_global *g, t_cmd *cmd, bool print)
 		nb = ft_atoi(cmd->args[1]);
 		(free_cmds(g), free_list(g->lenv), exit(nb % 256));
 	}
-	write(2, "exit: too many arguments\n", 25);
+	ft_perror("exit: too many arguments\n");
 	g->exit_val = 1;
 	return (1);
 }

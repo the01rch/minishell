@@ -6,51 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/09 16:41:01 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 23:30:01 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-bool	debug1 = false;
-
-static char	*ft_fname(char *redir, int i, int len, char *dels)
-{
-	char	*file;
-	char	q;
-
-	if (!redir)
-		return (NULL);
-	i = skip_spaces(redir);
-	q = '\0';
-	while (redir[i] && (!is_chr(dels, redir[i])
-			|| (is_chr("'\"", q) && redir[i] != q)))
-		i++;
-	file = malloc(sizeof(char) * 2 * (i + 1));
-	if (!file)
-		return (NULL);
-	i = skip_spaces(redir) - 1;
-	while (redir[++i] && (!is_chr(dels, redir[i])
-			|| (is_chr("'\"", q) && redir[i] != q)))
-	{
-		if (is_chr("'\"", redir[i]) && !q)
-		{
-			q = redir[i];
-			continue ;
-		}
-		if (redir[i] == q)
-		{
-			q = '\0';
-			continue ;
-		}
-		file[len++] = redir[i];
-	}
-	file[len] = '\0';
-	file = remq(file);
-	if (debug1)
-		printf("file: [%s]\n", file);
-	return (file);
-}
 
 int	ft_overwrite(t_global *g, t_cmd *cmd, char *redir)
 {
@@ -124,17 +84,49 @@ int	ft_redir_input(t_global *g, t_cmd *cmd, char *redir)
 	return (1);
 }
 
-int	ft_heredoc(t_cmd *cmd, char *redir, t_env *lenv)
+static int	handle_heredoc_child(t_global *g, int id, int *fd, char *redir)
 {
-	int		fd[2];
 	int		i;
+	void	(*old_handler)(int);
 
+	old_handler = signal(SIGINT, handl_heredoc);
 	i = skip_spaces(redir + 0);
-	if (pipe(fd) == -1)
-		return (-1);
+	fd[2] = id;
+	signal(SIGINT, handl_heredoc);
 	if (check_quotes(redir + i, 0) || *redir + i == '\\')
-		return ((i) + ft_hd_q(cmd, fd, ft_fname(redir + i, 0, 0, "<>|")));
+		return ((i) + ft_hd_q(g->cmds[id], fd
+				, ft_fname(redir + i, 0, 0, "<>|")));
 	else
 		return ((i)
-			+ ft_hd_nq(cmd, fd, ft_fname(redir + i, 0, 0, "<>| "), lenv));
+			+ ft_hd_nq(g, fd, ft_fname(redir + i, 0, 0, "<>| "), old_handler));
+}
+
+int	ft_heredoc(t_global *g, int id, char *redir)
+{
+	int		fd[2];
+	pid_t	pid;
+	int		status;
+
+	status = 0;
+	if (pipe(fd) == -1)
+		return (-1);
+	pid = fork();
+	if (pid == -1)
+		return (close(fd[0]), close(fd[1]), -1);
+	if (pid == 0)
+	{
+		close(fd[0]);
+		status = handle_heredoc_child(g, id, fd, redir);
+		printf("sadddddddddddddddd\n");
+		(free_cmds(g), free_list(g->lenv), exit(status));
+	}
+	(close(fd[1]), waitpid(pid, &status, 0));
+	if (WIFSIGNALED(status))
+	{
+		close(fd[0]);
+		g->cmds[id]->infile = -2;
+		return (-1);
+	}
+	g->cmds[id]->infile = fd[0];
+	return (2);
 }

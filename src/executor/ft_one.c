@@ -6,11 +6,31 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:20:05 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/07 21:28:44 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 21:10:13 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	ft_waitall(t_global *g)
+{
+	int	pid;
+	int	exit_status;
+
+	while (42)
+	{
+		pid = wait(&exit_status);
+		if (pid == g->last_pid)
+		{
+			if (WIFEXITED(exit_status))
+				g->exit_val = WEXITSTATUS(exit_status);
+		}
+		if (g_signal != 0)
+			g->exit_val = 128 + g_signal;
+		if (pid == -1)
+			break ;
+	}
+}
 
 int	close_fd(t_global *g, int *std_save, bool is_error)
 {

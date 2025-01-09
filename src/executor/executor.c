@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/08 13:27:44 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 23:00:48 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	execve_absolute_path(t_global *g, int id)
 	}
 }
 
-/*PROBLEME DE FREE DE ENV , LOOP INF SI ON FREE ICI*/
 void	execve_cmd_path(t_global *g, int id)
 {
 	char	*path;
@@ -77,8 +76,8 @@ void	execve_cmd_path(t_global *g, int id)
 	path = check_access(g->lenv, g->cmds[id]->args);
 	if (!path)
 	{
-		write(2, g->cmds[id]->args[0], ft_strlen(g->cmds[id]->args[0]));
-		write(2, ": command not found\n", 20);
+		ft_perror(g->cmds[id]->args[0]);
+		ft_perror(": command not found\n");
 		free_list(g->lenv);
 		free_cmds(g);
 		exit(127);

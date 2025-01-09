@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/07 21:03:47 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 22:55:06 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,14 @@ static char	**new_env(void)
 	if (!new)
 		return (NULL);
 	getcwd(cwd, sizeof(cwd));
-	ft_strncat(new[0], "PWD=", 0);
-	ft_strncat(new[0], cwd, ft_strlen(new[0]));
+	new[0] = malloc(sizeof(char) * (ft_strlen(cwd) + 5));
+	if (!new[0])
+		return (free(new), NULL);
+	ft_strlcpy(new[0], "PWD=", 5);
+	ft_strlcpy(new[0] + 4, cwd, ft_strlen(cwd) + 4);
 	new[1] = ft_strdup("SHLVL=1");
 	new[2] = ft_strdup("_=/usr/bin/env");
+	new[3] = NULL;
 	return (new);
 }
 
@@ -54,24 +58,28 @@ t_env	*arr2list(char **env)
 	t_env	*head;
 	t_env	*tmp;
 	t_env	*result;
+	bool	new;
 
+	new = false;
 	if (!*env)
+	{
+		new = true;
 		env = new_env();
+	}
 	head = create_node("a=b");
 	if (!head)
 		return (NULL);
 	tmp = head;
 	while (*env)
 	{
-		tmp->next = create_node(*env);
+		tmp->next = create_node(*env++);
 		if (!tmp->next)
 			return (free_list(head), NULL);
+		if (!new && tmp->next && ft_strcmp(tmp->next->name, "SHLVL") == 1)
+			tmp->next->content = ft_itoa(ft_atoi(tmp->next->content) + 1);
 		tmp = tmp->next;
-		env++;
 	}
-	result = head->next;
-	free_node(head);
-	return (result);
+	return (result = head->next, free_node(head), (t_env *)result);
 }
 
 char	**list2arr(t_env *lenv)

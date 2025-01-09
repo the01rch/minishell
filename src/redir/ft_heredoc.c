@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:52:04 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/02 22:47:39 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 23:23:33 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,40 +79,51 @@ static char	*ft_here_parse(char *line, t_env *lenv)
 		return (printf("%s\n", ERR_ALLOC), NULL);
 	hd = fill_hd(line, lenv, hd, 0);
 	if (!hd)
-		return (NULL);
+		return (line);
 	return (hd);
 }
 
 int	ft_hd_q(t_cmd *cmd, int *fd, char *del)
 {
 	char	*hd;
+	void	(*old_handler)(int);
 
-	while (777)
+	old_handler = signal(SIGINT, handl_heredoc);
+	while (g_signal != SIGINT)
 	{
 		hd = readline("heredoc (not parsed)> ");
-		if (!hd)
+		if (!hd || g_signal == SIGINT)
 		{
+			if (g_signal == SIGINT)
+			{
+				(close(fd[0]), fd[0] = -2);
+				break ;
+			}
 			printf("%s\n", ERR_HD_EOF);
 			break ;
 		}
 		if ((ft_strncmp(hd, del, ft_strlen(del)) == 0
 				&& hd[ft_strlen(del)] == 0))
 			break ;
-		write_here(hd, fd[1], ft_strlen(hd));
-		free(hd);
+		(write_here(hd, fd[1], ft_strlen(hd)), free(hd));
 	}
-	(free(del), free(hd), close(fd[1]));
+	(signal(SIGINT, old_handler), free(del), free(hd), close(fd[1]));
 	cmd->infile = fd[0];
 	return (2);
 }
 
-int	ft_hd_nq(t_cmd *cmd, int *fd, char *del, t_env *lenv)
+int	ft_hd_nq(t_global *g, int *fd, char *del, void (*old_handler)(int))
 {
 	char	*hd;
 
-	while (777)
+	while (g_signal != SIGINT)
 	{
 		hd = readline("heredoc> ");
+		if (g_signal == SIGINT)
+		{
+			(close(fd[0]), fd[0] = -2);
+			break ;
+		}
 		if (!hd)
 		{
 			printf("%s\n", ERR_HD_EOF);
@@ -121,16 +132,10 @@ int	ft_hd_nq(t_cmd *cmd, int *fd, char *del, t_env *lenv)
 		if ((ft_strncmp(hd, del, ft_strlen(del)) == 0
 				&& hd[ft_strlen(del)] == 0))
 			break ;
-		hd = ft_here_parse(hd, lenv);
-		if (!hd)
-		{
-			cmd->infile = -2;
-			return (close(fd[0]), close(fd[1]), free(del), (int)-1);
-		}
-		write_here(hd, fd[1], ft_strlen(hd));
-		(free(hd));
+		hd = ft_here_parse(hd, g->lenv);
+		(write_here(hd, fd[1], ft_strlen(hd)), free(hd));
 	}
-	(free(del), free(hd), close(fd[1]));
-	cmd->infile = fd[0];
+	(signal(SIGINT, old_handler), free(del), free(hd), close(fd[1]));
+	g->cmds[fd[2]]->infile = fd[0];
 	return (2);
 }

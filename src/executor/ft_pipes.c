@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 18:14:52 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/09 16:19:12 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 21:10:10 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,26 +87,6 @@ static void	pipe_and_fork(t_global *g, int id)
 	if (g->cmds[id]->outfile > 2)
 		close(g->cmds[id]->outfile);
 	return ;
-}
-
-void	ft_waitall(t_global *g)
-{
-	int	pid;
-	int	exit_status;
-
-	while (42)
-	{
-		pid = wait(&exit_status);
-		if (pid == g->last_pid)
-		{
-			if (WIFEXITED(exit_status))
-				g->exit_val = WEXITSTATUS(exit_status);
-		}
-		if (g_signal != 0)
-			g->exit_val = 128 + g_signal;
-		if (pid == -1)
-			break ;
-	}
 }
 
 void	exec_cmds(t_global *g)

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/08 15:44:13 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 22:24:20 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_signal = 0;
 
-static void	handl_int(int sig)
+void	handl_int(int sig)
 {
 	printf("\n");
 	rl_replace_line("", 0);
@@ -74,7 +74,7 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		init_s_cmd(&g, line);
-		if (ft_redir(&g, g.lenv, -1, 0))
+		if (ft_redir(&g, -1, 0))
 			ft_exec(&g);
 		else
 			g.exit_val = 2;

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/09 16:40:05 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/09 21:25:53 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,24 +56,6 @@ int	extract_varlen(char *line, int len, char **v_name, bool del_sign)
 	return (len);
 }
 
-static int	ft_skipquotes(char *str, char quote)
-{
-	int	idx;
-
-	idx = 0;
-	if (str[idx] && str[idx] == quote)
-	{
-		idx++;
-		while (str[idx] && str[idx] != quote)
-			idx++;
-		if (!str[idx])
-			return (-1);
-		if (str[idx])
-			idx++;
-	}
-	return (idx);
-}
-
 static int	skip_nonredir(char *redir, int i)
 {
 	int	count;
@@ -103,7 +85,7 @@ static int	skip_cmd(char *redir)
 	return (i);
 }
 
-int	ft_redir(t_global *g, t_env *lenv, int i, int tmp)
+int	ft_redir(t_global *g, int i, int tmp)
 {
 	int	j;
 
@@ -119,7 +101,7 @@ int	ft_redir(t_global *g, t_env *lenv, int i, int tmp)
 			else if (g->cmds[i]->redir[j] == '>')
 				tmp = ft_overwrite(g, g->cmds[i], g->cmds[i]->redir + j + 1);
 			if (ft_strncmp(g->cmds[i]->redir + j, "<<", 2) == 0)
-				tmp = ft_heredoc(g->cmds[i], g->cmds[i]->redir + j + 2, lenv);
+				tmp = ft_heredoc(g, i, g->cmds[i]->redir + j + 2);
 			else if (g->cmds[i]->redir[j] == '<')
 				tmp = ft_redir_input(g, g->cmds[i], g->cmds[i]->redir + j + 1);
 			if (tmp < 0)
