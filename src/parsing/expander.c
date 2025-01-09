@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/08 12:13:24 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/09 10:22:28 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ char	*gest_expand(t_global *g, char *str)
 	{
 		if (str[i] == '$' && !inq(str, i, '\''))
 		{
+			// TODO :handling single $
 			i++;
 			if (str[i] == '?')
 			{

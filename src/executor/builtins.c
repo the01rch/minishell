@@ -6,34 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/08 17:14:13 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/09 23:10:33 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-bool	ft_export(t_global *g, char *str)
-{
-	t_env	*tmp;
-	char	**arr;
-
-	tmp = g->lenv;
-	arr = str2arr(str, "=", false);
-	if (!arr)
-		return (false);
-	while (tmp->next != NULL)
-	{
-		if (ft_strcmp(arr[0], tmp->name))
-		{
-			free(tmp->content);
-			tmp->content = ft_strdup(arr[1]);
-			return (free_arr(arr), true);
-		}
-		tmp = tmp->next;
-	}
-	tmp->next = create_node(str);
-	return (free_arr(arr), true);
-}
 
 static void	ft_unset(t_global *g, char *str)
 {
@@ -67,28 +44,25 @@ static void	ft_unset(t_global *g, char *str)
 static bool	ft_cd(t_global *g, char **arr)
 {
 	char	cwd[1024];
+	char	*tmp;
 
 	if (!arr[1])
 	{
 		chdir(plist(g->lenv, "HOME"));
-		ft_export(g, pwrapper("PWD", plist(g->lenv, "HOME"), '='));
-		return (true);
+		tmp = pwrapper("PWD", plist(g->lenv, "HOME"), '=');
+		ft_export(g, &tmp);
+		return (free(tmp), true);
 	}
 	if (arr[2])
-	{
-		g->exit_val = 1;
-		return (ft_perror(" too many arguments\n"), false);
-	}
+		return (g->exit_val = 1, ft_perror(" too many arguments\n"), false);
 	if (chdir(arr[1]) == -1)
-	{
-		g->exit_val = 1;
-		return (perror("cd"), false);
-	}
+		return (g->exit_val = 1, perror("cd"), false);
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		ft_export(g, pwrapper("PWD", cwd, '='));
-	else
-		perror("getcwd");
-	return (true);
+	{
+		tmp = pwrapper("PWD", cwd, '=');
+		return (ft_export(g, &tmp), free(tmp), true);
+	}
+	return (perror("getcwd"), true);
 }
 
 static t_state	gest_env(t_global *g, char **arr)
@@ -112,7 +86,7 @@ static t_state	gest_env(t_global *g, char **arr)
 	if (ft_strcmp(arr[0], "unset"))
 		return (ft_unset(g, arr[1]), VALID);
 	if (ft_strcmp(arr[0], "export"))
-		return (ft_export(g, arr[1]), VALID);
+		return (ft_export(g, &arr[1]), VALID);
 	if (ft_strcmp(arr[0], "cd"))
 		return (ft_cd(g, arr), VALID);
 	return (NONE);
