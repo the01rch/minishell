@@ -6,7 +6,7 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/09 23:11:36 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/09 23:22:58 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static t_state is_format_export(char *str)
 	bool	equal;
 
 	equal = false;
-	printf("str : %s\n", str);
+//	printf("str : %s\n", str);
 	while (*str)
 	{
 		if (*str == '=')
