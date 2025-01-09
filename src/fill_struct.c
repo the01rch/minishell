@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/08 17:02:53 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/09 10:06:02 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,14 @@ static void	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
 	}
 }
 
-static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line) {
+static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
+{
 	char	cmd_line[1024];
-	int		i;
 	char	*tmp;
+	int		i;
 	int		w;
-	bool	redirect;
 
 	i = 0;
-	w = 0;
-	redirect = false;
 	while (line[i])
 	{
 		if (is_chr("><", line[i]) && !inq(line, i, 0))
@@ -64,22 +62,15 @@ static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line) {
 	}
 	init_cmd(cmd);
 	fill_redir(g, cmd, line, i);
-	i = 0;
+	ft_strncpy(cmd_line, line, i);
+	w = i;
 	while (line[i])
 	{
-		if (is_chr("><", line[i]))
-			redirect = true;
-		if (redirect)
+		if (line[i] == 32 && !is_chr("><", line[i - 1]))
 		{
-			if (line[i] == 32 && !is_chr("><", line[i - 1]))
-			{
-				while (line[i] && !is_chr("><", line[i]) && !inq(line, i, 0))
-					cmd_line[w++] = line[i++];
-				redirect = false;
-			}
+			while (line[i] && !is_chr("><", line[i]))
+				cmd_line[w++] = line[i++];
 		}
-		else
-			cmd_line[w++] = line[i];
 		i++;
 	}
 	cmd_line[w] = '\0';
