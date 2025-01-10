@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/16 17:25:21 by redrouic          #+#    #+#             */
-/*   Updated: 2024/12/23 13:09:02 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 15:59:21 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,9 @@ static char	**init_arr(const char *chr, char *str, bool quote)
 	y = 0;
 	while (y < rows)
 	{
-		arr[y] = malloc(sizeof(char) * (cols[y] + 1));
+		arr[y] = ft_calloc(sizeof(char), (cols[y] + 1));
 		if (!arr[y])
 			return (free_arr(arr), free(cols), NULL);
-		ft_memset(arr[y], 0, cols[y] + 1);
 		y++;
 	}
 	arr[y] = NULL;
