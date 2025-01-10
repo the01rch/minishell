@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 16:20:59 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 18:39:37 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@ bool	inq(char *str, int index, char quote)
 	return (current != '\0');
 }
 
+static void	copy_non_quotes(char *res, char *str, int *i, int *j)
+{
+	char	quote;
+
+	quote = str[*i];
+	(*i)++;
+	while (str[*i] && str[*i] != quote)
+		res[(*j)++] = str[(*i)++];
+	if (str[*i] == quote)
+		(*i)++;
+}
+
 char	*remq(char *str)
 {
 	char	*res;
@@ -43,21 +55,25 @@ char	*remq(char *str)
 	int		i;
 	int		j;
 
+	len = ft_strlen(str);
 	i = 0;
 	j = 0;
-	len = ft_strlen(str);
-	res = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	res = malloc(sizeof(char) * len + 1);
 	if (!res)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] != '"' && str[i] != '\'')
-			res[j++] = str[i];
-		i++;
+		if ((str[i] == '"' || str[i] == '\''))
+		{
+			copy_non_quotes(res, str, &i, &j);
+			continue ;
+		}
+		res[j++] = str[i++];
 	}
 	res[j] = '\0';
-	free(str);
-	return (res);
+	return (free(str), res);
 }
 
 char	*ret_venv(t_env *lenv, char *src, int *i)
@@ -104,7 +120,7 @@ char	*gest_expand(t_global *g, char *str)
 	{
 		if (str[i] == '$' && !inq(str, i, '\''))
 		{
-			if (str[i + 1] == '\0' || str[i + 1] == '\"')
+			if (str[i + 1] == '\0' || is_chr(" \t\"", str[i + 1]))
 			{
 				buf[y++] = str[i++];
 				continue ;
@@ -132,4 +148,5 @@ char	*gest_expand(t_global *g, char *str)
 	buf[y] = '\0';
 	return (buf);
 }
+
 #endif

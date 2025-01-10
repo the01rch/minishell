@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 15:08:54 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 18:41:48 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,44 +83,44 @@ static int fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
 
 static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
 {
-    char	cmd_line[1024];
-    char	*tmp;
-    int		i;
-    int		w;
+	char	cmd_line[1024];
+	char	*tmp;
+	int		i;
+	int		w;
 	int		test;
 
-    i = 0;
-    while (line[i])
-    {
-        if (is_chr("><", line[i]) && !inq(line, i, 0))
-            break ;
-        i++;
-    }
-    init_cmd(cmd);
-    test = fill_redir(g, cmd, line, i);
+	i = 0;
+	while (line[i])
+	{
+		if (is_chr("><", line[i]) && !inq(line, i, 0))
+			break ;
+		i++;
+	}
+	init_cmd(cmd);
+	test = fill_redir(g, cmd, line, i);
 	if (debug)
 		printf("redir + test + i: [%s]\n", line + test + i);
-    ft_strncpy(cmd_line, line, i);
-    w = i;
-    while (i < (int)ft_strlen(line) && line[i])
-    {
+	ft_strncpy(cmd_line, line, i);
+	w = i;
+	while (i < (int)ft_strlen(line) && line[i])
+	{
 		if (i < test)
 			i = test;
-        if (line[i] == 32 && !is_chr(">< \t", line[i - 1]))
-        {
-            while (line[i] && !is_chr("><", line[i]))
-                cmd_line[w++] = line[i++];
-        }
-        i++;
-    }
-    cmd_line[w] = '\0';
+		if (line[i] == 32 && !is_chr(">< \t", line[i - 1]))
+		{
+			while (line[i] && !is_chr("><", line[i]))
+				cmd_line[w++] = line[i++];
+		}
+		i++;
+	}
+	cmd_line[w] = '\0';
 	if (debug)
-    	printf("cmd_line: [%s]\n", cmd_line);
-    tmp = gest_expand(g, cmd_line);
-    cmd->args = str2arr(tmp, " \t", true);
-    free(tmp);
-    if (!cmd->args)
-        return (printf(EALL), free_cmds(g), exit(1), (void)0);
+		printf("cmd_line: [%s]\n", cmd_line);
+	tmp = gest_expand(g, cmd_line);
+	cmd->args = str2arr(tmp, " \t", true);
+	free(tmp);
+	if (!cmd->args)
+		return (printf(EALL), free_cmds(g), exit(1), (void)0);
 }
 
 void	init_s_cmd(t_global *g, char *line)

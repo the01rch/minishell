@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 17:32:56 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 18:40:53 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,38 +94,38 @@ static t_state	gest_env(t_global *g, char **arr)
 	return (NONE);
 }
 
-t_state    gest_builtins(t_global *g, t_cmd *cmd)
+t_state	gest_builtins(t_global *g, t_cmd *cmd)
 {
-    int    i;
+	int	i;
 
-    i = 0;
-    if (ft_strcmp(cmd->args[0], "export"))
-    {
-        for ( ; cmd->args[i]; i++);
-        if (i > 1)
-            return (ft_export(g, &cmd->args[1], true), VALID);
-        return (ft_export(g, &cmd->args[1], false), VALID);
-    }
-    for (i = 0; cmd->args[i]; i++)
-        cmd->args[i] = remq(cmd->args[i]);
-    i = 0;
-    if (ft_strcmp(cmd->args[0], "exit"))
-        return (ft_exit(g, cmd, true));
-    if (ft_strcmp(cmd->args[0], "echo"))
-    {
-        i++;
-        if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n"))
-            i++;
-        while (cmd->args[i] != NULL)
-        {
-            write(1, cmd->args[i], ft_strlen(cmd->args[i]));
-            if (cmd->args[i + 1] != NULL)
-                write(1, " ", 1);
-            i++;
-        }
-        if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n"))
-            return (g->exit_val = 0, VALID);
-        return (write(1, "\n", 1), g->exit_val = 0, VALID);
-    }
-    return (gest_env(g, cmd->args));
+	i = 0;
+	if (ft_strcmp(cmd->args[0], "export"))
+	{
+		for ( ; cmd->args[i]; i++);
+		if (i > 1)
+			return (ft_export(g, &cmd->args[1], true), VALID);
+		return (ft_export(g, &cmd->args[1], false), VALID);
+	}
+	for (i = 0; cmd->args[i]; i++)
+		cmd->args[i] = remq(cmd->args[i]);
+	i = 0;
+	if (ft_strcmp(cmd->args[0], "exit"))
+		return (ft_exit(g, cmd, true));
+	if (ft_strcmp(cmd->args[0], "echo"))
+	{
+		i++;
+		if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n"))
+			i++;
+		while (cmd->args[i] != NULL)
+		{
+			write(1, cmd->args[i], ft_strlen(cmd->args[i]));
+			if (cmd->args[i + 1] != NULL)
+				write(1, " ", 1);
+			i++;
+		}
+		if (cmd->args[1] && ft_strcmp(cmd->args[1], "-n"))
+			return (g->exit_val = 0, VALID);
+		return (write(1, "\n", 1), g->exit_val = 0, VALID);
+	}
+	return (gest_env(g, cmd->args));
 }
