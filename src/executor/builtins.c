@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 01:43:49 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 01:51:28 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,16 @@ t_state	gest_builtins(t_global *g, t_cmd *cmd)
 	int	i;
 
 	i = 0;
-
 	if (ft_strcmp(cmd->args[0], "export"))
 	{
-		if (cmd->args[2])
+		for ( ; cmd->args[i]; i++);
+		if (i > 1)
 			return (ft_export(g, &cmd->args[1], true), VALID);
 		return (ft_export(g, &cmd->args[1], false), VALID);
 	}
-	for (int i = 0; cmd->args[i]; i++)
+	for (i = 0; cmd->args[i]; i++)
 		cmd->args[i] = remq(cmd->args[i]);
+	i = 0;
 	if (ft_strcmp(cmd->args[0], "exit"))
 		return (ft_exit(g, cmd, true));
 	if (ft_strcmp(cmd->args[0], "echo"))

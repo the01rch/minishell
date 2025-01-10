@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 00:31:47 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 02:36:15 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int		ft_isdigit(int c);
 int		ft_atoi(const char *str);
 int		ft_is_nb(char *cmd);
-void	ft_strncat(char *dest, char *src, size_t n);
 char	*ft_itoa(int n);
 void	ft_perror(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
