@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 11:27:13 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 20:40:53 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,9 @@ t_env	*arr2list(char **env)
 	t_env	*head;
 	t_env	*tmp;
 	t_env	*result;
-	// bool	new;
 
-	// new = false;
 	if (!*env)
-	{
-		// new = true;
 		env = new_env();
-	}
 	head = create_node("a=b");
 	if (!head)
 		return (NULL);
@@ -71,8 +66,6 @@ t_env	*arr2list(char **env)
 		tmp->next = create_node(*env++);
 		if (!tmp->next)
 			return (free_list(head), NULL);
-		// if (!new && tmp->next && ft_strcmp(tmp->next->name, "SHLVL") == 1)
-		// 	tmp->next->content = ft_itoa(ft_atoi(tmp->next->content) + 1);
 		tmp = tmp->next;
 	}
 	return (result = head->next, free_node(head), (t_env *)result);

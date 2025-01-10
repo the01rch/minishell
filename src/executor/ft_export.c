@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 01:28:28 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 20:42:05 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static 	bool is_alpha(char c)
+static	bool	is_alpha(char c)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
 		return (true);
 	return (false);
 }
 
-static t_state is_format_export(char *str)
+static t_state	is_format_export(char *str)
 {
 	bool	equal;
 	int		i;
@@ -60,7 +60,7 @@ static void	print_export(t_env *lenv)
 	tmp = lenv;
 }
 
-static	bool single_export(t_global *g, char *str)
+static	bool	single_export(t_global *g, char *str)
 {
 	t_env	*tmp;
 	char	*test;
@@ -103,7 +103,8 @@ bool	ft_export(t_global *g, char **str, bool multiples)
 	{
 		res = is_format_export(str[i]);
 		if (res == ERROR)
-			return (g->exit_val = 1, ft_perror(" not a valid identifier\n"), false);
+			return (g->exit_val = 1,
+				ft_perror(" not a valid identifier\n"), false);
 		if (res == NONE)
 		{
 			i++;

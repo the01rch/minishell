@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 12:18:34 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 20:39:15 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int		ft_is_nb(char *cmd);
 char	*ft_itoa(int n);
 void	ft_perror(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-char    *ft_strndup(const char *src, size_t n);
 
 /*BUILTINS*/
 t_state	gest_builtins(t_global *g, t_cmd *cmd);

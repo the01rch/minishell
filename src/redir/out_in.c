@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/10 15:14:55 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 20:37:45 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,21 +88,14 @@ static int	handle_heredoc_child(t_global *g, int id, int *fd, char *redir)
 {
 	int		i;
 	void	(*old_handler)(int);
-	int		k;
 
 	old_handler = signal(SIGINT, handl_heredoc);
 	i = skip_spaces(redir + 0);
 	fd[2] = id;
+	while (is_chr("<>|", redir[i]))
+		i++;
 	signal(SIGINT, handl_heredoc);
-	k = 0;
-	while (!is_chr("<>|", redir[k]))
-		k++;
-	if (k == 0)
-		k = 2;
-	// printf("str + i: [%s]\n", redir + i);
-	// printf("str + i + at: [%s]\n", redir + i + (k - 1));
-	// printf("inq(redir + i - 1, i + (k - 2)); = %d\n", inq(redir + i, (k - 3), '\0'));
-	if (inq(redir + i, (k - 3), '\0'))
+	if (inq(redir, i, '\0'))
 		return ((i) + ft_hd_q(g->cmds[id], fd
 				, ft_fname(redir + i, 0, 0, "<>|"), old_handler));
 	else

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 21:02:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/10 12:19:21 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 20:37:23 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,19 @@ char	*ft_fname(char *redir, int i, int len, char *dels)
 	while (redir[++i] && (!is_chr(dels, redir[i])
 			|| (is_chr("'\"", q) && redir[i] != q)))
 	{
-		if (is_chr("'\"", redir[i]) && !q)
+		if ((is_chr("'\"", redir[i]) && !q) || redir[i] == q)
 		{
-			q = redir[i];
-			continue ;
-		}
-		if (redir[i] == q)
-		{
-			q = '\0';
+			if (redir[i] == q)
+				q = '\0';
+			else
+				q = redir[i];
 			continue ;
 		}
 		file[len++] = redir[i];
 	}
-	file[len] = '\0';
+	if (!q)
+		if (len > 0 && file[len - 1] == ' ')
+			len--;
 	return (file[len] = '\0', file);
 }
 

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 18:41:48 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 20:43:25 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static void	init_cmd(t_cmd *cmd)
 	cmd->pipe[1] = -1;
 }
 
-static void concat_quoted_string(char *dest, char *line, int *i, int *j, int len)
+static void	concat_quoted_string(char *dest, char *line, int *i, int *j, int len)
 {
-	char quote_char;
+	char	quote_char;
 
 	while (*j < len)
 	{
-		if (line[*j] == '"' || line[*j] == '\'') 
+		if (line[*j] == '"' || line[*j] == '\'')
 		{
 			quote_char = line[*j];
 			dest[(*i)++] = line[(*j)++];
@@ -43,11 +43,11 @@ static void concat_quoted_string(char *dest, char *line, int *i, int *j, int len
 		else if (!is_chr(" \t><", line[*j]))
 			dest[(*i)++] = line[(*j)++];
 		else
-			break;
+			break ;
 	}
 }
 
-static int fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
+static int	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
 {
 	int		i;
 	int		j;

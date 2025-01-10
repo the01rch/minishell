@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:52:04 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/10 12:19:17 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 20:38:23 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ int	ft_hd_q(t_cmd *cmd, int *fd, char *del, void (*old_handler)(int))
 {
 	char	*hd;
 
-	// printf("file: [%s]\n", del);
 	while (g_signal != SIGINT)
 	{
 		hd = readline("heredoc (not parsed)> ");
@@ -117,7 +116,6 @@ int	ft_hd_nq(t_global *g, int *fd, char *del, void (*old_handler)(int))
 {
 	char	*hd;
 
-	// printf("file: [%s]\n", del);
 	while (g_signal != SIGINT)
 	{
 		hd = readline("heredoc> ");
