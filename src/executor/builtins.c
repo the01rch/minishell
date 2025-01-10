@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/09 23:10:33 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 01:43:49 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,17 @@ static bool	ft_cd(t_global *g, char **arr)
 	{
 		chdir(plist(g->lenv, "HOME"));
 		tmp = pwrapper("PWD", plist(g->lenv, "HOME"), '=');
-		ft_export(g, &tmp);
+		ft_export(g, &tmp, false);
 		return (free(tmp), true);
 	}
-	if (arr[2])
+	else if (arr[2])
 		return (g->exit_val = 1, ft_perror(" too many arguments\n"), false);
-	if (chdir(arr[1]) == -1)
+	else if (chdir(arr[1]) == -1)
 		return (g->exit_val = 1, perror("cd"), false);
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
+	else if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		tmp = pwrapper("PWD", cwd, '=');
-		return (ft_export(g, &tmp), free(tmp), true);
+		return (ft_export(g, &tmp, false), free(tmp), true);
 	}
 	return (perror("getcwd"), true);
 }
@@ -85,8 +85,6 @@ static t_state	gest_env(t_global *g, char **arr)
 	}
 	if (ft_strcmp(arr[0], "unset"))
 		return (ft_unset(g, arr[1]), VALID);
-	if (ft_strcmp(arr[0], "export"))
-		return (ft_export(g, &arr[1]), VALID);
 	if (ft_strcmp(arr[0], "cd"))
 		return (ft_cd(g, arr), VALID);
 	return (NONE);
@@ -97,6 +95,17 @@ t_state	gest_builtins(t_global *g, t_cmd *cmd)
 	int	i;
 
 	i = 0;
+
+	if (ft_strcmp(cmd->args[0], "export"))
+	{
+		if (cmd->args[2])
+			return (ft_export(g, &cmd->args[1], true), VALID);
+		return (ft_export(g, &cmd->args[1], false), VALID);
+	}
+	for (int i = 0; cmd->args[i]; i++)
+		cmd->args[i] = remq(cmd->args[i]);
+	if (ft_strcmp(cmd->args[0], "exit"))
+		return (ft_exit(g, cmd, true));
 	if (ft_strcmp(cmd->args[0], "echo"))
 	{
 		i++;

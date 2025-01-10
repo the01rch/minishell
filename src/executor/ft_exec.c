@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/09 21:30:51 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 00:33:46 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	update_last_cmd(t_global *g, t_cmd *cmd)
 	result = plist(g->lenv, "_");
 	if (result)
 	{
-		ft_export(g, &v_);
+		ft_export(g, &v_, false);
 		free(result);
 	}
 	free(v_);

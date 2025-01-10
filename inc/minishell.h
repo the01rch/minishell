@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/09 22:50:49 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 00:31:47 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 /*BUILTINS*/
 t_state	gest_builtins(t_global *g, t_cmd *cmd);
 int		ft_exit(t_global *g, t_cmd *cmd, bool print);
-t_state	ft_export(t_global *g, char **str);
+bool	ft_export(t_global *g, char **str, bool multiples);
 
 /*SIGNAL*/
 void	signal_ctrd(t_global *g);

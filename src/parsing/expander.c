@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/09 10:22:28 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 01:27:48 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,6 @@ char	*gest_expand(t_global *g, char *str)
 			buf[y++] = str[i++];
 	}
 	buf[y] = '\0';
-	return (remq(buf));
+	return (buf);
 }
 #endif

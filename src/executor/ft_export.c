@@ -6,28 +6,38 @@
 /*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/09 23:22:58 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 01:28:28 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+static 	bool is_alpha(char c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (true);
+	return (false);
+}
+
 static t_state is_format_export(char *str)
 {
 	bool	equal;
+	int		i;
 
 	equal = false;
-//	printf("str : %s\n", str);
-	while (*str)
+	if (!is_alpha(str[0]) && str[0] != '_')
+		return (ERROR);
+	i = 0;
+	while (str[i])
 	{
-		if (*str == '=')
-			equal = true;
-		if (!equal)
+		if (str[i] == '=')
 		{
-			if (!ft_isalnum(*str) || *str != '_')
-				return (ERROR);
+			equal = true;
+			break ;
 		}
-		str++;
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (ERROR);
+		i++;
 	}
 	if (!equal)
 		return (NONE);
@@ -58,6 +68,10 @@ static	bool single_export(t_global *g, char *str)
 
 	tmp = g->lenv;
 	i = 0;
+	if (is_format_export(str) == NONE)
+		return (true);
+	if (is_format_export(str) == ERROR)
+		return (g->exit_val = 1, ft_perror(" not a valid identifier\n"), false);
 	while (str[i] && str[i] != '=')
 		i++;
 	test = ft_substr(str, 0, i);
@@ -75,31 +89,27 @@ static	bool single_export(t_global *g, char *str)
 	return (free(test), true);
 }
 
-t_state	ft_export(t_global *g, char **str)
+bool	ft_export(t_global *g, char **str, bool multiples)
 {
 	int		i;
+	t_state	res;
 
 	i = 0;
 	if (!*str)
 		return (print_export(g->lenv), true);
+	if (!multiples)
+		return (single_export(g, *str), VALID);
 	while (str[i] != NULL)
-		i++;
-	if (i > 1)	
 	{
-		i = 0;
-		while (str[i] != NULL)
+		res = is_format_export(str[i]);
+		if (res == ERROR)
+			return (g->exit_val = 1, ft_perror(" not a valid identifier\n"), false);
+		if (res == NONE)
 		{
-			if (is_format_export(str[i]) == ERROR)
-				return (g->exit_val = 1, ft_perror("not a valid identifier\n"), ERROR);
-			else if (is_format_export(str[i]) == NONE)
-			{
-				i++;
-				continue ;
-			}
-			single_export(g, str[i++]);
+			i++;
+			continue ;
 		}
-	}	
-	else
-		single_export(g, *str);
+		single_export(g, str[i++]);
+	}
 	return (VALID);
 }
