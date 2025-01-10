@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/09 23:55:16 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:27:13 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,7 @@ static char	**new_env(void)
 	if (!new)
 		return (NULL);
 	getcwd(cwd, sizeof(cwd));
-	new[0] = malloc(sizeof(char) * (ft_strlen(cwd) + 5));
-	if (!new[0])
-		return (free(new), NULL);
-	ft_strlcpy(new[0], "PWD=", 5);
-	ft_strlcpy(new[0] + 4, cwd, ft_strlen(cwd) + 4);
+	new[0] = pwrapper("PWD", cwd, '=');
 	new[1] = ft_strdup("SHLVL=1");
 	new[2] = ft_strdup("_=/usr/bin/env");
 	new[3] = NULL;

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:20:05 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/09 21:10:13 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:24:53 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,6 @@ int	exec_cmd(t_global *g, int id)
 
 	if (set_check_cmd(g, 0))
 		return (1);
-	if (ft_strcmp(g->cmds[id]->args[0], "exit"))
-		return (ft_exit(g, g->cmds[id], true));
 	std_save[2] = id;
 	if (dup_inf_out(g, std_save) == 1)
 	{

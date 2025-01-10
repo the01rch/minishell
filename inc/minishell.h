@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 10:53:44 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:20:44 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 int		ft_isdigit(int c);
 int		ft_atoi(const char *str);
 int		ft_is_nb(char *cmd);
-void	ft_strncat(char *dest, char *src, size_t n);
 char	*ft_itoa(int n);
 void	ft_perror(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
@@ -52,7 +51,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 /*BUILTINS*/
 t_state	gest_builtins(t_global *g, t_cmd *cmd);
 int		ft_exit(t_global *g, t_cmd *cmd, bool print);
-bool	ft_export(t_global *g, char *str);
+bool	ft_export(t_global *g, char **str, bool multiples);
 
 /*SIGNAL*/
 void	signal_ctrd(t_global *g);

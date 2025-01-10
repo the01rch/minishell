@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 10:23:29 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:27:55 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ bool	inq(char *str, int index, char quote)
 	current = '\0';
 	if (!str || index < 0 || index >= ft_strlen(str))
 		return (false);
-	// printf("inq str + i : [%s]\n", str + i);
-	// printf("inq str + i + index : [%s]\n", str + i + index);
 	while (i <= index)
 	{
 		if (current == '\0')
@@ -106,6 +104,7 @@ char	*gest_expand(t_global *g, char *str)
 	{
 		if (str[i] == '$' && !inq(str, i, '\''))
 		{
+			// TODO :handling single $
 			i++;
 			if (str[i] == '?')
 			{
@@ -127,6 +126,6 @@ char	*gest_expand(t_global *g, char *str)
 			buf[y++] = str[i++];
 	}
 	buf[y] = '\0';
-	return (remq(buf));
+	return (buf);
 }
 #endif

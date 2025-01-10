@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/09 23:59:49 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 11:25:46 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
 	w = i;
 	while (i < (int)ft_strlen(line) && line[i])
 	{
-		if (line[i] == 32 && !is_chr("><", line[i - 1]))
+		if (line[i] == 32 && !is_chr(">< \t", line[i - 1]))
 		{
 			while (line[i] && !is_chr("><", line[i]))
 				cmd_line[w++] = line[i++];
