@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:54:11 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/06 17:30:58 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 12:20:44 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,7 @@ void	free_list(t_env *list)
 void	free_cmd(t_cmd *cmd)
 {
 	if (cmd->args)
-	{
 		free_arr(cmd->args);
-	}
 	if (cmd->redir)
 		free(cmd->redir);
 	free(cmd);

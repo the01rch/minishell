@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 11:20:44 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 12:18:34 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int		ft_is_nb(char *cmd);
 char	*ft_itoa(int n);
 void	ft_perror(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+char    *ft_strndup(const char *src, size_t n);
 
 /*BUILTINS*/
 t_state	gest_builtins(t_global *g, t_cmd *cmd);
@@ -94,11 +95,11 @@ void	free_cmds(t_global *g);
 void	free_cmd(t_cmd *cmd);
 
 /*REDIR*/
-int		ft_redir(t_global *g, int i);
-void	ft_overwrite(t_global *g, t_cmd *cmd, char *redir);
-void	ft_append(t_global *g, t_cmd *cmd, char *redir);
-void	ft_redir_input(t_global *g, t_cmd *cmd, char *redir);
-void	ft_heredoc(t_global *g, int id, char *redir);
+int		ft_redir(t_global *g, int i, int tmp);
+int		ft_overwrite(t_global *g, t_cmd *cmd, char *redir);
+int		ft_append(t_global *g, t_cmd *cmd, char *redir);
+int		ft_redir_input(t_global *g, t_cmd *cmd, char *redir);
+int		ft_heredoc(t_global *g, int id, char *redir);
 int		ft_hd_nq(t_global *g, int *fd, char *del, void (*old_handler)(int));
 int		ft_hd_q(t_cmd *cmd, int *fd, char *del, void (*old_handler)(int));
 ssize_t	write_here(const void *buffer, int fd, size_t count);

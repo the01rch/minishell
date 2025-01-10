@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2025/01/10 11:19:57 by kpires           ###   ########.fr        #
+#    Updated: 2025/01/10 11:50:22 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,13 +27,13 @@ SRC		=	src/main.c\
 			src/executor/ft_exec.c\
 			src/executor/ft_one.c\
 			src/executor/ft_pipes.c\
+			src/executor/ft_export.c\
 
 SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strlen.c\
 			lib/ft_strncpy.c\
 			lib/ft_strncmp.c\
 			lib/ft_strdup.c\
-			lib/ft_concat.c\
 			lib/ft_strlcat.c\
 			lib/ft_memcpy.c\
 			lib/ft_isalnum.c\
@@ -46,6 +46,7 @@ SLiB	=	lib/ft_strcmp.c\
 			lib/ft_is_nb.c\
 			lib/ft_perror.c\
 			lib/ft_substr.c\
+			lib/ft_strndup.c\
 
 OBJ		=	$(SRC:.c=.o)
 
