@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/09 21:25:53 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 10:55:46 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,59 +56,35 @@ int	extract_varlen(char *line, int len, char **v_name, bool del_sign)
 	return (len);
 }
 
-static int	skip_nonredir(char *redir, int i)
+int	ft_redir(t_global *g, int i)
 {
-	int	count;
-	int	rlen;
+	int		j;
+	char	**redir;
 
-	count = 0;
-	rlen = ft_strlen(redir);
-	if (i > rlen || count > rlen || i + count > rlen)
-		return (0);
-	while (redir[i + count] && !is_chr("><|", redir[i + count]))
-	{
-		if (!is_chr("'\"", redir[i + count]))
-			count++;
-		count += ft_skipquotes(redir + i + count, '"');
-		count += ft_skipquotes(redir + i + count, '\'');
-	}
-	return (count);
-}
-
-static int	skip_cmd(char *redir)
-{
-	int	i;
-
-	i = 0;
-	while (redir[i] && redir[i] != '|')
-		i++;
-	return (i);
-}
-
-int	ft_redir(t_global *g, int i, int tmp)
-{
-	int	j;
-
+	redir = malloc(sizeof(char *) * 1 + 1);
+	if (!redir)
+		return (-1);
+	redir[0] = "   			<< \"ONE \"";
+	redir[1] = NULL;
 	while (++i < g->cnt && g->cmds[i])
 	{
 		if (!g->cmds[i]->redir)
 			continue ;
 		j = 0;
-		while (j < ft_strlen(g->cmds[i]->redir) && g->cmds[i]->redir[j])
+		while (redir[j])
 		{
-			if (ft_strncmp(g->cmds[i]->redir + j, ">>", 2) == 0)
-				tmp = ft_append(g, g->cmds[i], g->cmds[i]->redir + j + 2);
-			else if (g->cmds[i]->redir[j] == '>')
-				tmp = ft_overwrite(g, g->cmds[i], g->cmds[i]->redir + j + 1);
-			if (ft_strncmp(g->cmds[i]->redir + j, "<<", 2) == 0)
-				tmp = ft_heredoc(g, i, g->cmds[i]->redir + j + 2);
-			else if (g->cmds[i]->redir[j] == '<')
-				tmp = ft_redir_input(g, g->cmds[i], g->cmds[i]->redir + j + 1);
-			if (tmp < 0)
-				j += skip_cmd(g->cmds[i]->redir + j);
-			if (!g->cmds[i]->redir[j])
+			if (!g->cmds[i]->redir)
 				break ;
-			j += tmp + skip_nonredir(g->cmds[i]->redir, (j + tmp));
+			redir[j] += skip_spaces(redir[j]);
+			if (ft_strncmp(redir[j], ">>", 2) == 0)
+				ft_append(g, g->cmds[i], redir[j] + 2);
+			else if (redir[j][0] == '>')
+				ft_overwrite(g, g->cmds[i], redir[j] + 1);
+			if (ft_strncmp(redir[j], "<<", 2) == 0)
+				ft_heredoc(g, i, redir[j] + 2);
+			else if (redir[j][0] == '<')
+				ft_redir_input(g, g->cmds[i], redir[j] + 1);
+			j++;
 		}
 	}
 	return (1);

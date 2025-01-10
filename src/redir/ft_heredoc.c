@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:52:04 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/09 23:23:33 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 10:58:17 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,11 @@ static char	*ft_here_parse(char *line, t_env *lenv)
 	return (hd);
 }
 
-int	ft_hd_q(t_cmd *cmd, int *fd, char *del)
+int	ft_hd_q(t_cmd *cmd, int *fd, char *del, void (*old_handler)(int))
 {
 	char	*hd;
-	void	(*old_handler)(int);
 
-	old_handler = signal(SIGINT, handl_heredoc);
+	printf("file: [%s]\n", del);
 	while (g_signal != SIGINT)
 	{
 		hd = readline("heredoc (not parsed)> ");
@@ -109,13 +108,16 @@ int	ft_hd_q(t_cmd *cmd, int *fd, char *del)
 	}
 	(signal(SIGINT, old_handler), free(del), free(hd), close(fd[1]));
 	cmd->infile = fd[0];
-	return (2);
+	if (fd[0] == -2)
+		return (-1);
+	return (0);
 }
 
 int	ft_hd_nq(t_global *g, int *fd, char *del, void (*old_handler)(int))
 {
 	char	*hd;
 
+	printf("file: [%s]\n", del);
 	while (g_signal != SIGINT)
 	{
 		hd = readline("heredoc> ");
@@ -136,6 +138,7 @@ int	ft_hd_nq(t_global *g, int *fd, char *del, void (*old_handler)(int))
 		(write_here(hd, fd[1], ft_strlen(hd)), free(hd));
 	}
 	(signal(SIGINT, old_handler), free(del), free(hd), close(fd[1]));
-	g->cmds[fd[2]]->infile = fd[0];
-	return (2);
+	if (fd[0] == -2)
+		return (g->cmds[fd[2]]->infile = fd[0], -1);
+	return (g->cmds[fd[2]]->infile = fd[0], 0);
 }

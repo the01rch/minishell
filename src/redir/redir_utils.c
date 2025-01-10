@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 21:02:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/09 21:19:26 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 10:56:53 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ char	*ft_fname(char *redir, int i, int len, char *dels)
 		}
 		file[len++] = redir[i];
 	}
-	return (file[len] = '\0', remq(file));
+	file[len] = '\0';
+	return (file[len] = '\0', file);
 }
 
 int	ft_skipquotes(char *str, char quote)

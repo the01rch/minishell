@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/09 21:58:33 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 10:53:44 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,13 @@ void	free_cmds(t_global *g);
 void	free_cmd(t_cmd *cmd);
 
 /*REDIR*/
-int		ft_redir(t_global *g, int i, int tmp);
-int		ft_overwrite(t_global *g, t_cmd *cmd, char *redir);
-int		ft_append(t_global *g, t_cmd *cmd, char *redir);
-int		ft_redir_input(t_global *g, t_cmd *cmd, char *redir);
-int		ft_heredoc(t_global *g, int id, char *redir);
+int		ft_redir(t_global *g, int i);
+void	ft_overwrite(t_global *g, t_cmd *cmd, char *redir);
+void	ft_append(t_global *g, t_cmd *cmd, char *redir);
+void	ft_redir_input(t_global *g, t_cmd *cmd, char *redir);
+void	ft_heredoc(t_global *g, int id, char *redir);
 int		ft_hd_nq(t_global *g, int *fd, char *del, void (*old_handler)(int));
-int		ft_hd_q(t_cmd *cmd, int *fd, char *del);
+int		ft_hd_q(t_cmd *cmd, int *fd, char *del, void (*old_handler)(int));
 ssize_t	write_here(const void *buffer, int fd, size_t count);
 int		extract_varlen(char *line, int len, char **v_name, bool del_sign);
 char	*ft_fname(char *redir, int i, int len, char *dels);
