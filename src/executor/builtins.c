@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 01:51:28 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/10 15:48:01 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static bool	ft_cd(t_global *g, char **arr)
 	if (!arr[1])
 	{
 		chdir(plist(g->lenv, "HOME"));
+		tmp = pwrapper("OLDPWD", plist(g->lenv, "PWD"), '=');
+		(ft_export(g, &tmp, false), free(tmp));
 		tmp = pwrapper("PWD", plist(g->lenv, "HOME"), '=');
 		ft_export(g, &tmp, false);
 		return (free(tmp), true);
@@ -59,6 +61,8 @@ static bool	ft_cd(t_global *g, char **arr)
 		return (g->exit_val = 1, perror("cd"), false);
 	else if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
+		tmp = pwrapper("OLDPWD", plist(g->lenv, "PWD"), '=');
+		(ft_export(g, &tmp, false), free(tmp));
 		tmp = pwrapper("PWD", cwd, '=');
 		return (ft_export(g, &tmp, false), free(tmp), true);
 	}

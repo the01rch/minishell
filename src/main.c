@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 10:46:21 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/10 15:31:23 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		init_s_cmd(&g, line);
-		if (ft_redir(&g, -1))
+		if (ft_redir(&g, -1, 0))
 			ft_exec(&g);
 		else
 			g.exit_val = 2;
