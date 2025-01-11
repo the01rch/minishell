@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2025/01/11 17:02:16 by redrouic         ###   ########.fr        #
+#    Updated: 2025/01/11 17:18:23 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,29 +62,48 @@ RL		=	-lreadline
 
 RM		=	rm -rf
 
-CFLAGS	+=	-Wall -Wextra -Werror -g3
+GREEN = \033[0;32m
+YELLOW = \033[0;33m
+RED = \033[0;31m
+BLUE = \033[0;34m
+NC = \033[0m
+FLASH = \033[6m
+WHITE = \033[0;37m
 
 all: $(NAME) $(BIN)
-	
+	@printf "\033[2K\r$(BLUE)🔨[COMPILATION]\n"
+	@printf "\033[2K\r$(BLUE) └LIB:✅$(NC)\n"
+	@printf "\033[2K\r$(BLUE) └BIN:✅$(NC)\n\n"
+	@printf "██       █████  ███████ ██    ██ ███████ ██   ██ ███████ ██      ██\n"
+	@printf "██      ██   ██    ███   ██  ██  ██      ██   ██ ██      ██      ██\n"
+	@printf "██      ███████   ███     ████   ███████ ███████ █████   ██      ██\n"
+	@printf "██      ██   ██  ███       ██         ██ ██   ██ ██      ██      ██\n"
+	@printf "███████ ██   ██ ███████    ██    ███████ ██   ██ ███████ ███████ ███████\n"
+	@printf "\n"
+	@printf "              $(RED)L A Z Y S H E L L  C O M P I L E D$(NC)\n"
+	@printf "                    $(BLUE)@the01rch 🤝 @fripok$(NC)\n"
+
 $(NAME): $(LOBJ)
-	ar rc $(NAME) $(LOBJ)
- 
+	@ar rc $(NAME) $(LOBJ)
+
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@printf "\033[2K\r$(BLUE)⌛[COMPILING]:$< "
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(BIN): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(NAME) -o $(BIN) $(RL)
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(OBJ) $(NAME) -o $(BIN) $(RL)
 
 clean:
-	$(RM) $(OBJ)
-	$(RM) $(LOBJ)
+	@$(RM) $(OBJ)
+	@$(RM) $(LOBJ)
+	@printf "\033[2K\r$(YELLOW)🧼[CLEAN]$(NC) \n"
+	@printf "\033[2K\r$(YELLOW) └OBJ:✅$(NC) \n"
 
 fclean: clean
-	$(RM) $(NAME)
-	$(RM) $(BIN)
+	@$(RM) $(NAME)
+	@$(RM) $(BIN)
+	@printf "\033[2K\r$(YELLOW) └LIB:✅$(NC) \n"
+	@printf "\033[2K\r$(YELLOW) └BIN:✅$(NC) \n"
 
 re: fclean all
 

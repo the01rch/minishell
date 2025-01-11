@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 16:45:18 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 17:39:54 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,12 @@ static void	print_export(t_env *lenv)
 	tmp = lenv;
 }
 
-static	bool	single_export(t_global *g, char *str)
+static	bool	single_export(t_global *g, char *str, int i)
 {
 	t_env	*tmp;
-	char	*test;
-	int		i;
+	char	*e_name;
 
 	tmp = g->lenv;
-	i = 0;
 	if (is_format_export(str) == NONE)
 		return (true);
 	if (is_format_export(str) == ERROR)
@@ -74,18 +72,20 @@ static	bool	single_export(t_global *g, char *str)
 			, ft_perror(" not a valid identifier\n"), false);
 	while (str[i] && str[i] != '=')
 		i++;
-	test = ft_substr(str, 0, i);
-	while (tmp->next != NULL)
+	e_name = ft_substr(str, 0, i);
+	while (tmp)
 	{
-		if (ft_strcmp(test, tmp->name) == 1)
+		if (ft_strcmp(e_name, tmp->name))
 		{
-			(free(tmp->content));
+			free(tmp->content);
 			tmp->content = ft_substr(str, i + 1, ft_strlen(str));
-			return (free(test), true);
+			return (free(e_name), true);
 		}
 		tmp = tmp->next;
 	}
-	return (tmp->next = create_node(str), free(test), true);
+	if (!ft_strcmp(e_name, tmp->name))
+		tmp->next = create_node(str);
+	return (free(e_name), true);
 }
 
 bool	ft_export(t_global *g, char **str, bool multiples)
@@ -97,7 +97,7 @@ bool	ft_export(t_global *g, char **str, bool multiples)
 	if (!*str)
 		return (print_export(g->lenv), true);
 	if (!multiples)
-		return (single_export(g, *str), VALID);
+		return (single_export(g, *str, 0), VALID);
 	while (str[i] != NULL)
 	{
 		res = is_format_export(str[i]);
@@ -109,7 +109,7 @@ bool	ft_export(t_global *g, char **str, bool multiples)
 			i++;
 			continue ;
 		}
-		single_export(g, str[i++]);
+		single_export(g, str[i++], 0);
 	}
 	return (VALID);
 }
