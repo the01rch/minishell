@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 18:04:52 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 18:19:46 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,10 @@ static void	print_export(t_env *lenv)
 	tmp = lenv;
 }
 
-static	bool	single_export(t_global *g, char *str, int i)
+static	bool	single_export(t_global *g, char *str, int i, t_env *tmp)
 {
-	t_env	*tmp;
 	char	*e_name;
 
-	tmp = g->lenv;
 	if (is_format_export(str) == NONE)
 		return (true);
 	if (is_format_export(str) == ERROR)
@@ -81,6 +79,8 @@ static	bool	single_export(t_global *g, char *str, int i)
 			tmp->content = ft_substr(str, i + 1, ft_strlen(str));
 			return (free(e_name), true);
 		}
+		if (!tmp->next)
+			break ;
 		tmp = tmp->next;
 	}
 	if (!ft_strcmp(e_name, tmp->name))
@@ -92,12 +92,14 @@ bool	ft_export(t_global *g, char **str, bool multiples)
 {
 	int		i;
 	t_state	res;
+	t_env	*tmp;
 
 	i = 0;
+	tmp = g->lenv;
 	if (!*str)
 		return (print_export(g->lenv), true);
 	if (!multiples)
-		return (single_export(g, *str, 0), VALID);
+		return (single_export(g, *str, 0, tmp), VALID);
 	while (str[i] != NULL)
 	{
 		res = is_format_export(str[i]);
@@ -109,7 +111,7 @@ bool	ft_export(t_global *g, char **str, bool multiples)
 			i++;
 			continue ;
 		}
-		single_export(g, str[i++], 0);
+		single_export(g, str[i++], 0, tmp);
 	}
 	return (VALID);
 }
