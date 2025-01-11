@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 12:48:39 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 13:54:47 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static char	**new_env(void)
 		return (NULL);
 	getcwd(cwd, sizeof(cwd));
 	new[0] = pwrapper("PWD", cwd, '=');
-	new[1] = ft_strdup("SHLVL=1");
-	new[2] = ft_strdup("_=/usr/bin/env");
+	new[1] = ft_strdup("_=/usr/bin/env");
+	new[2] = ft_strdup("SHLVL=1");
 	new[3] = NULL;
 	return (new);
 }

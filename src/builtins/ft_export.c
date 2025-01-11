@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 12:57:10 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 13:55:17 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static	bool	single_export(t_global *g, char *str)
 	test = ft_substr(str, 0, i);
 	while (tmp->next != NULL)
 	{
-		if (ft_strcmp(test, tmp->name))
+		if (ft_strcmp(test, tmp->name) == 1)
 		{
 			(free(tmp->content));
 			tmp->content = ft_substr(str, i + 1, ft_strlen(str));
