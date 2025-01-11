@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/10 20:38:06 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 12:40:06 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ static int	skip_nonredir(char *redir, int i)
 	{
 		if (!is_chr("'\"", redir[i + count]))
 			count++;
-		count += ft_skipquotes(redir + i + count, '"');
-		count += ft_skipquotes(redir + i + count, '\'');
+		count += skip_chars(redir + i + count, "\"'");
 	}
 	return (count);
 }

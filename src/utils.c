@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 06:04:27 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 12:23:19 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 12:32:53 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ char	*pwrapper(char *name, char *content, char sep)
 	return (dest);
 }
 
-int	skip_spaces(char *str)
+int	skip_chars(char *str, char *dels)
 {
 	int	i;
 
 	if (!str)
 		return (0);
 	i = 0;
-	while (str[i] && (is_chr("\t ", str[i])))
+	while (str[i] && (is_chr(dels, str[i])))
 		i++;
 	return (i);
 }
@@ -86,15 +86,4 @@ bool	inq(char *str, int index, char quote)
 		i++;
 	}
 	return (current != '\0');
-}
-
-void	init_cmd(t_cmd *cmd)
-{
-	cmd->args = NULL;
-	cmd->redir = NULL;
-	cmd->infile = -1;
-	cmd->outfile = -1;
-	cmd->prev_fd = -1;
-	cmd->pipe[0] = -1;
-	cmd->pipe[1] = -1;
 }

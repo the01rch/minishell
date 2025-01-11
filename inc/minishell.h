@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 12:06:34 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 12:40:16 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 extern int	g_signal;
 
 /*LIB*/
-int		ft_skipquotes(char *str, char quote);
 int		ft_strlen(const char *str);
 bool	ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -56,7 +55,6 @@ bool	ft_cd(t_global *g, char **arr);
 
 /*SIGNAL*/
 void	signal_ctrd(t_global *g);
-void	handl_int(int sig);
 void	handl_heredoc(int sig);
 
 /*EXEC*/
@@ -83,10 +81,9 @@ char	*remq(char *str);
 bool	is_chr(const char *chr, char c);
 char	*pwrapper(char *name, char *content, char sep);
 int		count_rows(const char *chr, char *str, bool quote);
-int		skip_spaces(char *str);
+int		skip_chars(char *str, char *dels);
 int		check_quotes(char *str, int i);
 char	*plist(t_env *lenv, char *name);
-void	init_cmd(t_cmd *cmd);
 
 /*FREE*/
 void	free_node(t_env *node);

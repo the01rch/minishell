@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 21:02:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/10 20:37:23 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 12:40:22 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	count_fname_len(char *redir, char *dels)
 	char	q;
 	int		real_len;
 
-	i = skip_spaces(redir);
+	i = skip_chars(redir, " \t");
 	q = '\0';
 	real_len = 0;
 	while (redir[i] && (!is_chr(dels, redir[i])
@@ -43,7 +43,7 @@ char	*ft_fname(char *redir, int i, int len, char *dels)
 	file = malloc(sizeof(char) * (count_fname_len(redir, dels) + 1));
 	if (!file)
 		return (NULL);
-	i = skip_spaces(redir) - 1;
+	i = skip_chars(redir, " \t") - 1;
 	q = '\0';
 	while (redir[++i] && (!is_chr(dels, redir[i])
 			|| (is_chr("'\"", q) && redir[i] != q)))
@@ -62,24 +62,6 @@ char	*ft_fname(char *redir, int i, int len, char *dels)
 		if (len > 0 && file[len - 1] == ' ')
 			len--;
 	return (file[len] = '\0', file);
-}
-
-int	ft_skipquotes(char *str, char quote)
-{
-	int	idx;
-
-	idx = 0;
-	if (str[idx] && str[idx] == quote)
-	{
-		idx++;
-		while (str[idx] && str[idx] != quote)
-			idx++;
-		if (!str[idx])
-			return (-1);
-		if (str[idx])
-			idx++;
-	}
-	return (idx);
 }
 
 void	handl_heredoc(int sig)

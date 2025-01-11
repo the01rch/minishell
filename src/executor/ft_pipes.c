@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 18:14:52 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/09 21:10:10 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 12:38:21 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	exec_pipes(t_global *g, int id)
 		{
 			(close(g->cmds[id]->pipe[1]));
 			free_cmds(g);
-			write(2, "exec: error with dup\n", 22);
+			ft_perror("exec: error with dup\n");
 			exit(1);
 		}
 		close_all_fd_child(g);

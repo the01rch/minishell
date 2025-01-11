@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 15:31:23 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 12:37:58 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_signal = 0;
 
-void	handl_int(int sig)
+static void	handl_int(int sig)
 {
 	printf("\n");
 	rl_replace_line("", 0);
@@ -33,7 +33,7 @@ static void	handl_quit(int sig)
 		rl_redisplay();
 	}
 	else
-		write(STDERR_FILENO, "Quit (core dumped)\n", 20);
+		ft_perror("Quit (core dumped)\n");
 	g_signal = sig;
 }
 

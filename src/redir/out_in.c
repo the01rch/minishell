@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/10 20:37:45 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 12:33:30 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_overwrite(t_global *g, t_cmd *cmd, char *redir)
 	cmd2 = cmd;
 	if (cmd2->outfile > 1)
 		close(cmd2->outfile);
-	redir = redir + skip_spaces(redir);
+	redir = redir + skip_chars(redir, " \t");
 	file = ft_fname(redir, 0, 0, "<>| ");
 	if (!file)
 		return (-1);
@@ -44,7 +44,7 @@ int	ft_append(t_global *g, t_cmd *cmd, char *redir)
 	cmd2 = cmd;
 	if (cmd2->outfile > 1)
 		close(cmd2->outfile);
-	redir = redir + skip_spaces(redir);
+	redir = redir + skip_chars(redir, " \t");
 	file = ft_fname(redir, 0, 0, "<>| ");
 	if (!file)
 		return (-1);
@@ -68,7 +68,7 @@ int	ft_redir_input(t_global *g, t_cmd *cmd, char *redir)
 	cmd2 = cmd;
 	if (cmd2->infile > 1)
 		close(cmd2->infile);
-	redir = redir + skip_spaces(redir);
+	redir = redir + skip_chars(redir, " \t");
 	file = ft_fname(redir, 0, 0, "<>| ");
 	if (!file)
 		return (-1);
@@ -90,7 +90,7 @@ static int	handle_heredoc_child(t_global *g, int id, int *fd, char *redir)
 	void	(*old_handler)(int);
 
 	old_handler = signal(SIGINT, handl_heredoc);
-	i = skip_spaces(redir + 0);
+	i = skip_chars(redir, " \t");
 	fd[2] = id;
 	while (is_chr("<>|", redir[i]))
 		i++;

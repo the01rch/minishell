@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 02:23:08 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 12:33:04 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	check_pipes(char *str)
 	if (*str != '|')
 		return (0);
 	idx = 1;
-	idx += skip_spaces(str);
+	idx += skip_chars(str, " \t");
 	if (!str[idx] || str[idx] == '|')
 		return (ft_perror(FPIPE), -1);
 	return (idx);
@@ -101,7 +101,7 @@ bool	is_syntax_valid(t_global *g, char *str)
 		g->exit_val = 130;
 	if (str == NULL)
 		signal_ctrd(g);
-	i = skip_spaces(str);
+	i = skip_chars(str, " \t");
 	if (!str[i])
 		return (false);
 	if (str[i] == '|')

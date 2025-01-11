@@ -6,11 +6,22 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 12:26:17 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 12:27:31 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+static void	init_cmd(t_cmd *cmd)
+{
+	cmd->args = NULL;
+	cmd->redir = NULL;
+	cmd->infile = -1;
+	cmd->outfile = -1;
+	cmd->prev_fd = -1;
+	cmd->pipe[0] = -1;
+	cmd->pipe[1] = -1;
+}
 
 static void	concat_quoted_string(char *dest, char *line, int *i, int *j)
 {
