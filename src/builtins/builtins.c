@@ -6,11 +6,39 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 03:16:51 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 03:23:37 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+int	ft_exit(t_global *g, t_cmd *cmd, bool print)
+{
+	int	nb;
+
+	if (print)
+		printf("exit\n");
+	if (!cmd->args[1] || cmd->args[1] == NULL)
+		(free_cmds(g), free_list(g->lenv), exit(g->exit_val));
+	if ((ft_is_nb(cmd->args[1]) || ft_strlen(cmd->args[1]) >= 19)
+		&& ((ft_strncmp("9223372036854775807", cmd->args[1], 19) < 0
+				&& cmd->args[1][0] != '-')
+		|| (ft_strncmp("-9223372036854775808", cmd->args[1], 20) < 0
+			&& cmd->args[1][0] == '-')))
+	{
+		(ft_perror("exit: "), ft_perror(cmd->args[1]));
+		ft_perror(": numeric argument required\n");
+		(free_cmds(g), free_list(g->lenv), exit(2));
+	}
+	if (ft_is_nb(cmd->args[1]) == 0 && cmd->args[1] && cmd->args[2] == NULL)
+	{
+		nb = ft_atoi(cmd->args[1]);
+		(free_cmds(g), free_list(g->lenv), exit(nb % 256));
+	}
+	ft_perror("exit: too many arguments\n");
+	g->exit_val = 1;
+	return (1);
+}
 
 static void	ft_unset(t_global *g, char *str)
 {
@@ -39,35 +67,6 @@ static void	ft_unset(t_global *g, char *str)
 		}
 		tmp = tmp->next;
 	}
-}
-
-static bool	ft_cd(t_global *g, char **arr)
-{
-	char	cwd[1024];
-	char	*tmp;
-	char	*pl;
-
-	if (!arr[1])
-	{
-		pl = plist(g->lenv, "HOME");
-		(chdir(pl), free(pl));
-		tmp = pwrapper("OLDPWD", plist(g->lenv, "PWD"), '=');
-		(ft_export(g, &tmp, false), free(tmp));
-		tmp = pwrapper("PWD", plist(g->lenv, "HOME"), '=');
-		return (ft_export(g, &tmp, false), free(tmp), true);
-	}
-	else if (arr[2])
-		return (g->exit_val = 1, ft_perror(" too many arguments\n"), false);
-	else if (chdir(arr[1]) == -1)
-		return (g->exit_val = 1, perror("cd"), false);
-	else if (getcwd(cwd, sizeof(cwd)) != NULL)
-	{
-		tmp = pwrapper("OLDPWD", plist(g->lenv, "PWD"), '=');
-		(ft_export(g, &tmp, false), free(tmp));
-		tmp = pwrapper("PWD", cwd, '=');
-		return (ft_export(g, &tmp, false), free(tmp), true);
-	}
-	return (perror("getcwd"), true);
 }
 
 static t_state	ft_echo(t_global *g, t_cmd *cmd)

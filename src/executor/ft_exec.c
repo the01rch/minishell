@@ -6,39 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/10 11:23:41 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 03:23:50 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-int	ft_exit(t_global *g, t_cmd *cmd, bool print)
-{
-	int	nb;
-
-	if (print)
-		printf("exit\n");
-	if (!cmd->args[1] || cmd->args[1] == NULL)
-		(free_cmds(g), free_list(g->lenv), exit(g->exit_val));
-	if ((ft_is_nb(cmd->args[1]) || ft_strlen(cmd->args[1]) >= 19)
-		&& ((ft_strncmp("9223372036854775807", cmd->args[1], 19) < 0
-				&& cmd->args[1][0] != '-')
-		|| (ft_strncmp("-9223372036854775808", cmd->args[1], 20) < 0
-			&& cmd->args[1][0] == '-')))
-	{
-		(ft_perror("exit: "), ft_perror(cmd->args[1]));
-		ft_perror(": numeric argument required\n");
-		(free_cmds(g), free_list(g->lenv), exit(2));
-	}
-	if (ft_is_nb(cmd->args[1]) == 0 && cmd->args[1] && cmd->args[2] == NULL)
-	{
-		nb = ft_atoi(cmd->args[1]);
-		(free_cmds(g), free_list(g->lenv), exit(nb % 256));
-	}
-	ft_perror("exit: too many arguments\n");
-	g->exit_val = 1;
-	return (1);
-}
 
 static void	update_last_cmd(t_global *g, t_cmd *cmd)
 {

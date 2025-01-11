@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 10:37:45 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 02:23:08 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,6 @@ static int	check_redir(char *str)
 	return (idx);
 }
 
-bool	quote_exist(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == 34 || str[i] == 39)
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
 int	check_quotes(char *str, int i)
 {
 	char	openq;
@@ -70,8 +56,6 @@ int	check_quotes(char *str, int i)
 
 	openq = 0;
 	idx = i;
-	if (quote_exist(str) == false)
-		return (i);
 	while (str[idx])
 	{
 		if (openq == 0 && (str[idx] == 34 || str[idx] == 39))
@@ -112,6 +96,7 @@ bool	is_syntax_valid(t_global *g, char *str)
 	int	i;
 	int	tmp;
 
+	add_history(str);
 	if (g_signal == SIGINT)
 		g->exit_val = 130;
 	if (str == NULL)
@@ -130,6 +115,5 @@ bool	is_syntax_valid(t_global *g, char *str)
 		if (i > ft_strlen(str))
 			break ;
 	}
-	add_history(str);
 	return (true);
 }

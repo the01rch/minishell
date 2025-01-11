@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2025/01/10 20:40:34 by kpires           ###   ########.fr        #
+#    Updated: 2025/01/11 03:25:43 by redrouic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,12 +22,13 @@ SRC		=	src/main.c\
 			src/redir/ft_redir.c\
 			src/redir/ft_heredoc.c\
 			src/redir/redir_utils.c\
-			src/executor/builtins.c\
+			src/builtins/ft_export.c\
+			src/builtins/ft_cd.c\
+			src/builtins/builtins.c\
 			src/executor/executor.c\
 			src/executor/ft_exec.c\
 			src/executor/ft_one.c\
 			src/executor/ft_pipes.c\
-			src/executor/ft_export.c\
 
 SLiB	=	lib/ft_strcmp.c\
 			lib/ft_strlen.c\

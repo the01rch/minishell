@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 06:04:27 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/07 21:30:41 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 02:41:46 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,28 @@ char	*plist(t_env *lenv, char *name)
 		tmp = tmp->next;
 	}
 	return (NULL);
+}
+
+bool	inq(char *str, int index, char quote)
+{
+	int		i;
+	char	current;
+
+	i = 0;
+	current = '\0';
+	if (!str || index < 0 || index >= ft_strlen(str))
+		return (false);
+	while (i <= index)
+	{
+		if (current == '\0')
+		{
+			if ((quote == '\0' && (str[i] == 34 || str[i] == 39))
+				|| str[i] == quote)
+				current = str[i];
+		}
+		else if (str[i] == current)
+			current = '\0';
+		i++;
+	}
+	return (current != '\0');
 }
