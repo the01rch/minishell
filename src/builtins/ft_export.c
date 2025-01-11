@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 16:05:04 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:45:18 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static	bool	is_alpha(char c)
 	return (false);
 }
 
-static t_state	is_format_export(char *str)
+t_state	is_format_export(char *str)
 {
 	bool	equal;
 	int		i;

@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2025/01/11 03:25:43 by redrouic         ###   ########.fr        #
+#    Updated: 2025/01/11 17:02:16 by redrouic         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ SRC		=	src/main.c\
 			src/redir/ft_heredoc.c\
 			src/redir/redir_utils.c\
 			src/builtins/ft_export.c\
+			src/builtins/ft_unset.c\
 			src/builtins/ft_cd.c\
 			src/builtins/builtins.c\
 			src/executor/executor.c\

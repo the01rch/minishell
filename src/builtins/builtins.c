@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 16:04:16 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 16:58:35 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,35 +38,6 @@ int	ft_exit(t_global *g, t_cmd *cmd, bool print)
 	ft_perror("exit: too many arguments\n");
 	g->exit_val = 1;
 	return (1);
-}
-
-static void	ft_unset(t_global *g, char *str)
-{
-	t_env	*tmp;
-	t_env	*to_delete;
-
-	if (!g->lenv || !str)
-		return ;
-	g->exit_val = 0;
-	if (ft_strcmp(str, g->lenv->name))
-	{
-		to_delete = g->lenv;
-		g->lenv = g->lenv->next;
-		free_node(to_delete);
-		return ;
-	}
-	tmp = g->lenv;
-	while (tmp && tmp->next)
-	{
-		if (ft_strcmp(str, tmp->next->name))
-		{
-			to_delete = tmp->next;
-			tmp->next = tmp->next->next;
-			free_node(to_delete);
-			return ;
-		}
-		tmp = tmp->next;
-	}
 }
 
 static t_state	ft_echo(t_global *g, t_cmd *cmd)
@@ -111,7 +82,7 @@ static t_state	gest_env(t_global *g, char **arr)
 		return (ERROR);
 	}
 	if (ft_strcmp(arr[0], "unset"))
-		return (ft_unset(g, arr[1]), VALID);
+		return (ft_unset(g, &arr[1]), VALID);
 	if (ft_strcmp(arr[0], "cd"))
 		return (ft_cd(g, arr), VALID);
 	return (NONE);
