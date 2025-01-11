@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 12:52:59 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 15:57:34 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		ft_isdigit(int c);
 int		ft_atoi(const char *str);
 int		ft_is_nb(char *cmd);
 char	*ft_itoa(int n);
-void	ft_perror(const char *str, bool new_line);
+void	ft_perror(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 /*BUILTINS*/

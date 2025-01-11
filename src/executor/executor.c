@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 13:13:55 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 16:00:51 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void	execve_absolute_path(t_global *g, int id)
 		{
 			if (access(g->cmds[id]->args[0], X_OK) != 0)
 			{
-				ft_perror(g->cmds[id]->args[0], false);
-				ft_perror(": Permission denied\n", false);
+				ft_perror(g->cmds[id]->args[0]);
+				ft_perror(": Permission denied\n");
 			}
 			else
 			{
-				ft_perror(g->cmds[id]->args[0], false);
-				ft_perror(": Is a directory\n", false);
+				ft_perror(g->cmds[id]->args[0]);
+				ft_perror(": Is a directory\n");
 			}
 			(free_cmds(g), free_list(g->lenv)
 				, free_arr(lenv), exit(126));
@@ -76,8 +76,8 @@ void	execve_cmd_path(t_global *g, int id)
 	path = check_access(g->lenv, g->cmds[id]->args);
 	if (!path)
 	{
-		ft_perror(g->cmds[id]->args[0], false);
-		ft_perror(": command not found\n", false);
+		ft_perror(g->cmds[id]->args[0]);
+		ft_perror(": command not found\n");
 		free_list(g->lenv);
 		free_cmds(g);
 		exit(127);

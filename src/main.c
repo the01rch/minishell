@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 15:31:34 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 16:05:26 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	handl_quit(int sig)
 		rl_redisplay();
 	}
 	else
-		ft_perror("Quit (core dumped)\n", false);
+		ft_perror("Quit (core dumped)\n");
 	g_signal = sig;
 }
 
@@ -55,20 +55,6 @@ static void	init_g(t_global *g, char **env)
 	g->cmds = NULL;
 	g->cnt = 0;
 	g->last_pid = -1;
-	printf("											\
-								\n");
-	printf("██       █████  ███████ ██    ██ ███████\
- ██   ██ ███████ ██      ██     \n");
-	printf("██      ██   ██    ███   ██  ██  ██     \
- ██   ██ ██      ██      ██     \n");
-	printf("██      ███████   ███     ████   ███████\
- ███████ █████   ██      ██     \n");
-	printf("██      ██   ██  ███       ██         ██\
- ██   ██ ██      ██      ██     \n");
-	printf("███████ ██   ██ ███████    ██    ███████\
- ██   ██ ███████ ███████ ███████\n");
-	printf("										\
-								\n");
 }
 
 int	main(int ac, char **av, char **env)
@@ -81,7 +67,7 @@ int	main(int ac, char **av, char **env)
 	{
 		g_signal = 0;
 		(signal(SIGINT, handl_int), signal(SIGQUIT, handl_quit));
-		line = readline("( ͡° ͜ʖ ͡°) $>");
+		line = readline("( ͡° ͜ʖ ͡°) $> ");
 		if (!is_syntax_valid(&g, line))
 		{
 			free(line);

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 13:44:58 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 16:05:52 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	update_last_cmd(t_global *g, t_cmd *cmd)
 	v_ = malloc(sizeof(char) * len);
 	if (!v_)
 	{
-		ft_perror("env: error with mallocc \n", false);
+		ft_perror("env: error with mallocc \n");
 		return ;
 	}
 	ft_strncpy(v_, "_=/usr/bin/", 12);

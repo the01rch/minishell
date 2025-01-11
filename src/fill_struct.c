@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 14:42:13 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 16:00:04 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
 	{
 		cmd->redir = malloc(sizeof(char) * (ft_strlen(line) - len + 2));
 		if (!cmd->redir)
-			return (ft_perror(EALL, false), free_cmds(g), exit(1), (int)len);
+			return (ft_perror(EALL), free_cmds(g), exit(1), (int)len);
 		i[0] = 0;
 		i[1] = len;
 		while (i[1] < (int)ft_strlen(line))
@@ -102,7 +102,7 @@ static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line, int ints[3])
 	cmd->args = str2arr(tmp, " \t", true);
 	free(tmp);
 	if (!cmd->args)
-		return (ft_perror(EALL, false), free_cmds(g), exit(1), (void)0);
+		return (ft_perror(EALL), free_cmds(g), exit(1), (void)0);
 }
 
 void	init_s_cmd(t_global *g, char *line)
@@ -116,16 +116,16 @@ void	init_s_cmd(t_global *g, char *line)
 	g->cnt = rows;
 	g->cmds = malloc(sizeof(t_cmd *) * (rows + 1));
 	if (!g->cmds)
-		return (ft_perror(EALL, false), exit(1), (void)0);
+		return (ft_perror(EALL), exit(1), (void)0);
 	arr = str2arr(line, "|", true);
 	if (!arr)
-		return (ft_perror(EALL, false), free_cmds(g), exit(1), (void)0);
+		return (ft_perror(EALL), free_cmds(g), exit(1), (void)0);
 	i = 0;
 	while (i < rows)
 	{
 		g->cmds[i] = malloc(sizeof(t_cmd));
 		if (!g->cmds[i])
-			return (ft_perror(EALL, false), (void)0);
+			return (ft_perror(EALL), (void)0);
 		fill_s_cmd(g, g->cmds[i], arr[i], ints);
 		i++;
 	}
