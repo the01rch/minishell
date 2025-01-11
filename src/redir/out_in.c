@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 12:33:30 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 23:48:57 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ static int	handle_heredoc_child(t_global *g, int id, int *fd, char *redir)
 {
 	int		i;
 	void	(*old_handler)(int);
+	char	*file;
+	int		result;
 
 	old_handler = signal(SIGINT, handl_heredoc);
 	i = skip_chars(redir, " \t");
@@ -96,11 +98,18 @@ static int	handle_heredoc_child(t_global *g, int id, int *fd, char *redir)
 		i++;
 	signal(SIGINT, handl_heredoc);
 	if (inq(redir, i, '\0'))
-		return ((i) + ft_hd_q(g->cmds[id], fd
-				, ft_fname(redir + i, 0, 0, "<>|"), old_handler));
-	else
-		return ((i)
-			+ ft_hd_nq(g, fd, ft_fname(redir + i, 0, 0, "<>| "), old_handler));
+	{
+		file = ft_fname(redir + i, 0, 0, "<>|");
+		if (!file)
+			return (close(fd[1]), close(fd[0]), -1);
+		result = (i) + ft_hd_q(g, fd, file, old_handler);
+		return (free(file), (int)result);
+	}
+	file = ft_fname(redir + i, 0, 0, "<>| ");
+	if (!file)
+		return (close(fd[1]), close(fd[0]), -1);
+	result = (i) + ft_hd_nq(g, fd, file, old_handler);
+	return (free(file), (int)result);
 }
 
 int	ft_heredoc(t_global *g, int id, char *redir)
@@ -119,7 +128,7 @@ int	ft_heredoc(t_global *g, int id, char *redir)
 	{
 		close(fd[0]);
 		status = handle_heredoc_child(g, id, fd, redir);
-		(free_cmds(g), free_list(g->lenv), exit(status));
+		(free_g(g, NULL), exit(status));
 	}
 	(close(fd[1]), waitpid(pid, &status, 0));
 	if (WIFSIGNALED(status))

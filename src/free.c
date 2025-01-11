@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 15:54:11 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/10 12:20:44 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 23:59:10 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,6 @@ void	free_arr(char **arr)
 	free(arr);
 }
 
-void	free_node(t_env *node)
-{
-	if (node)
-	{
-		free(node->name);
-		free(node->content);
-		free(node);
-	}
-}
-
 void	free_list(t_env *list)
 {
 	t_env	*tmp;
@@ -42,16 +32,40 @@ void	free_list(t_env *list)
 	{
 		tmp = list;
 		list = list->next;
-		free_node(tmp);
+		ft_free_node(tmp);
 	}
+}
+
+void	free_g(t_global *g, char **arr)
+{
+	if (!g)
+		return ;
+	if (g->cmds)
+		free_cmds(g);
+	if (g->lenv)
+		free_list(g->lenv);
+	if (arr)
+		free_arr(arr);
 }
 
 void	free_cmd(t_cmd *cmd)
 {
+	if (!cmd)
+		return ;
 	if (cmd->args)
+	{
 		free_arr(cmd->args);
+		cmd->args = NULL;
+	}
 	if (cmd->redir)
+	{
 		free(cmd->redir);
+		cmd->redir = NULL;
+	}
+	if (cmd->infile > 2)
+		close(cmd->infile);
+	if (cmd->outfile > 2)
+		close(cmd->outfile);
 	free(cmd);
 }
 
@@ -63,7 +77,7 @@ void	free_cmds(t_global *g)
 		return ;
 	close_all_fd_child(g);
 	i = 0;
-	while (g->cmds[i])
+	while (i < g->cnt && g->cmds[i])
 	{
 		free_cmd(g->cmds[i]);
 		g->cmds[i] = NULL;

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 18:14:52 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 16:06:44 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 23:16:34 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	exec_pipes(t_global *g, int id)
 		if (dup_infile(g, id) || dup_outfile(g, id))
 		{
 			(close(g->cmds[id]->pipe[1]));
-			free_cmds(g);
+			free_g(g, NULL);
 			ft_perror("Exec: error with dup\n");
 			exit(1);
 		}
@@ -64,7 +64,7 @@ static void	exec_pipes(t_global *g, int id)
 		if (gest_builtins(g, g->cmds[id]) == NONE)
 			execve_cmd(g, id);
 	}
-	(free_list(g->lenv), free_cmds(g), exit(g->exit_val));
+	(free_g(g, NULL), exit(g->exit_val));
 }
 
 static void	pipe_and_fork(t_global *g, int id)

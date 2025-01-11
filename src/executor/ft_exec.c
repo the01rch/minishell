@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 17:33:42 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 23:05:32 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ static void	update_last_cmd(t_global *g, t_cmd *cmd)
 	char	*result;
 
 	len = (11 + ft_strlen(cmd->args[0]) + 1);
-	v_ = malloc(sizeof(char) * len);
+	v_ = ft_calloc(sizeof(char), len);
 	if (!v_)
 	{
-		ft_perror("env: error with mallocc \n");
+		ft_perror("env: error with malloc \n");
 		return ;
 	}
 	ft_strncpy(v_, "_=/usr/bin/", 12);
@@ -40,13 +40,21 @@ void	close_all_fd_child(t_global *g)
 {
 	int	i;
 
+	if (!g || !g->cmds || !g->cmds[0])
+		return ;
 	i = 0;
-	while (g->cmds[i])
+	while (i < g->cnt && g->cmds[i])
 	{
 		if (g->cmds[i]->infile > 2)
+		{
 			close(g->cmds[i]->infile);
+			g->cmds[i]->infile = -1;
+		}
 		if (g->cmds[i]->outfile > 2)
+		{
 			close(g->cmds[i]->outfile);
+			g->cmds[i]->outfile = -1;
+		}
 		i++;
 	}
 }

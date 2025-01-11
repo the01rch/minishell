@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 18:19:46 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 19:59:37 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static	bool	single_export(t_global *g, char *str, int i, t_env *tmp)
 		tmp = tmp->next;
 	}
 	if (!ft_strcmp(e_name, tmp->name))
-		tmp = create_node(str);
+		tmp->next = create_node(str);
 	return (free(e_name), true);
 }
 

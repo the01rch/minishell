@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:20:05 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 16:06:17 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 23:13:59 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	close_fd(t_global *g, int *std_save, bool is_error)
 			if (g->cmds[std_save[2]]->outfile != -1)
 				close(std_save[1]);
 			if (is_error)
-				(free_cmds(g), free_list(g->lenv), exit(1));
+				(free_g(g, NULL), exit(1));
 		}
 		close(std_save[0]);
 	}
@@ -52,7 +52,7 @@ int	close_fd(t_global *g, int *std_save, bool is_error)
 		{
 			close(std_save[1]);
 			if (is_error)
-				(free_cmds(g), free_list(g->lenv), exit(1));
+				(free_g(g, NULL), exit(1));
 		}
 		close(std_save[1]);
 	}
@@ -89,8 +89,8 @@ static void	gest_shell(t_global *g, int id, int *std_save)
 
 	pid = fork();
 	if (pid < 0)
-		return (perror("Error :Fork failed\n"), free_cmds(g),
-			free_list(g->lenv), exit(0), (void)0);
+		return (ft_perror("Error :Fork failed\n"),
+			free_g(g, NULL), exit(0), (void)0);
 	else if (pid == 0)
 	{
 		if (g->cmds[id]->infile != -1)

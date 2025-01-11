@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 06:04:27 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 13:50:10 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 23:06:44 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*pwrapper(char *name, char *content, char sep)
 
 	len = ft_strlen(name) + ft_strlen(content) + 1;
 	i = 0;
-	dest = malloc(sizeof(char) * (len + 1));
+	dest = ft_calloc(sizeof(char), (len + 1));
 	if (!dest)
 		return (NULL);
 	while (*name)

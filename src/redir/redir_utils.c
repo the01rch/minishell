@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 21:02:53 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 12:40:22 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 23:06:32 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*ft_fname(char *redir, int i, int len, char *dels)
 	char	*file;
 	char	q;
 
-	file = malloc(sizeof(char) * (count_fname_len(redir, dels) + 1));
+	file = ft_calloc(sizeof(char), (count_fname_len(redir, dels) + 1));
 	if (!file)
 		return (NULL);
 	i = skip_chars(redir, " \t") - 1;

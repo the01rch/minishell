@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 16:58:47 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 23:58:02 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int		ft_is_nb(char *cmd);
 char	*ft_itoa(int n);
 void	ft_perror(const char *str);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+void	ft_free_node(t_env *node);
 
 /*BUILTINS*/
 t_state	gest_builtins(t_global *g, t_cmd *cmd);
@@ -88,11 +89,11 @@ int		check_quotes(char *str, int i);
 char	*plist(t_env *lenv, char *name);
 
 /*FREE*/
-void	free_node(t_env *node);
 void	free_arr(char **arr);
 void	free_list(t_env *list);
 void	free_cmds(t_global *g);
 void	free_cmd(t_cmd *cmd);
+void	free_g(t_global *g, char **arr);
 
 /*REDIR*/
 int		ft_redir(t_global *g, int i, int tmp);

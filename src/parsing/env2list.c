@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 18:59:11 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 13:54:47 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 23:59:18 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_env	*create_node(char *str)
 	new->content = ft_substr(str, i + 1, ft_strlen(str));
 	new->next = NULL;
 	if (!new->name || !new->content)
-		return (free_node(new), NULL);
+		return (ft_free_node(new), NULL);
 	return (new);
 }
 
@@ -68,7 +68,7 @@ t_env	*arr2list(char **env)
 			return (free_list(head), NULL);
 		tmp = tmp->next;
 	}
-	return (result = head->next, free_node(head), (t_env *)result);
+	return (result = head->next, ft_free_node(head), (t_env *)result);
 }
 
 char	**list2arr(t_env *lenv)

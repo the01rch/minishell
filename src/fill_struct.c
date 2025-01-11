@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 16:00:04 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 23:59:38 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	init_cmd(t_cmd *cmd)
 	cmd->pipe[1] = -1;
 }
 
-static void	concat_quoted_string(char *dest, char *line, int *i, int *j)
+static void	cat_quot_str(char *dest, char *line, int *i, int *j)
 {
 	char	quote_char;
 	int		len;
@@ -47,62 +47,61 @@ static void	concat_quoted_string(char *dest, char *line, int *i, int *j)
 	}
 }
 
-static int	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
+static int	fill_redir(t_global *g, int i, char **li, int l)
 {
-	int		i[2];
+	int		j[2];
 
-	if (len < (int)ft_strlen(line))
+	if (l < (int)ft_strlen(li[i]))
 	{
-		cmd->redir = malloc(sizeof(char) * (ft_strlen(line) - len + 2));
-		if (!cmd->redir)
-			return (ft_perror(EALL), free_cmds(g), exit(1), (int)len);
-		i[0] = 0;
-		i[1] = len;
-		while (i[1] < (int)ft_strlen(line))
+		g->cmds[i]->redir = ft_calloc(sizeof(char), (ft_strlen(li[i]) - l + 2));
+		if (!g->cmds[i]->redir)
+			return (ft_perror(EALL), free_g(g, li), exit(1), (int)-1);
+		j[0] = 0;
+		j[1] = l;
+		while (j[1] < (int)ft_strlen(li[i]))
 		{
-			if (is_chr("><", line[i[1]]))
+			if (is_chr("><", li[i][j[1]]))
 			{
-				while (i[1] < ft_strlen(line) && (is_chr("><", line[i[1]])
-						|| is_chr(" \t", line[i[1]])))
-					cmd->redir[i[0]++] = line[i[1]++];
-				concat_quoted_string(cmd->redir, line, &i[0], &i[1]);
-				cmd->redir[i[0]++] = ' ';
+				while (j[1] < ft_strlen(li[i]) && (is_chr("><", li[i][j[1]])
+					|| is_chr(" \t", li[i][j[1]])))
+					g->cmds[i]->redir[j[0]++] = li[i][j[1]++];
+				cat_quot_str(g->cmds[i]->redir, li[i], &j[0], &j[1]);
+				g->cmds[i]->redir[j[0]++] = ' ';
 			}
 			else
-				i[1]++;
+				j[1]++;
 		}
-		return (cmd->redir[i[0]] = '\0', (int)i[0] - 1);
+		return (g->cmds[i]->redir[j[0]] = '\0', (int)j[0] - 1);
 	}
-	return (len);
+	return (l);
 }
 
-static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line, int ints[3])
+static void	fill_s_cmd(t_global *g, int id, char **arr, int t[3])
 {
 	char	cmd_line[1024];
 	char	*tmp;
 
-	ints[0] = -1;
-	while (line[++ints[0]])
-		if (is_chr("><", line[ints[0]]) && !inq(line, ints[0], 0))
+	t[0] = -1;
+	while (arr[id][++t[0]])
+		if (is_chr("><", arr[id][t[0]]) && !inq(arr[id], t[0], 0))
 			break ;
-	(init_cmd(cmd), ints[2] = fill_redir(g, cmd, line, ints[0]));
-	ft_strncpy(cmd_line, line, ints[0]);
-	ints[1] = ints[0];
-	while (ints[0] < (int)ft_strlen(line) && line[ints[0]])
+	(init_cmd(g->cmds[id]), t[2] = fill_redir(g, id, arr, t[0]));
+	(ft_strncpy(cmd_line, arr[id], t[0]), t[1] = t[0]);
+	while (t[0] < (int)ft_strlen(arr[id]) && arr[id][t[0]])
 	{
-		if (ints[0] < ints[2])
-			ints[0] = ints[2];
-		if (line[ints[0]] == 32 && !is_chr(">< \t", line[ints[0] - 1]))
-			while (line[ints[0]] && !is_chr("><", line[ints[0]]))
-				cmd_line[ints[1]++] = line[ints[0]++];
-		ints[0]++;
+		if (t[0] < t[2])
+			t[0] = t[2];
+		if (arr[id][t[0]] == 32 && !is_chr(">< \t", arr[id][t[0] - 1]))
+			while (arr[id][t[0]] && !is_chr("><", arr[id][t[0]]))
+				cmd_line[t[1]++] = arr[id][t[0]++];
+		t[0]++;
 	}
-	cmd_line[ints[1]] = '\0';
+	cmd_line[t[1]] = '\0';
 	tmp = gest_expand(g, cmd_line);
-	cmd->args = str2arr(tmp, " \t", true);
+	g->cmds[id]->args = str2arr(tmp, " \t", true);
 	free(tmp);
-	if (!cmd->args)
-		return (ft_perror(EALL), free_cmds(g), exit(1), (void)0);
+	if (!g->cmds[id]->args)
+		return (ft_perror(EALL), free_g(g, arr), exit(1), (void)0);
 }
 
 void	init_s_cmd(t_global *g, char *line)
@@ -110,23 +109,23 @@ void	init_s_cmd(t_global *g, char *line)
 	char	**arr;
 	int		rows;
 	int		i;
-	int		ints[3];
+	int		t[3];
 
 	rows = count_rows("|", line, true);
 	g->cnt = rows;
-	g->cmds = malloc(sizeof(t_cmd *) * (rows + 1));
+	g->cmds = ft_calloc(sizeof(t_cmd *), (rows + 1));
 	if (!g->cmds)
-		return (ft_perror(EALL), exit(1), (void)0);
+		return (ft_perror(EALL), free(line), exit(1), (void)0);
 	arr = str2arr(line, "|", true);
 	if (!arr)
-		return (ft_perror(EALL), free_cmds(g), exit(1), (void)0);
+		return (ft_perror(EALL), free_g(g, NULL), free(line), exit(1), (void)0);
 	i = 0;
 	while (i < rows)
 	{
-		g->cmds[i] = malloc(sizeof(t_cmd));
+		g->cmds[i] = ft_calloc(sizeof(t_cmd), 1);
 		if (!g->cmds[i])
 			return (ft_perror(EALL), (void)0);
-		fill_s_cmd(g, g->cmds[i], arr[i], ints);
+		fill_s_cmd(g, i, arr, t);
 		i++;
 	}
 	g->cmds[i] = NULL;

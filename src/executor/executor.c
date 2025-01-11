@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 16:00:51 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 23:04:29 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,11 @@ void	execve_absolute_path(t_global *g, int id)
 				ft_perror(g->cmds[id]->args[0]);
 				ft_perror(": Is a directory\n");
 			}
-			(free_cmds(g), free_list(g->lenv)
-				, free_arr(lenv), exit(126));
+			(free_g(g, lenv), exit(126));
 		}
 		else
 			perror(g->cmds[id]->args[0]);
-		(free_list(g->lenv), free_cmds(g)
-			, free_arr(lenv), exit(127));
+		(free_g(g, lenv), exit(127));
 	}
 }
 
@@ -78,48 +76,17 @@ void	execve_cmd_path(t_global *g, int id)
 	{
 		ft_perror(g->cmds[id]->args[0]);
 		ft_perror(": command not found\n");
-		free_list(g->lenv);
-		free_cmds(g);
+		free_g(g, NULL);
 		exit(127);
 	}
 	if (execve(path, g->cmds[id]->args, list2arr(g->lenv)) == -1)
 	{
 		perror("execve");
-		free_list(g->lenv);
+		free_g(g, NULL);
 		free(path);
-		free_cmds(g);
 		exit(1);
 	}
 }
-
-/*
-	if (g->cmds[id]->args[0][0] == '\0')
-	{
-		i = 0;
-		free(g->cmds[id]->args[0]);
-		while (g->cmds[id]->args[i + 1])
-		{
-			g->cmds[id]->args[i] = g->cmds[id]->args[i + 1];
-			i++;
-		}
-		g->cmds[id]->args[i] = NULL;
-		if (g->cmds[id]->args[0])
-		{
-			i = 0;
-			while (g->cmds[id]->args[0][i])
-			{
-				if (g->cmds[id]->args[0][i] == '/')
-				{
-					execve_absolute_path(g, id, lenv);
-					return ;
-				}
-				i++;
-			}
-			execve_cmd_path(g, id, lenv);
-		}
-		return ;
-	}
-*/
 
 void	execve_cmd(t_global *g, int id)
 {

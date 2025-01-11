@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 16:58:35 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 22:58:14 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_exit(t_global *g, t_cmd *cmd, bool print)
 	if (print)
 		printf("exit\n");
 	if (!cmd->args[1] || cmd->args[1] == NULL)
-		(free_cmds(g), free_list(g->lenv), exit(g->exit_val));
+		(free_g(g, NULL), exit(g->exit_val));
 	if ((ft_is_nb(cmd->args[1]) || ft_strlen(cmd->args[1]) >= 19)
 		&& ((ft_strncmp("9223372036854775807", cmd->args[1], 19) < 0
 				&& cmd->args[1][0] != '-')
@@ -28,12 +28,12 @@ int	ft_exit(t_global *g, t_cmd *cmd, bool print)
 	{
 		(ft_perror("exit: "), ft_perror(cmd->args[1]));
 		ft_perror(": numeric argument required\n");
-		(free_cmds(g), free_list(g->lenv), exit(2));
+		(free_g(g, NULL), exit(2));
 	}
 	if (ft_is_nb(cmd->args[1]) == 0 && cmd->args[1] && cmd->args[2] == NULL)
 	{
 		nb = ft_atoi(cmd->args[1]);
-		(free_cmds(g), free_list(g->lenv), exit(nb % 256));
+		(free_g(g, NULL), exit(nb % 256));
 	}
 	ft_perror("exit: too many arguments\n");
 	g->exit_val = 1;

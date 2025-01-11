@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 14:34:07 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 23:44:45 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	extract_varlen(char *line, int len, char **v_name, bool del_sign)
 	var_len = len - start;
 	if (line[len] && del_sign)
 		len--;
-	*v_name = malloc(sizeof(char) * (var_len + 1));
+	*v_name = ft_calloc(sizeof(char), (var_len + 1));
 	if (!*v_name)
 		return (-1);
 	ft_strncpy(*v_name, line + start, var_len);
@@ -72,7 +72,10 @@ static int	skip_nonredir(char *redir, int i)
 		if (!is_chr("'\"", redir[i + count]))
 			count++;
 		if (i + count < ft_strlen(redir))
-			count += skip_chars(redir + i + count, "\"'");
+		{
+			count += skip_chars(redir + i + count, "\"");
+			count += skip_chars(redir + i + count, "'");
+		}
 	}
 	return (count);
 }

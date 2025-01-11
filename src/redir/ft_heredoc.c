@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:52:04 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 16:07:28 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 23:42:50 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	ft_hd_q(t_cmd *cmd, int *fd, char *del, void (*old_handler)(int))
 			break ;
 		(write_here(hd, fd[1], ft_strlen(hd)), free(hd));
 	}
-	(signal(SIGINT, old_handler), free(del), free(hd), close(fd[1]));
+	(signal(SIGINT, old_handler), free(hd), close(fd[1]));
 	cmd->infile = fd[0];
 	if (fd[0] == -2)
 		return (-1);
@@ -135,7 +135,7 @@ int	ft_hd_nq(t_global *g, int *fd, char *del, void (*old_handler)(int))
 		hd = ft_here_parse(hd, g->lenv);
 		(write_here(hd, fd[1], ft_strlen(hd)), free(hd));
 	}
-	(signal(SIGINT, old_handler), free(del), free(hd), close(fd[1]));
+	(signal(SIGINT, old_handler), free(hd), close(fd[1]));
 	if (fd[0] == -2)
 		return (g->cmds[fd[2]]->infile = fd[0], -1);
 	return (g->cmds[fd[2]]->infile = fd[0], 0);
