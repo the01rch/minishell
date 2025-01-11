@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 13:40:08 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 15:26:33 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,16 @@ static void	init_g(t_global *g, char **env)
 	g->cmds = NULL;
 	g->cnt = 0;
 	g->last_pid = -1;
+	printf("██       █████  ███████ ██    ██ ███████\
+	██   ██ ███████ ██      ██                              \n");
+	printf("██      ██   ██    ███   ██  ██  ██     \
+	██   ██ ██      ██      ██          ▄ ██ ▄        ▄ ██ ▄\n");
+	printf("██      ███████   ███     ████   ███████\
+	███████ █████   ██      ██           ████          ████ \n");
+	printf("██      ██   ██  ███       ██         ██\
+	██   ██ ██      ██      ██          ▀ ██ ▀        ▀ ██ ▀\n");
+	printf("███████ ██   ██ ███████    ██    ███████\
+	██   ██ ███████ ███████ ███████           ███████       \n");
 }
 
 int	main(int ac, char **av, char **env)
@@ -67,7 +77,7 @@ int	main(int ac, char **av, char **env)
 	{
 		g_signal = 0;
 		(signal(SIGINT, handl_int), signal(SIGQUIT, handl_quit));
-		line = readline("$> ");
+		line = readline("( ͡° ͜ʖ ͡°) $>");
 		if (!is_syntax_valid(&g, line))
 		{
 			free(line);

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 21:56:02 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 12:40:06 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 14:34:07 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,17 @@ static int	skip_nonredir(char *redir, int i)
 	int	rlen;
 
 	count = 0;
+	if (!redir)
+		return (0);
 	rlen = ft_strlen(redir);
 	if (i > rlen || count > rlen || i + count > rlen)
 		return (0);
-	while (redir[i + count] && !is_chr("><|", redir[i + count]))
+	while (i + count < ft_strlen(redir) && !is_chr("><|", redir[i + count]))
 	{
 		if (!is_chr("'\"", redir[i + count]))
 			count++;
-		count += skip_chars(redir + i + count, "\"'");
+		if (i + count < ft_strlen(redir))
+			count += skip_chars(redir + i + count, "\"'");
 	}
 	return (count);
 }

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:52:04 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 13:05:43 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 15:06:37 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	ft_hd_q(t_cmd *cmd, int *fd, char *del, void (*old_handler)(int))
 
 	while (g_signal != SIGINT)
 	{
-		hd = readline("heredoc (not parsed)> ");
+		hd = readline("( ͡ಥ ͜ʖ ͡ಥ) heredoc(not parsed)> ");
 		if (!hd || g_signal == SIGINT)
 		{
 			if (g_signal == SIGINT)
@@ -118,7 +118,7 @@ int	ft_hd_nq(t_global *g, int *fd, char *del, void (*old_handler)(int))
 
 	while (g_signal != SIGINT)
 	{
-		hd = readline("heredoc> ");
+		hd = readline("( ͡ಥ ͜ʖ ͡ಥ) heredoc> ");
 		if (g_signal == SIGINT)
 		{
 			(close(fd[0]), fd[0] = -2);

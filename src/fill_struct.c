@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 12:53:32 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 14:42:13 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
 
 	if (len < (int)ft_strlen(line))
 	{
-		cmd->redir = malloc(sizeof(char) * (ft_strlen(line) - len + 1));
+		cmd->redir = malloc(sizeof(char) * (ft_strlen(line) - len + 2));
 		if (!cmd->redir)
 			return (ft_perror(EALL, false), free_cmds(g), exit(1), (int)len);
 		i[0] = 0;
