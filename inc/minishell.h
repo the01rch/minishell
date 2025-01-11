@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 03:24:24 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 12:06:34 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int		count_rows(const char *chr, char *str, bool quote);
 int		skip_spaces(char *str);
 int		check_quotes(char *str, int i);
 char	*plist(t_env *lenv, char *name);
+void	init_cmd(t_cmd *cmd);
 
 /*FREE*/
 void	free_node(t_env *node);

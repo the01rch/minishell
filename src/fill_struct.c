@@ -6,22 +6,11 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 02:17:20 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 12:26:17 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-static void	init_cmd(t_cmd *cmd)
-{
-	cmd->args = NULL;
-	cmd->redir = NULL;
-	cmd->infile = -1;
-	cmd->outfile = -1;
-	cmd->prev_fd = -1;
-	cmd->pipe[0] = -1;
-	cmd->pipe[1] = -1;
-}
 
 static void	concat_quoted_string(char *dest, char *line, int *i, int *j)
 {
@@ -49,68 +38,55 @@ static void	concat_quoted_string(char *dest, char *line, int *i, int *j)
 
 static int	fill_redir(t_global *g, t_cmd *cmd, char *line, int len)
 {
-	int		i;
-	int		j;
-	bool	q;
+	int		i[2];
 
-	q = false;
 	if (len < (int)ft_strlen(line))
 	{
 		cmd->redir = malloc(sizeof(char) * (ft_strlen(line) - len + 1));
 		if (!cmd->redir)
 			return (ft_perror(EALL), free_cmds(g), exit(1), (int)len);
-		i = 0;
-		j = len;
-		while (j < (int)ft_strlen(line))
+		i[0] = 0;
+		i[1] = len;
+		while (i[1] < (int)ft_strlen(line))
 		{
-			if (!q && is_chr("><", line[j]))
+			if (is_chr("><", line[i[1]]))
 			{
-				while (j < ft_strlen(line) && (is_chr("><", line[j])
-						|| is_chr(" \t", line[j])))
-					cmd->redir[i++] = line[j++];
-				concat_quoted_string(cmd->redir, line, &i, &j);
-				cmd->redir[i++] = ' ';
+				while (i[1] < ft_strlen(line) && (is_chr("><", line[i[1]])
+						|| is_chr(" \t", line[i[1]])))
+					cmd->redir[i[0]++] = line[i[1]++];
+				concat_quoted_string(cmd->redir, line, &i[0], &i[1]);
+				cmd->redir[i[0]++] = ' ';
 			}
 			else
-				j++;
+				i[1]++;
 		}
-		cmd->redir[i] = '\0';
-		return (i - 1);
+		return (cmd->redir[i[0]] = '\0', (int)i[0] - 1);
 	}
 	return (len);
 }
 
-static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line)
+static void	fill_s_cmd(t_global *g, t_cmd *cmd, char *line, int ints[3])
 {
 	char	cmd_line[1024];
 	char	*tmp;
-	int		i;
-	int		w;
-	int		test;
 
-	i = 0;
-	while (line[i])
-	{
-		if (is_chr("><", line[i]) && !inq(line, i, 0))
+	ints[0] = -1;
+	while (line[++ints[0]])
+		if (is_chr("><", line[ints[0]]) && !inq(line, ints[0], 0))
 			break ;
-		i++;
-	}
-	init_cmd(cmd);
-	test = fill_redir(g, cmd, line, i);
-	ft_strncpy(cmd_line, line, i);
-	w = i;
-	while (i < (int)ft_strlen(line) && line[i])
+	(init_cmd(cmd), ints[2] = fill_redir(g, cmd, line, ints[0]));
+	ft_strncpy(cmd_line, line, ints[0]);
+	ints[1] = ints[0];
+	while (ints[0] < (int)ft_strlen(line) && line[ints[0]])
 	{
-		if (i < test)
-			i = test;
-		if (line[i] == 32 && !is_chr(">< \t", line[i - 1]))
-		{
-			while (line[i] && !is_chr("><", line[i]))
-				cmd_line[w++] = line[i++];
-		}
-		i++;
+		if (ints[0] < ints[2])
+			ints[0] = ints[2];
+		if (line[ints[0]] == 32 && !is_chr(">< \t", line[ints[0] - 1]))
+			while (line[ints[0]] && !is_chr("><", line[ints[0]]))
+				cmd_line[ints[1]++] = line[ints[0]++];
+		ints[0]++;
 	}
-	cmd_line[w] = '\0';
+	cmd_line[ints[1]] = '\0';
 	tmp = gest_expand(g, cmd_line);
 	cmd->args = str2arr(tmp, " \t", true);
 	free(tmp);
@@ -123,6 +99,7 @@ void	init_s_cmd(t_global *g, char *line)
 	char	**arr;
 	int		rows;
 	int		i;
+	int		ints[3];
 
 	rows = count_rows("|", line, true);
 	g->cnt = rows;
@@ -138,7 +115,7 @@ void	init_s_cmd(t_global *g, char *line)
 		g->cmds[i] = malloc(sizeof(t_cmd));
 		if (!g->cmds[i])
 			return (printf(EALL), (void)0);
-		fill_s_cmd(g, g->cmds[i], arr[i]);
+		fill_s_cmd(g, g->cmds[i], arr[i], ints);
 		i++;
 	}
 	g->cmds[i] = NULL;

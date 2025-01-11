@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 06:04:27 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 02:41:46 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 12:23:19 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,15 @@ bool	inq(char *str, int index, char quote)
 		i++;
 	}
 	return (current != '\0');
+}
+
+void	init_cmd(t_cmd *cmd)
+{
+	cmd->args = NULL;
+	cmd->redir = NULL;
+	cmd->infile = -1;
+	cmd->outfile = -1;
+	cmd->prev_fd = -1;
+	cmd->pipe[0] = -1;
+	cmd->pipe[1] = -1;
 }
