@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 03:16:51 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 13:11:11 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static bool	ft_cd(t_global *g, char **arr)
 		return (ft_export(g, &tmp, false), free(tmp), true);
 	}
 	else if (arr[2])
-		return (g->exit_val = 1, ft_perror(" too many arguments\n"), false);
+		return (g->exit_val = 1, ft_perror(" too many arguments", true), false);
 	else if (chdir(arr[1]) == -1)
 		return (g->exit_val = 1, perror("cd"), false);
 	else if (getcwd(cwd, sizeof(cwd)) != NULL)
@@ -96,7 +96,11 @@ static t_state	gest_env(t_global *g, char **arr)
 	if (ft_strcmp(arr[0], "env"))
 	{
 		if (arr[1])
-			return (g->exit_val = 1, printf(EENV, arr[1]), ERROR);
+		{
+			(ft_perror("env: '", false), ft_perror(arr[1], false));
+			ft_perror("': No such file or directory\n", false);
+			return (g->exit_val = 1, ERROR);
+		}
 		return (plist(g->lenv, NULL), VALID);
 	}
 	if (ft_strcmp(arr[0], "pwd"))

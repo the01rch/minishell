@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 20:42:05 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 12:57:10 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static void	print_export(t_env *lenv)
 	while (tmp->next != NULL)
 	{
 		test = pwrapper(tmp->name, tmp->content, '=');
-		printf("export %s\n", test);
 		free(test);
 		tmp = tmp->next;
 	}
@@ -71,7 +70,8 @@ static	bool	single_export(t_global *g, char *str)
 	if (is_format_export(str) == NONE)
 		return (true);
 	if (is_format_export(str) == ERROR)
-		return (g->exit_val = 1, ft_perror(" not a valid identifier\n"), false);
+		return (g->exit_val = 1
+			, ft_perror(" not a valid identifier\n", false), false);
 	while (str[i] && str[i] != '=')
 		i++;
 	test = ft_substr(str, 0, i);
@@ -85,8 +85,7 @@ static	bool	single_export(t_global *g, char *str)
 		}
 		tmp = tmp->next;
 	}
-	tmp->next = create_node(str);
-	return (free(test), true);
+	return (tmp->next = create_node(str), free(test), true);
 }
 
 bool	ft_export(t_global *g, char **str, bool multiples)
@@ -104,7 +103,7 @@ bool	ft_export(t_global *g, char **str, bool multiples)
 		res = is_format_export(str[i]);
 		if (res == ERROR)
 			return (g->exit_val = 1,
-				ft_perror(" not a valid identifier\n"), false);
+				ft_perror(" not a valid identifier\n", false), false);
 		if (res == NONE)
 		{
 			i++;

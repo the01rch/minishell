@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: redrouic <redrouic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 03:20:08 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 03:33:16 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/11 12:54:54 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ bool	ft_cd(t_global *g, char **arr)
 	if (!arr[1])
 		return (simple_cd(g, pl, tmp));
 	else if (arr[2])
-		return (g->exit_val = 1, ft_perror(" too many arguments\n"), false);
+		return (g->exit_val = 1
+			, ft_perror(" too many arguments\n", false), false);
 	else if (chdir(arr[1]) == -1)
 		return (g->exit_val = 1, perror("cd"), false);
 	else if (getcwd(cwd, sizeof(cwd)) != NULL)

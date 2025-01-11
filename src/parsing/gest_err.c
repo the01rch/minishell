@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 12:33:04 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 13:13:18 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	check_pipes(char *str)
 	idx = 1;
 	idx += skip_chars(str, " \t");
 	if (!str[idx] || str[idx] == '|')
-		return (ft_perror(FPIPE), -1);
+		return (ft_perror(FPIPE, false), -1);
 	return (idx);
 }
 
@@ -43,9 +43,9 @@ static int	check_redir(char *str)
 	while (str[idx] && is_chr("\t ", str[idx]))
 		idx++;
 	if (!str[idx] || idx == ft_strlen(str))
-		return (ft_perror(FPIPE), -1);
+		return (ft_perror(FPIPE, false), -1);
 	if (is_chr("><|", str[idx]))
-		return (ft_perror(FPIPE), -1);
+		return (ft_perror(FPIPE, false), -1);
 	return (idx);
 }
 
@@ -65,7 +65,7 @@ int	check_quotes(char *str, int i)
 		idx++;
 	}
 	if (openq != 0)
-		return (printf("Error: Unmatched quote\n"), -1);
+		return (ft_perror("Error: Unmatched quote\n", false), (int)-1);
 	return (idx);
 }
 

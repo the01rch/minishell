@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:20:05 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/10 11:24:53 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 13:01:46 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	exec_cmd(t_global *g, int id)
 	std_save[2] = id;
 	if (dup_inf_out(g, std_save) == 1)
 	{
-		printf("exec: error with dup\n");
+		ft_perror("Exec: error with dup\n", false);
 		g->exit_val = 1;
 		return (g->exit_val);
 	}

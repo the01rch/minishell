@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 11:52:04 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/10 20:38:23 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 13:05:43 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	*ft_here_parse(char *line, t_env *lenv)
 
 	hd = init_hd(line, lenv, 0, 0);
 	if (!hd)
-		return (printf("%s\n", ERR_ALLOC), NULL);
+		return (ft_perror(ERR_ALLOC, true), NULL);
 	hd = fill_hd(line, lenv, hd, 0);
 	if (!hd)
 		return (line);
@@ -97,7 +97,7 @@ int	ft_hd_q(t_cmd *cmd, int *fd, char *del, void (*old_handler)(int))
 				(close(fd[0]), fd[0] = -2);
 				break ;
 			}
-			printf("%s\n", ERR_HD_EOF);
+			ft_perror(ERR_HD_EOF, true);
 			break ;
 		}
 		if ((ft_strncmp(hd, del, ft_strlen(del)) == 0
@@ -126,7 +126,7 @@ int	ft_hd_nq(t_global *g, int *fd, char *del, void (*old_handler)(int))
 		}
 		if (!hd)
 		{
-			printf("%s\n", ERR_HD_EOF);
+			ft_perror(ERR_HD_EOF, true);
 			break ;
 		}
 		if ((ft_strncmp(hd, del, ft_strlen(del)) == 0

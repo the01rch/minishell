@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/16 12:54:36 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/10 12:16:31 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/11 13:11:52 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # define DQUOTE 34
 # define EALL "Error: allocation failed.\n"
 # define FPIPE " syntax error near unexpected token `|'\n"
-# define EENV "env: '%s': No such file or directory\n"
 # define ERR_HD_EOF "warning: here-document delimited by end-of-file\n"
 # define ERR_ALLOC "An error has occured, it may\
  be related with a malloc failure\n"
