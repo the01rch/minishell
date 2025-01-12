@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 15:58:54 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 17:40:13 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ t_state	is_format_export(char *str)
 static void	print_export(t_env *lenv)
 {
 	t_env	*tmp;
-	char	*test;
 
 	tmp = lenv;
-	while (tmp->next != NULL)
+	while (tmp)
 	{
-		test = pwrapper(tmp->name, tmp->content, '=');
-		free(test);
+		printf("export %s=\"%s\"\n", tmp->name, tmp->content);
+		if (!tmp->next)
+			break ;
 		tmp = tmp->next;
 	}
 	tmp = lenv;
