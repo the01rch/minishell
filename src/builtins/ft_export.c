@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 20:43:21 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 21:37:01 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ bool	ft_export(t_global *g, char **str, bool multiples)
 	int		i;
 	t_state	res;
 	t_env	*tmp;
+	bool	err;
 
 	i = 0;
 	tmp = g->lenv;
@@ -98,17 +99,20 @@ bool	ft_export(t_global *g, char **str, bool multiples)
 		return (print_export(g->lenv), true);
 	if (!multiples)
 		return (single_export(g, *str, 0, tmp), VALID);
+	err = false;
 	while (str[i] != NULL)
 	{
 		res = is_format_export(str[i]);
-		if (res == ERROR)
-			return (ft_perror(EID, 0), g->exit_val = 1, false);
-		if (res == NONE)
+		if (res == ERROR || res == NONE)
 		{
+			if (res == ERROR)
+				(ft_perror(EID, 0), err = true);
 			i++;
 			continue ;
 		}
 		single_export(g, str[i++], 0, tmp);
 	}
+	if (err)
+		return (g->exit_val = 1, false);
 	return (VALID);
 }

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 15:57:39 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 21:32:01 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,7 @@ char	*ret_venv(t_env *lenv, char *src, int *i)
 	return (res);
 }
 
-#ifndef BUF_SIZ
-# define BUF_SIZ
-
+#ifndef BUFF_SIZ
 # define BUFF_SIZ 256
 
 static char	*process_dollar(t_global *g, char *str, int *i, char *buf)
