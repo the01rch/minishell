@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 06:04:27 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 19:58:34 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 23:41:00 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ bool	inq(char *str, int index, char quote)
 
 	i = 0;
 	current = '\0';
-	if (!str || index < 0 || index >= ft_strlen(str))
+	if (!str || index < 0 || index >= (int)ft_strlen(str))
 		return (false);
 	while (i <= index)
 	{
