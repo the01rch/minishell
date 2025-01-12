@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 23:05:32 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 14:45:38 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,17 @@ static void	update_last_cmd(t_global *g, t_cmd *cmd)
 	int		len;
 	char	*result;
 
-	len = (11 + ft_strlen(cmd->args[0]) + 1);
-	v_ = ft_calloc(sizeof(char), len);
-	if (!v_)
+	if (access(cmd->args[0], X_OK) == 0)
 	{
-		ft_perror("env: error with malloc \n");
-		return ;
+		v_ = ft_strdup(cmd->args[0]);
+		result = pwrapper("_", v_, '=');
+		ft_export(g, &result, false);
+		return (free(v_), free(result), (void)0);
 	}
+	len = (11 + ft_strlen(cmd->args[0]) + 1);
+	v_ = malloc(sizeof(char) * len);
+	if (!v_)
+		return (ft_perror(EALL), (void)0);
 	ft_strncpy(v_, "_=/usr/bin/", 12);
 	ft_strlcat(v_, cmd->args[0], len);
 	result = plist(g->lenv, "_");
@@ -40,21 +44,13 @@ void	close_all_fd_child(t_global *g)
 {
 	int	i;
 
-	if (!g || !g->cmds || !g->cmds[0])
-		return ;
 	i = 0;
-	while (i < g->cnt && g->cmds[i])
+	while (g->cmds[i])
 	{
 		if (g->cmds[i]->infile > 2)
-		{
 			close(g->cmds[i]->infile);
-			g->cmds[i]->infile = -1;
-		}
 		if (g->cmds[i]->outfile > 2)
-		{
 			close(g->cmds[i]->outfile);
-			g->cmds[i]->outfile = -1;
-		}
 		i++;
 	}
 }
@@ -62,7 +58,7 @@ void	close_all_fd_child(t_global *g)
 int	set_check_cmd(t_global *g, int id)
 {
 	if (g->cmds[id] && g->cmds[id]->args && g->cmds[id]->args[0]
-		&& ft_strlen(g->cmds[id]->args[0]) != 0)
+			&& ft_strlen(g->cmds[id]->args[0]) != 0)
 	{
 		if (ft_strcmp(g->cmds[0]->args[0], "exit"))
 			return (0);
