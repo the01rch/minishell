@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 03:20:08 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 15:58:46 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 16:34:20 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	ft_cd(t_global *g, char **arr)
 
 	tmp = NULL;
 	pl = NULL;
-	if (!arr[1])
+	if (!arr[1] || ft_strcmp(arr[1], "~"))
 		return (simple_cd(g, pl, tmp));
 	else if (arr[2])
 		return (g->exit_val = 1
