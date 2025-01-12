@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 16:58:06 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 15:58:57 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 20:43:32 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,14 @@ void	ft_unset(t_global *g, char **str)
 	g->exit_val = 0;
 	while (str[i] != NULL)
 	{
-		if (is_format_export(str[i]) == ERROR)
-		{
-			g->exit_val = 1;
-			ft_perror(" not a valid identifier\n", 0);
-			return ;
-		}
 		unset_var(&g->lenv, str[i]);
 		i++;
 	}
 }
+
+// if (is_format_export(str[i]) == ERROR)
+// {
+// 	g->exit_val = 1;
+// 	ft_perror(EID, 0);
+// 	return ;
+// }

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 16:18:27 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 17:15:25 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,11 @@ static int	fill_redir(t_global *g, int i, char **li, int l)
 
 static void	fill_s_cmd(t_global *g, int id, char **arr, int t[3])
 {
-	char	cmd_line[1024];
+	char	*cmd_line;
 	char	*tmp;
 
 	t[0] = -1;
+	cmd_line = ft_calloc(sizeof(char), 999999);
 	while (arr[id][++t[0]])
 		if (is_chr("><", arr[id][t[0]]) && !inq(arr[id], t[0], 0))
 			break ;

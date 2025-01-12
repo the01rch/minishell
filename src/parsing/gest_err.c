@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 16:16:26 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 20:03:48 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ static int	check_pipes(char *str)
 		return (0);
 	idx = 1;
 	idx += skip_chars(str, " \t");
-	if (!str[idx] || str[idx] == '|')
+	if (!str[idx] || (str[idx] == '|' && str[idx - 1] != '|'))
 		return (ft_perror(UTOK, "|"), -1);
+	if (str[idx] == '|' && str[idx - 1] == '|')
+		idx++;
 	return (idx);
 }
 

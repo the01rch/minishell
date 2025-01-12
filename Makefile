@@ -6,7 +6,7 @@
 #    By: kpires <kpires@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 19:41:59 by redrouic          #+#    #+#              #
-#    Updated: 2025/01/11 23:58:56 by kpires           ###   ########.fr        #
+#    Updated: 2025/01/12 16:57:07 by kpires           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -62,6 +62,8 @@ NAME	=	libft.a
 RL		=	-lreadline
 
 RM		=	rm -rf
+
+CFLAGS	+=	-Wall -Wextra -Werror -g3
 
 GREEN = \033[0;32m
 YELLOW = \033[0;33m

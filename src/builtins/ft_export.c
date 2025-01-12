@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 15:58:54 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 20:43:21 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,11 @@ t_state	is_format_export(char *str)
 static void	print_export(t_env *lenv)
 {
 	t_env	*tmp;
-	char	*test;
 
 	tmp = lenv;
-	while (tmp->next != NULL)
+	while (tmp != NULL)
 	{
-		test = pwrapper(tmp->name, tmp->content, '=');
-		free(test);
+		printf("export %s=\"%s\"\n", tmp->name, tmp->content);
 		tmp = tmp->next;
 	}
 	tmp = lenv;
@@ -67,7 +65,7 @@ static	bool	single_export(t_global *g, char *str, int i, t_env *tmp)
 		return (true);
 	if (is_format_export(str) == ERROR)
 		return (g->exit_val = 1
-			, ft_perror(" not a valid identifier\n", 0), false);
+			, ft_perror(EID, 0), false);
 	while (str[i] && str[i] != '=')
 		i++;
 	e_name = ft_substr(str, 0, i);
@@ -104,8 +102,7 @@ bool	ft_export(t_global *g, char **str, bool multiples)
 	{
 		res = is_format_export(str[i]);
 		if (res == ERROR)
-			return (g->exit_val = 1,
-				ft_perror(" not a valid identifier\n", 0), false);
+			return (ft_perror(EID, 0), g->exit_val = 1, false);
 		if (res == NONE)
 		{
 			i++;
