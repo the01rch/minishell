@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 16:01:36 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/12 15:02:18 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,14 @@ int	check_quotes(char *str, int i)
 	int		idx;
 
 	openq = 0;
+	idx = 0;
+	while (str[idx])
+	{
+		if (is_chr("\'\"", str[idx++]))
+			break ;
+	}
+	if (idx == ft_strlen(str))
+		return (i);
 	idx = i;
 	while (str[idx])
 	{

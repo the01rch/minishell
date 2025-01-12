@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/12 14:45:38 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/12 15:04:23 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	close_all_fd_child(t_global *g)
 int	set_check_cmd(t_global *g, int id)
 {
 	if (g->cmds[id] && g->cmds[id]->args && g->cmds[id]->args[0]
-			&& ft_strlen(g->cmds[id]->args[0]) != 0)
+		&& ft_strlen(g->cmds[id]->args[0]) != 0)
 	{
 		if (ft_strcmp(g->cmds[0]->args[0], "exit"))
 			return (0);

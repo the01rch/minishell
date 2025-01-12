@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 12:06:06 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 23:48:57 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 14:54:53 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static int	handle_heredoc_child(t_global *g, int id, int *fd, char *redir)
 		file = ft_fname(redir + i, 0, 0, "<>|");
 		if (!file)
 			return (close(fd[1]), close(fd[0]), -1);
-		result = (i) + ft_hd_q(g, fd, file, old_handler);
+		result = (i) + ft_hd_q(g->cmds[id], fd, file, old_handler);
 		return (free(file), (int)result);
 	}
 	file = ft_fname(redir + i, 0, 0, "<>| ");
