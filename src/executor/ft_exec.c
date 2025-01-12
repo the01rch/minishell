@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 23:30:38 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/12 15:04:23 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/12 15:57:39 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	update_last_cmd(t_global *g, t_cmd *cmd)
 	len = (11 + ft_strlen(cmd->args[0]) + 1);
 	v_ = malloc(sizeof(char) * len);
 	if (!v_)
-		return (ft_perror(EALL), (void)0);
+		return (ft_perror(EALL, 0), (void)0);
 	ft_strncpy(v_, "_=/usr/bin/", 12);
 	ft_strlcat(v_, cmd->args[0], len);
 	result = plist(g->lenv, "_");

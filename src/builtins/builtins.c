@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 00:30:48 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 22:58:14 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 16:19:56 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	ft_exit(t_global *g, t_cmd *cmd, bool print)
 		|| (ft_strncmp("-9223372036854775808", cmd->args[1], 20) < 0
 			&& cmd->args[1][0] == '-')))
 	{
-		(ft_perror("exit: "), ft_perror(cmd->args[1]));
-		ft_perror(": numeric argument required\n");
+		(ft_perror("exit: ", 0), ft_perror(cmd->args[1], 0));
+		ft_perror(": numeric argument required\n", 0);
 		(free_g(g, NULL), exit(2));
 	}
 	if (ft_is_nb(cmd->args[1]) == 0 && cmd->args[1] && cmd->args[2] == NULL)
@@ -35,7 +35,7 @@ int	ft_exit(t_global *g, t_cmd *cmd, bool print)
 		nb = ft_atoi(cmd->args[1]);
 		(free_g(g, NULL), exit(nb % 256));
 	}
-	ft_perror("exit: too many arguments\n");
+	ft_perror("exit: too many arguments\n", 0);
 	g->exit_val = 1;
 	return (1);
 }
@@ -67,8 +67,8 @@ static t_state	gest_env(t_global *g, char **arr)
 	{
 		if (arr[1])
 		{
-			(ft_perror("env: '"), ft_perror(arr[1]));
-			ft_perror("': No such file or directory\n");
+			(ft_perror("env: '", 0), ft_perror(arr[1], 0));
+			ft_perror("': No such file or directory\n", 0);
 			return (g->exit_val = 1, ERROR);
 		}
 		return (plist(g->lenv, NULL), VALID);

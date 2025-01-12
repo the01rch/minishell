@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:33:18 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 23:58:02 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 16:20:19 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		ft_isdigit(int c);
 int		ft_atoi(const char *str);
 int		ft_is_nb(char *cmd);
 char	*ft_itoa(int n);
-void	ft_perror(const char *str);
+void	ft_perror(const char *str, char *tok);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 void	ft_free_node(t_env *node);
 
@@ -77,6 +77,7 @@ char	**list2arr(t_env *lenv);
 char	**str2arr(char *str, const char *chr, bool quote);
 void	init_s_cmd(t_global *g, char *line);
 char	*gest_expand(t_global *g, char *str);
+int		gest_msg(char *str, int idx);
 
 /*UTILS*/
 bool	inq(char *str, int index, char quote);

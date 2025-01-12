@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 03:20:08 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 15:58:10 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/12 15:58:46 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static bool	simple_cd(t_global *g, char *pl, char *tmp)
 	pl = plist(g->lenv, "HOME");
 	if (!pl)
 	{
-		(free(pl), ft_perror("cd: HOME not set\n"));
+		(free(pl), ft_perror("cd: HOME not set\n", 0));
 		g->exit_val = 1;
 		return (false);
 	}
@@ -42,7 +42,7 @@ bool	ft_cd(t_global *g, char **arr)
 		return (simple_cd(g, pl, tmp));
 	else if (arr[2])
 		return (g->exit_val = 1
-			, ft_perror(" too many arguments\n"), false);
+			, ft_perror(" too many arguments\n", 0), false);
 	else if (chdir(arr[1]) == -1)
 		return (g->exit_val = 1, perror("cd"), false);
 	else if (getcwd(cwd, sizeof(cwd)) != NULL)

@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 17:27:02 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 16:02:42 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/12 15:57:39 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*ret_venv(t_env *lenv, char *src, int *i)
 	*i += len;
 	str = malloc(sizeof(char) * len + 1);
 	if (!str)
-		return (ft_perror(EALL), NULL);
+		return (ft_perror(EALL, 0), NULL);
 	ft_strncpy(str, src, len);
 	res = plist(lenv, str);
 	free(str);
@@ -117,7 +117,7 @@ char	*gest_expand(t_global *g, char *str)
 
 	buf = ft_calloc(sizeof(char), BUFF_SIZ);
 	if (!buf)
-		return (ft_perror(EALL), NULL);
+		return (ft_perror(EALL, 0), NULL);
 	buf_pos = buf;
 	i = 0;
 	while (str[i] != '\0')

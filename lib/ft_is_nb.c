@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/02 22:18:11 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/02 22:19:31 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 16:18:21 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_is_nb(char *cmd)
 	int	i;
 
 	i = 0;
-	while (cmd[i] == 32 || cmd[i] == '\0')
+	while (cmd[i] == ' ' || cmd[i] == '\0')
 	{
 		if (cmd[i] == '\0')
 			return (1);
@@ -27,7 +27,7 @@ int	ft_is_nb(char *cmd)
 		i++;
 	while (ft_isdigit(cmd[i]))
 		i++;
-	while (cmd[i] == 32)
+	while (cmd[i] == ' ')
 		i++;
 	if (cmd[i] != '\0')
 		return (1);

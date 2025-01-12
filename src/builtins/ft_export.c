@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 19:59:37 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 15:58:54 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static	bool	single_export(t_global *g, char *str, int i, t_env *tmp)
 		return (true);
 	if (is_format_export(str) == ERROR)
 		return (g->exit_val = 1
-			, ft_perror(" not a valid identifier\n"), false);
+			, ft_perror(" not a valid identifier\n", 0), false);
 	while (str[i] && str[i] != '=')
 		i++;
 	e_name = ft_substr(str, 0, i);
@@ -105,7 +105,7 @@ bool	ft_export(t_global *g, char **str, bool multiples)
 		res = is_format_export(str[i]);
 		if (res == ERROR)
 			return (g->exit_val = 1,
-				ft_perror(" not a valid identifier\n"), false);
+				ft_perror(" not a valid identifier\n", 0), false);
 		if (res == NONE)
 		{
 			i++;

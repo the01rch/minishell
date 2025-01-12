@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 23:59:38 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 16:18:27 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	fill_redir(t_global *g, int i, char **li, int l)
 	{
 		g->cmds[i]->redir = ft_calloc(sizeof(char), (ft_strlen(li[i]) - l + 2));
 		if (!g->cmds[i]->redir)
-			return (ft_perror(EALL), free_g(g, li), exit(1), (int)-1);
+			return (ft_perror(EALL, 0), free_g(g, li), exit(1), (int)-1);
 		j[0] = 0;
 		j[1] = l;
 		while (j[1] < (int)ft_strlen(li[i]))
@@ -91,7 +91,7 @@ static void	fill_s_cmd(t_global *g, int id, char **arr, int t[3])
 	{
 		if (t[0] < t[2])
 			t[0] = t[2];
-		if (arr[id][t[0]] == 32 && !is_chr(">< \t", arr[id][t[0] - 1]))
+		if (arr[id][t[0]] == ' ' && !is_chr(">< \t", arr[id][t[0] - 1]))
 			while (arr[id][t[0]] && !is_chr("><", arr[id][t[0]]))
 				cmd_line[t[1]++] = arr[id][t[0]++];
 		t[0]++;
@@ -101,7 +101,7 @@ static void	fill_s_cmd(t_global *g, int id, char **arr, int t[3])
 	g->cmds[id]->args = str2arr(tmp, " \t", true);
 	free(tmp);
 	if (!g->cmds[id]->args)
-		return (ft_perror(EALL), free_g(g, arr), exit(1), (void)0);
+		return (ft_perror(EALL, 0), free_g(g, arr), exit(1), (void)0);
 }
 
 void	init_s_cmd(t_global *g, char *line)
@@ -115,16 +115,16 @@ void	init_s_cmd(t_global *g, char *line)
 	g->cnt = rows;
 	g->cmds = ft_calloc(sizeof(t_cmd *), (rows + 1));
 	if (!g->cmds)
-		return (ft_perror(EALL), free(line), exit(1), (void)0);
+		return (ft_perror(EALL, 0), free(line), exit(1), (void)0);
 	arr = str2arr(line, "|", true);
 	if (!arr)
-		return (ft_perror(EALL), free_g(g, NULL), free(line), exit(1), (void)0);
+		return (ft_perror(EALL, 0), free_g(g, 0), free(line), exit(1), (void)0);
 	i = 0;
 	while (i < rows)
 	{
 		g->cmds[i] = ft_calloc(sizeof(t_cmd), 1);
 		if (!g->cmds[i])
-			return (ft_perror(EALL), (void)0);
+			return (ft_perror(EALL, 0), (void)0);
 		fill_s_cmd(g, i, arr, t);
 		i++;
 	}

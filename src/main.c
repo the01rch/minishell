@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 15:15:56 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 00:03:25 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 15:57:57 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	handl_quit(int sig)
 		rl_redisplay();
 	}
 	else
-		ft_perror("Quit (core dumped)\n");
+		ft_perror("Quit (core dumped)\n", 0);
 	g_signal = sig;
 }
 

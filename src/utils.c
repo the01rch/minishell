@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 06:04:27 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/11 23:06:44 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 16:21:01 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,19 @@ bool	inq(char *str, int index, char quote)
 		i++;
 	}
 	return (current != '\0');
+}
+
+int	gest_msg(char *str, int idx)
+{
+	if (str[idx] && str[idx + 1] && str[idx + 1] == '>')
+		return (ft_perror(UTOK, ">>"), -1);
+	else if (str[idx] && str[idx] == '>')
+		return (ft_perror(UTOK, ">"), -1);
+	else if (str[idx] && str[idx + 1] && str[idx + 1] == '<')
+		return (ft_perror(UTOK, "<<"), -1);
+	else if (str[idx] && str[idx] == '<')
+		return (ft_perror(UTOK, "<"), -1);
+	else if (str[idx] && str[idx] == '|')
+		return (ft_perror(UTOK, "|"), -1);
+	return (-1);
 }

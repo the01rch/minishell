@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 13:20:05 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/11 23:13:59 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/12 15:59:22 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void	gest_shell(t_global *g, int id, int *std_save)
 
 	pid = fork();
 	if (pid < 0)
-		return (ft_perror("Error :Fork failed\n"),
+		return (ft_perror("Error :Fork failed\n", 0),
 			free_g(g, NULL), exit(0), (void)0);
 	else if (pid == 0)
 	{
@@ -112,7 +112,7 @@ int	exec_cmd(t_global *g, int id)
 	std_save[2] = id;
 	if (dup_inf_out(g, std_save) == 1)
 	{
-		ft_perror("Exec: error with dup\n");
+		ft_perror("Exec: error with dup\n", 0);
 		g->exit_val = 1;
 		return (g->exit_val);
 	}

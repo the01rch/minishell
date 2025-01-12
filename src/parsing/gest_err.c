@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 15:02:18 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/12 16:16:26 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	check_pipes(char *str)
 	idx = 1;
 	idx += skip_chars(str, " \t");
 	if (!str[idx] || str[idx] == '|')
-		return (ft_perror(FPIPE), -1);
+		return (ft_perror(UTOK, "|"), -1);
 	return (idx);
 }
 
@@ -43,9 +43,9 @@ static int	check_redir(char *str)
 	while (str[idx] && is_chr("\t ", str[idx]))
 		idx++;
 	if (!str[idx] || idx == ft_strlen(str))
-		return (ft_perror(FPIPE), -1);
+		return (ft_perror(UTOK, "newline"), -1);
 	if (is_chr("><|", str[idx]))
-		return (ft_perror(FPIPE), -1);
+		return (gest_msg(str, idx), -1);
 	return (idx);
 }
 
@@ -73,7 +73,7 @@ int	check_quotes(char *str, int i)
 		idx++;
 	}
 	if (openq != 0)
-		return (ft_perror("Error: Unmatched quote\n"), (int)-1);
+		return (ft_perror("Error: Unmatched quote\n", 0), (int)-1);
 	return (idx);
 }
 
@@ -113,7 +113,7 @@ bool	is_syntax_valid(t_global *g, char *str)
 	if (!str[i])
 		return (false);
 	if (str[i] == '|')
-		return (g->exit_val = 2, false);
+		return (ft_perror(UTOK, "|"), g->exit_val = 2, false);
 	while (str[i])
 	{
 		tmp = token_indices(str, i);
