@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 13:01:39 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 20:03:48 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/13 14:03:34 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ int	check_quotes(char *str, int i)
 	int		idx;
 
 	openq = 0;
+	if (str[0] && ft_strlen(str) == 1 && is_chr("\'\"", str[0]))
+		return (ft_perror("Error: Unmatched quote\n", 0), (int)-1);
 	idx = 0;
 	while (str[idx])
-	{
 		if (is_chr("\'\"", str[idx++]))
 			break ;
-	}
 	if (idx == ft_strlen(str))
 		return (i);
 	idx = i;
@@ -98,6 +98,8 @@ static int	token_indices(char *str, int i)
 	if (tmp < 0)
 		return (-1);
 	i += tmp;
+	if (i == 0)
+		return (-1);
 	return (i);
 }
 

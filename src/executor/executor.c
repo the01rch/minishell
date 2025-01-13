@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 01:34:17 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 15:59:14 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/13 13:45:24 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*check_access(t_env *lenv, char **arr)
 		return (NULL);
 	path = NULL;
 	while (tab[i] != NULL)
-	{
+	{	
 		path = pwrapper(tab[i++], arr[0], '/');
 		if (!path)
 			return (free_arr(tab), NULL);
@@ -70,21 +70,27 @@ void	execve_absolute_path(t_global *g, int id)
 void	execve_cmd_path(t_global *g, int id)
 {
 	char	*path;
+	char	**lenv;
+	int		i;
 
-	path = check_access(g->lenv, g->cmds[id]->args);
+	i = 0;
+	while (g->cmds[id]->args[0][i] && is_chr(".'\"", g->cmds[id]->args[0][i]))
+		i++;
+	if (g->cmds[id]->args[0][i] == '\0')
+		path = NULL;
+	else
+		path = check_access(g->lenv, g->cmds[id]->args);
+	lenv = list2arr(g->lenv);
 	if (!path)
 	{
 		ft_perror(g->cmds[id]->args[0], 0);
 		ft_perror(": command not found\n", 0);
-		free_g(g, NULL);
-		exit(127);
+		(free_g(g, lenv), exit(127));
 	}
-	if (execve(path, g->cmds[id]->args, list2arr(g->lenv)) == -1)
+	if (execve(path, g->cmds[id]->args, lenv) == -1)
 	{
 		perror("execve");
-		free_g(g, NULL);
-		free(path);
-		exit(1);
+		(free_g(g, lenv), free(path), exit(1));
 	}
 }
 

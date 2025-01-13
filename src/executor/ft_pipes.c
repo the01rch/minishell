@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 18:14:52 by kpires            #+#    #+#             */
-/*   Updated: 2025/01/13 00:02:41 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/13 11:02:56 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,11 +94,6 @@ void	exec_cmds(t_global *g)
 	int		i;
 
 	i = 0;
-	if (ft_strcmp(g->cmds[0]->args[0], "export"))
-	{
-		gest_builtins(g, g->cmds[i]);
-		g->cmds[0]->outfile = -2;
-	}
 	while (g->cmds[i])
 	{
 		pipe_and_fork(g, i);

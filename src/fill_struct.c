@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/13 04:05:34 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/13 13:43:54 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ static int	fill_redir(t_global *g, int i, char **li, int l)
 					|| is_chr(" \t", li[i][j[1]])))
 					g->cmds[i]->redir[j[0]++] = li[i][j[1]++];
 				cat_quot_str(g->cmds[i]->redir, li[i], &j[0], &j[1]);
-				g->cmds[i]->redir[j[0]++] = ' ';
 			}
 			else
 				j[1]++;
@@ -93,7 +92,8 @@ static void	fill_s_cmd(t_global *g, int id, char **arr, int t[3])
 	{
 		if (t[0] < t[2])
 			t[0] = t[2];
-		if (arr[id][t[0]] == ' ' && !is_chr(">< \t", arr[id][t[0] - 1]))
+		if (arr[id][t[0]] && arr[id][t[0]] == ' '
+				&& !is_chr(">< \t", arr[id][t[0] - 1]))
 			while (arr[id][t[0]] && !is_chr("><", arr[id][t[0]]))
 				cmd_line[t[1]++] = arr[id][t[0]++];
 		t[0]++;
