@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 18:02:03 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 16:18:27 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/13 04:05:34 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,12 @@ static int	fill_redir(t_global *g, int i, char **li, int l)
 
 static void	fill_s_cmd(t_global *g, int id, char **arr, int t[3])
 {
-	char	cmd_line[1024];
+	char	*cmd_line;
 	char	*tmp;
 
-	t[0] = -1;
+	cmd_line = ft_calloc(sizeof(char), (ft_strlen(arr[id]) + 1));
+	if (!cmd_line)
+		return (ft_perror(EALL, 0), free_g(g, arr), exit(1), (void)0);
 	while (arr[id][++t[0]])
 		if (is_chr("><", arr[id][t[0]]) && !inq(arr[id], t[0], 0))
 			break ;
@@ -99,33 +101,32 @@ static void	fill_s_cmd(t_global *g, int id, char **arr, int t[3])
 	cmd_line[t[1]] = '\0';
 	tmp = gest_expand(g, cmd_line);
 	g->cmds[id]->args = str2arr(tmp, " \t", true);
-	free(tmp);
-	if (!g->cmds[id]->args)
-		return (ft_perror(EALL, 0), free_g(g, arr), exit(1), (void)0);
+	(free(cmd_line), free(tmp));
 }
 
 void	init_s_cmd(t_global *g, char *line)
 {
 	char	**arr;
-	int		rows;
 	int		i;
 	int		t[3];
 
-	rows = count_rows("|", line, true);
-	g->cnt = rows;
-	g->cmds = ft_calloc(sizeof(t_cmd *), (rows + 1));
+	g->cnt = count_rows("|", line, true);
+	g->cmds = ft_calloc(sizeof(t_cmd *), (g->cnt + 1));
 	if (!g->cmds)
 		return (ft_perror(EALL, 0), free(line), exit(1), (void)0);
 	arr = str2arr(line, "|", true);
 	if (!arr)
 		return (ft_perror(EALL, 0), free_g(g, 0), free(line), exit(1), (void)0);
 	i = 0;
-	while (i < rows)
+	while (i < g->cnt)
 	{
 		g->cmds[i] = ft_calloc(sizeof(t_cmd), 1);
 		if (!g->cmds[i])
 			return (ft_perror(EALL, 0), (void)0);
+		t[0] = -1;
 		fill_s_cmd(g, i, arr, t);
+		if (!g->cmds[i]->args)
+			return (ft_perror(EALL, 0), free_g(g, arr), exit(1), (void)0);
 		i++;
 	}
 	g->cmds[i] = NULL;

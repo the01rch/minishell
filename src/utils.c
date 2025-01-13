@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 06:04:27 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/12 16:21:01 by kpires           ###   ########.fr       */
+/*   Updated: 2025/01/13 03:35:50 by redrouic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,18 +47,22 @@ int	skip_chars(char *str, char *dels)
 char	*plist(t_env *lenv, char *name)
 {
 	t_env	*tmp;
-	char	*result;
+	char	*res;
 
 	tmp = lenv;
 	while (tmp != NULL)
 	{
 		if (name && ft_strcmp(name, tmp->name))
 		{
-			result = ft_strdup(tmp->content);
-			return (result);
+			res = ft_strdup(tmp->content);
+			return (res);
 		}
 		else if (!name)
-			printf("%s=%s\n", tmp->name, tmp->content);
+		{
+			res = remq(ft_strdup(tmp->content));
+			printf("%s=%s\n", tmp->name, res);
+			free(res);
+		}
 		tmp = tmp->next;
 	}
 	return (NULL);
@@ -71,7 +75,7 @@ bool	inq(char *str, int index, char quote)
 
 	i = 0;
 	current = '\0';
-	if (!str || index < 0 || index >= ft_strlen(str))
+	if (!str || index < 0 || index >= (int)ft_strlen(str))
 		return (false);
 	while (i <= index)
 	{
@@ -90,14 +94,16 @@ bool	inq(char *str, int index, char quote)
 
 int	gest_msg(char *str, int idx)
 {
-	if (str[idx] && str[idx + 1] && str[idx + 1] == '>')
+	if (str[idx] && str[idx] == '>' && str[idx + 1] && str[idx + 1] == '>')
 		return (ft_perror(UTOK, ">>"), -1);
 	else if (str[idx] && str[idx] == '>')
 		return (ft_perror(UTOK, ">"), -1);
-	else if (str[idx] && str[idx + 1] && str[idx + 1] == '<')
+	else if (str[idx] && str[idx] == '<' && str[idx + 1] && str[idx + 1] == '<')
 		return (ft_perror(UTOK, "<<"), -1);
 	else if (str[idx] && str[idx] == '<')
 		return (ft_perror(UTOK, "<"), -1);
+	else if (str[idx] && str[idx] == '|' && str[idx + 1] && str[idx + 1] != '|')
+		return (ft_perror(UTOK, "|"), -1);
 	else if (str[idx] && str[idx] == '|')
 		return (ft_perror(UTOK, "|"), -1);
 	return (-1);
