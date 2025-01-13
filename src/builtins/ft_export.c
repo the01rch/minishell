@@ -6,7 +6,7 @@
 /*   By: kpires <kpires@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 23:10:04 by redrouic          #+#    #+#             */
-/*   Updated: 2025/01/13 03:51:28 by redrouic         ###   ########.fr       */
+/*   Updated: 2025/01/13 14:09:15 by kpires           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	print_export(t_env *lenv)
 	while (tmp != NULL)
 	{
 		res = remq(ft_strdup(tmp->content));
-		printf("declare -x %s=\"%s\"\n", tmp->name, res);
+		printf("export %s=\"%s\"\n", tmp->name, res);
 		free(res);
 		tmp = tmp->next;
 	}
